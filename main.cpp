@@ -21,7 +21,6 @@
 
     // 2. A higher level understanding of how I should structure the project:
     //
-    //
 
 
 
