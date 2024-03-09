@@ -1,6 +1,6 @@
 // --- BlackFilmDatabase_GUI --- \\\
 
---- Project Notes / Plan ---
+// --- Project Notes / Plan --- \\\
 
 The aim of the project is to create a GUI that allows users to search a database of Black films. My motivation for the 
 project is simple - there are so many GREAT Black films that I personally haven't watched yet, and so a search 
