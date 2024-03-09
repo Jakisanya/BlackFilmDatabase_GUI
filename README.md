@@ -13,11 +13,11 @@ database uses Postgresql and is therefore queried using Postgresql. To give a hi
 The main window of the application will have a video playing in the background. The video will be a clip from a popular
 Black film. There'll be a 'SEARCH DATABASE' button in the centre of the frame that will navigate to the search page. 
 The search page will have two sections, 'Basic Search' and 'Advanced Search'. The basic search will have 5 fields:
-    1. Title -> A general text field. 
-    2. Release Year -> A range-based slider. 
-    3. Genre -> A set of selectable options (boxes).
-    4. Film Rating -> A set of selectable options (boxes).
-    5. Language -> A set of selectable options (boxes).
+1. Title -> A general text field. 
+2. Release Year -> A range-based slider. 
+3. Genre -> A set of selectable options (boxes).
+4. Film Rating -> A set of selectable options (boxes).
+5. Language -> A set of selectable options (boxes).
 
 The 'Advanced Search' section will allow the user to narrow their search by offering 6 more fields. These are:
     1. IMDb Rating -> A range-based slider.
