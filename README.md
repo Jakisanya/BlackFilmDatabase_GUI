@@ -32,9 +32,9 @@ be the 'SEARCH BUTTON' allowing the user to send the query.
 
 The search results will show on the Results Page. The layout of the page will be simple. Each result will form a row - 
 almost like a row of a database but with only a small amount of data. This is so that data on the page doesn't seem 
-excessive - the user should be able to quickly identify the main elements when quickly skimming. An alternative idea is 
-to show the posters of the films returned in a grid layout. Ultimately, the user will be able to click on one of the
-search results and be presented with a page of information on that film alone. The poster will be in the top left-hand
-corner and all other information around it. 
+excessive - the user should be able to quickly identify the main elements when skimming. An alternative idea is to show 
+the posters of the films returned in a grid layout. Ultimately, the user will be able to click on one of the search 
+results and be presented with a page of information on that film alone. The poster will be in the top left-hand corner 
+and all other information around it. 
 
 
