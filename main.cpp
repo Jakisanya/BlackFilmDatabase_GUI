@@ -34,9 +34,16 @@ QWidget* createComboBoxField(const QString& label, QComboBox& cbWidget, QWidget*
     return widgetContainer;
 }
 
-class SearchPage : public QWidget {
+class SearchPage : public QGraphicsView {
 public:
-    SearchPage(QWidget* parent = nullptr) : QWidget(parent) {
+    SearchPage() {
+        setFixedSize(640, 360);
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setBackgroundBrush(QColor(Qt::black));
+        setWindowTitle("Search the Database");
+
         QVBoxLayout layout(this);
 
         // Basic Search Fields
@@ -59,7 +66,7 @@ public:
 
         // Advanced Search Checkbox
         advancedCheckbox.setText("Advanced Search");
-        connect(advancedCheckbox, &QCheckBox::toggled, advancedSearchFields, &QWidget::setEnabled);
+        // connect(advancedCheckbox, &QCheckBox::toggled, this, &SearchPage::enableAdvancedSearch);
         layout.addWidget(&advancedCheckbox);
 
         // Search Button
@@ -82,18 +89,23 @@ public:
     [[nodiscard]] QString getDirector() const { return directorEdit.text(); }
     [[nodiscard]] QString getWriter() const { return writerEdit.text(); }
 
+public slots:
+    void enableAdvancedSearch() {
+
+    };
+
 private:
-    QWidget* titleWidget;
-    QWidget* yearWidget;
-    QWidget* genreWidget;
-    QWidget* filmRatingWidget;
-    QWidget* languageWidget;
-    QWidget* imdbRatingWidget;
-    QWidget* rottenTomatoesRatingWidget;
-    QWidget* keywordWidget;
-    QWidget* actorWidget;
-    QWidget* directorWidget;
-    QWidget* writerWidget;
+    QWidget* titleWidget{};
+    QWidget* yearWidget{};
+    QWidget* genreWidget{};
+    QWidget* filmRatingWidget{};
+    QWidget* languageWidget{};
+    QWidget* imdbRatingWidget{};
+    QWidget* rottenTomatoesRatingWidget{};
+    QWidget* keywordWidget{};
+    QWidget* actorWidget{};
+    QWidget* directorWidget{};
+    QWidget* writerWidget{};
     QLineEdit titleEdit;
     QLineEdit yearEdit;
     QLineEdit imdbEdit;
@@ -153,27 +165,27 @@ public slots:
         scene.removeItem(&videoItem);
         scene.removeItem(proxyWidget);
 
-        // Create and display search page
-        searchPage = new SearchPage;
-        scene.addWidget(searchPage);
+        // Display the search page
+        proxyWidget->setWidget(&searchPage);
+        scene.addItem(proxyWidget);
 
         // Connect search button to perform search function
-        QObject::connect(searchPage->searchButton, &QPushButton::clicked, this, &MainGraphicsView::performSearch);
+        QObject::connect(&searchButton, &QPushButton::clicked, this, &MainGraphicsView::performSearch);
     }
 
     void performSearch() {
         // Gather search parameters from the search page
-        QString title = searchPage->getTitle();
-        QString year = searchPage->getYear();
-        QString genre = searchPage->getGenre();
-        QString rating = searchPage->getRating();
-        QString language = searchPage->getLanguage();
-        QString imdbRating = searchPage->getIMDBRating();
-        QString rottenTomatoesRating = searchPage->getRottenTomatoesRating();
-        QString keyword = searchPage->getKeyword();
-        QString actor = searchPage->getActor();
-        QString director = searchPage->getDirector();
-        QString writer = searchPage->getWriter();
+        QString title = searchPage.getTitle();
+        QString year = searchPage.getYear();
+        QString genre = searchPage.getGenre();
+        QString rating = searchPage.getRating();
+        QString language = searchPage.getLanguage();
+        QString imdbRating = searchPage.getIMDBRating();
+        QString rottenTomatoesRating = searchPage.getRottenTomatoesRating();
+        QString keyword = searchPage.getKeyword();
+        QString actor = searchPage.getActor();
+        QString director = searchPage.getDirector();
+        QString writer = searchPage.getWriter();
 
         // Implement the search functionality, query the database, and display results
     }
@@ -184,7 +196,7 @@ private:
     QMediaPlayer mediaPlayer;
     QPushButton searchButton;
     QGraphicsProxyWidget* proxyWidget;
-    SearchPage *searchPage;
+    SearchPage searchPage;
 };
 
 int main(int argc, char *argv[]) {
