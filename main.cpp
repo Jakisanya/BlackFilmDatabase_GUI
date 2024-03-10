@@ -18,62 +18,63 @@
 #include <QSlider>
 #include <QCheckBox>
 
-QWidget* createLineEditField(const QString& label, QLineEdit& leWidget, QWidget* widgetContainer) {
-    QHBoxLayout layout(widgetContainer);
-    QLabel fieldLabel(label);
-    layout.addWidget(&fieldLabel);
-    layout.addWidget(&leWidget);
-    return widgetContainer;
-}
 
-QWidget* createComboBoxField(const QString& label, QComboBox& cbWidget, QWidget* widgetContainer) {
-    QHBoxLayout layout(widgetContainer);
-    QLabel fieldLabel(label);
-    layout.addWidget(&fieldLabel);
-    layout.addWidget(&cbWidget);
-    return widgetContainer;
-}
-
-class SearchPage : public QGraphicsView {
+class SearchPage : public QWidget {
 public:
     SearchPage() {
-        setFixedSize(640, 360);
-        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        setBackgroundBrush(QColor(Qt::black));
-        setWindowTitle("Search the Database");
+        setFixedSize(640, 720);
 
-        QVBoxLayout layout(this);
-
-        // Basic Search Fields
-        layout.addWidget(createLineEditField("Title", titleEdit, titleWidget));
-        layout.addWidget(createLineEditField("Release Year", yearEdit, yearWidget));
-        layout.addWidget(createComboBoxField("Genre", genreCombo, genreWidget));
-        layout.addWidget(createComboBoxField("Film Rating", filmRatingCombo, filmRatingWidget));
-        layout.addWidget(createComboBoxField("Language", languageCombo, languageWidget));
-
-        // Advanced Search Fields (Initially disabled)
-        advancedSearchFields.setEnabled(false);
-        QVBoxLayout advancedLayout(&advancedSearchFields);
-        advancedLayout.addWidget(createLineEditField("IMDB Rating", imdbEdit, imdbRatingWidget));
-        advancedLayout.addWidget(createLineEditField("Rotten Tomatoes Rating", rottenTomatoesEdit, rottenTomatoesRatingWidget));
-        advancedLayout.addWidget(createLineEditField("Keyword", keywordEdit, keywordWidget));
-        advancedLayout.addWidget(createLineEditField("Actor", actorEdit, actorWidget));
-        advancedLayout.addWidget(createLineEditField("Director", directorEdit, directorWidget));
-        advancedLayout.addWidget(createLineEditField("Writer", writerEdit, writerWidget));
-        layout.addWidget(&advancedSearchFields);
+        // Basic Search Fields (Initially disabled)
+        basicSectionLayout.addWidget(createLineEditField(titleFieldLayout, "Title", titleFieldLabel, titleEdit, titleWidget));
+        basicSectionLayout.addWidget(createLineEditField(releaseYearFieldLayout, "Release Year", releaseYearFieldLabel, yearEdit, yearWidget));
+        basicSectionLayout.addWidget(createComboBoxField(genreFieldLayout, "Genre", genreFieldLabel, genreCombo, genreWidget));
+        basicSectionLayout.addWidget(createComboBoxField(filmRatingFieldLayout, "Film Rating", filmRatingFieldLabel, filmRatingCombo, filmRatingWidget));
+        basicSectionLayout.addWidget(createComboBoxField(languageFieldLayout, "Language", languageFieldLabel, languageCombo, languageWidget));
+        basicSectionWidget.setLayout(&basicSectionLayout);
+        mainLayout.addWidget(&basicSectionWidget);
 
         // Advanced Search Checkbox
         advancedCheckbox.setText("Advanced Search");
-        // connect(advancedCheckbox, &QCheckBox::toggled, this, &SearchPage::enableAdvancedSearch);
-        layout.addWidget(&advancedCheckbox);
+        connect(&advancedCheckbox, &QCheckBox::toggled, this, &SearchPage::toggleAdvancedSearch);
+        mainLayout.addWidget(&advancedCheckbox);
+
+        // Advanced Search Fields (Initially disabled)
+        advancedSectionWidget.setEnabled(false);
+        advancedSectionWidget.setLayout(&advancedSectionLayout);
+        advancedSectionLayout.addWidget(createLineEditField(imdbRatingFieldLayout, "IMDB Rating", imdbRatingFieldLabel, imdbRatingEdit, imdbRatingWidget));
+        advancedSectionLayout.addWidget(createLineEditField(rottenTomatoesRatingFieldLayout, "Rotten Tomatoes Rating", rottenTomatoesRatingFieldLabel, rottenTomatoesRatingEdit, rottenTomatoesRatingWidget));
+        advancedSectionLayout.addWidget(createLineEditField(keywordFieldLayout, "Keyword", keywordFieldLabel, keywordEdit, keywordWidget));
+        advancedSectionLayout.addWidget(createLineEditField(actorFieldLayout, "Actor", actorFieldLabel, actorEdit, actorWidget));
+        advancedSectionLayout.addWidget(createLineEditField(directorFieldLayout, "Director", directorFieldLabel, directorEdit, directorWidget));
+        advancedSectionLayout.addWidget(createLineEditField(writerFieldLayout, "Writer", writerFieldLabel, writerEdit, writerWidget));
+        advancedSectionLayout.addStretch();
+        mainLayout.addWidget(&advancedSectionWidget);
 
         // Search Button
-        searchButton.setText("Search");
-        layout.addWidget(&searchButton);
+        searchButton.setText("SEARCH");
+        searchButton.setFixedSize(200, 50);
+        mainLayout.addWidget(&searchButton);
 
-        setLayout(&layout);
+        setLayout(&mainLayout);
+    }
+
+    QWidget* createLineEditField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel, QLineEdit& leWidget, QWidget& widgetContainer) {
+        fieldLabel.setText(labelText);
+        fieldLayout.addWidget(&fieldLabel);
+        leWidget.setFixedSize(400, 30);
+        leWidget.setAlignment(Qt::AlignCenter);
+        fieldLayout.addWidget(&leWidget);
+        widgetContainer.setLayout(&fieldLayout);
+        return &widgetContainer;
+    }
+
+    QWidget* createComboBoxField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel, QComboBox& cbWidget, QWidget& widgetContainer) {
+        fieldLabel.setText(labelText);
+        fieldLayout.addWidget(&fieldLabel);
+        cbWidget.setFixedSize(400, 30);
+        fieldLayout.addWidget(&cbWidget);
+        widgetContainer.setLayout(&fieldLayout);
+        return &widgetContainer;
     }
 
     // Accessors for search fields
@@ -82,51 +83,78 @@ public:
     [[nodiscard]] QString getGenre() const { return genreCombo.currentText(); }
     [[nodiscard]] QString getRating() const { return filmRatingCombo.currentText(); }
     [[nodiscard]] QString getLanguage() const { return languageCombo.currentText(); }
-    [[nodiscard]] QString getIMDBRating() const { return imdbEdit.text(); }
-    [[nodiscard]] QString getRottenTomatoesRating() const { return rottenTomatoesEdit.text(); }
+    [[nodiscard]] QString getIMDBRating() const { return imdbRatingEdit.text(); }
+    [[nodiscard]] QString getRottenTomatoesRating() const { return rottenTomatoesRatingEdit.text(); }
     [[nodiscard]] QString getKeyword() const { return keywordEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorEdit.text(); }
     [[nodiscard]] QString getWriter() const { return writerEdit.text(); }
 
 public slots:
-    void enableAdvancedSearch() {
-
-    };
+    void toggleAdvancedSearch() {
+        advancedSectionWidget.setEnabled(advancedCheckbox.isChecked());
+    }
 
 private:
-    QWidget* titleWidget{};
-    QWidget* yearWidget{};
-    QWidget* genreWidget{};
-    QWidget* filmRatingWidget{};
-    QWidget* languageWidget{};
-    QWidget* imdbRatingWidget{};
-    QWidget* rottenTomatoesRatingWidget{};
-    QWidget* keywordWidget{};
-    QWidget* actorWidget{};
-    QWidget* directorWidget{};
-    QWidget* writerWidget{};
+    QVBoxLayout mainLayout;
+    // Basic Search
+    QWidget basicSectionWidget;
+    QVBoxLayout basicSectionLayout;
+    QHBoxLayout titleFieldLayout;
+    QHBoxLayout releaseYearFieldLayout;
+    QHBoxLayout genreFieldLayout;
+    QHBoxLayout filmRatingFieldLayout;
+    QHBoxLayout languageFieldLayout;
+    QWidget titleWidget;
+    QWidget yearWidget;
+    QWidget genreWidget;
+    QWidget filmRatingWidget;
+    QWidget languageWidget;
     QLineEdit titleEdit;
     QLineEdit yearEdit;
-    QLineEdit imdbEdit;
-    QLineEdit rottenTomatoesEdit;
+    QComboBox genreCombo;
+    QComboBox filmRatingCombo;
+    QComboBox languageCombo;
+    QLabel titleFieldLabel;
+    QLabel releaseYearFieldLabel;
+    QLabel genreFieldLabel;
+    QLabel filmRatingFieldLabel;
+    QLabel languageFieldLabel;
+    // Advanced Search
+    QWidget advancedSectionWidget;
+    QVBoxLayout advancedSectionLayout;
+    QHBoxLayout imdbRatingFieldLayout;
+    QHBoxLayout rottenTomatoesRatingFieldLayout;
+    QHBoxLayout keywordFieldLayout;
+    QHBoxLayout actorFieldLayout;
+    QHBoxLayout directorFieldLayout;
+    QHBoxLayout writerFieldLayout;
+    QWidget imdbRatingWidget;
+    QWidget rottenTomatoesRatingWidget;
+    QWidget keywordWidget;
+    QWidget actorWidget;
+    QWidget directorWidget;
+    QWidget writerWidget;
+    QLineEdit imdbRatingEdit;
+    QLineEdit rottenTomatoesRatingEdit;
     QLineEdit keywordEdit;
     QLineEdit actorEdit;
     QLineEdit directorEdit;
     QLineEdit writerEdit;
-    QComboBox genreCombo;
-    QComboBox filmRatingCombo;
-    QComboBox languageCombo;
-    QPushButton searchButton;
-    QWidget advancedSearchFields;
+    QLabel imdbRatingFieldLabel;
+    QLabel rottenTomatoesRatingFieldLabel;
+    QLabel keywordFieldLabel;
+    QLabel actorFieldLabel;
+    QLabel directorFieldLabel;
+    QLabel writerFieldLabel;
     QCheckBox advancedCheckbox;
+    QPushButton searchButton;
 };
 
 class MainGraphicsView : public QGraphicsView {
 public:
     MainGraphicsView() {
         setFixedSize(640, 360);
-        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         setBackgroundBrush(QColor(Qt::black));
@@ -171,6 +199,9 @@ public slots:
 
         // Connect search button to perform search function
         QObject::connect(&searchButton, &QPushButton::clicked, this, &MainGraphicsView::performSearch);
+
+        // Change page dimensions
+        setFixedSize(640, 720);
     }
 
     void performSearch() {
