@@ -22,25 +22,24 @@
 class RangeSlider : public QSlider {
 
 public:
-    RangeSlider() {
-        slider.setOrientation(Qt::Horizontal);
-    }
+    RangeSlider() = default;
 
-    void paintEvent() {
+    void paintEvent(QPaintEvent *) override {
         QPainter p(this);
 
-        QStyleOptionSlider opt;
-        initStyleOption(&opt);
+        QStyleOptionSlider opt1, opt2; // Separate options for each handle
+        initStyleOption(&opt1);
+        initStyleOption(&opt2);
 
         // First handle.
-        opt.sliderPosition = 0;
-        opt.subControls = QStyle::SC_SliderHandle;
-        style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
+        opt1.sliderPosition = slider.minimum();
+        opt1.subControls = QStyle::SC_SliderHandle;
+        style()->drawComplexControl(QStyle::CC_Slider, &opt1, &p, this);
 
         // Second handle.
-        opt.sliderPosition = 50;
-        opt.subControls = QStyle::SC_SliderHandle;
-        style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
+        opt2.sliderPosition = slider.maximum();
+        opt2.subControls = QStyle::SC_SliderHandle;
+        style()->drawComplexControl(QStyle::CC_Slider, &opt2, &p, this);
     }
 
 protected:
@@ -115,10 +114,10 @@ public:
         fieldLabel.setText(labelText);
         fieldLayout.addWidget(&fieldLabel);
         rsWidget.setFixedSize(400, 30);
+        rsWidget.setOrientation(Qt::Horizontal);
         rsWidget.setMinimum(sliderValues[0]); // slider's minimum value
         rsWidget.setMaximum(sliderValues[1]); // slider's maximum value
-        rsWidget.setValue(sliderValues[2]);   // slider's starting position
-        rsWidget.paintEvent();
+        // rsWidget.setValue(sliderValues[2]);   // slider's starting position
         fieldLayout.addWidget(&rsWidget);
         widgetContainer.setLayout(&fieldLayout);
         return &widgetContainer;
