@@ -15,18 +15,51 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QSlider>
+// #include <QSlider>
+#include <QPaintEvent>
 #include <QCheckBox>
 
+class RangeSlider : public QSlider {
+
+public:
+    RangeSlider() {
+        slider.setOrientation(Qt::Horizontal);
+    }
+
+    void paintEvent() {
+        QPainter p(this);
+
+        QStyleOptionSlider opt;
+        initStyleOption(&opt);
+
+        // First handle.
+        opt.sliderPosition = 0;
+        opt.subControls = QStyle::SC_SliderHandle;
+        style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
+
+        // Second handle.
+        opt.sliderPosition = 50;
+        opt.subControls = QStyle::SC_SliderHandle;
+        style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
+    }
+
+protected:
+    QSlider slider;
+};
 
 class SearchPage : public QWidget {
 public:
     SearchPage() {
         setFixedSize(640, 720);
 
+        // Set up RangeSlider value arrays (minimum_value, maximum_value, starting_value)
+        std::array<int, 3> rSliderReleaseYearValues = {1950, 2024, 2008};
+        std::array<int, 3> rSliderIMDbRatingValues = {0, 10, 6};
+        std::array<int, 3> rSliderRTRatingValues = {0, 100, 85};
+
         // Basic Search Fields (Initially disabled)
         basicSectionLayout.addWidget(createLineEditField(titleFieldLayout, "Title", titleFieldLabel, titleEdit, titleWidget));
-        basicSectionLayout.addWidget(createLineEditField(releaseYearFieldLayout, "Release Year", releaseYearFieldLabel, yearEdit, yearWidget));
+        basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldLayout, "Release Year", releaseYearFieldLabel, rSliderReleaseYear, releaseYearWidget, rSliderReleaseYearValues));
         basicSectionLayout.addWidget(createComboBoxField(genreFieldLayout, "Genre", genreFieldLabel, genreCombo, genreWidget));
         basicSectionLayout.addWidget(createComboBoxField(filmRatingFieldLayout, "Film Rating", filmRatingFieldLabel, filmRatingCombo, filmRatingWidget));
         basicSectionLayout.addWidget(createComboBoxField(languageFieldLayout, "Language", languageFieldLabel, languageCombo, languageWidget));
@@ -41,8 +74,8 @@ public:
         // Advanced Search Fields (Initially disabled)
         advancedSectionWidget.setEnabled(false);
         advancedSectionWidget.setLayout(&advancedSectionLayout);
-        advancedSectionLayout.addWidget(createLineEditField(imdbRatingFieldLayout, "IMDB Rating", imdbRatingFieldLabel, imdbRatingEdit, imdbRatingWidget));
-        advancedSectionLayout.addWidget(createLineEditField(rottenTomatoesRatingFieldLayout, "Rotten Tomatoes Rating", rottenTomatoesRatingFieldLabel, rottenTomatoesRatingEdit, rottenTomatoesRatingWidget));
+        advancedSectionLayout.addWidget(createRangeSliderField(imdbRatingFieldLayout, "IMDB Rating", imdbRatingFieldLabel, rSliderIMDbRating, imdbRatingWidget, rSliderIMDbRatingValues));
+        advancedSectionLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldLayout, "Rotten Tomatoes Rating", rottenTomatoesRatingFieldLabel, rSliderRTRating, rottenTomatoesRatingWidget, rSliderRTRatingValues));
         advancedSectionLayout.addWidget(createLineEditField(keywordFieldLayout, "Keyword", keywordFieldLabel, keywordEdit, keywordWidget));
         advancedSectionLayout.addWidget(createLineEditField(actorFieldLayout, "Actor", actorFieldLabel, actorEdit, actorWidget));
         advancedSectionLayout.addWidget(createLineEditField(directorFieldLayout, "Director", directorFieldLabel, directorEdit, directorWidget));
@@ -77,14 +110,28 @@ public:
         return &widgetContainer;
     }
 
+    QWidget* createRangeSliderField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel,
+                                    RangeSlider& rsWidget, QWidget& widgetContainer, std::array<int, 3> sliderValues) {
+        fieldLabel.setText(labelText);
+        fieldLayout.addWidget(&fieldLabel);
+        rsWidget.setFixedSize(400, 30);
+        rsWidget.setMinimum(sliderValues[0]); // slider's minimum value
+        rsWidget.setMaximum(sliderValues[1]); // slider's maximum value
+        rsWidget.setValue(sliderValues[2]);   // slider's starting position
+        rsWidget.paintEvent();
+        fieldLayout.addWidget(&rsWidget);
+        widgetContainer.setLayout(&fieldLayout);
+        return &widgetContainer;
+    }
+
     // Accessors for search fields
     [[nodiscard]] QString getTitle() const { return titleEdit.text(); }
-    [[nodiscard]] QString getYear() const { return yearEdit.text(); }
+    [[nodiscard]] int getReleaseYearRange() const { return rSliderReleaseYear.value(); }
     [[nodiscard]] QString getGenre() const { return genreCombo.currentText(); }
     [[nodiscard]] QString getRating() const { return filmRatingCombo.currentText(); }
     [[nodiscard]] QString getLanguage() const { return languageCombo.currentText(); }
-    [[nodiscard]] QString getIMDBRating() const { return imdbRatingEdit.text(); }
-    [[nodiscard]] QString getRottenTomatoesRating() const { return rottenTomatoesRatingEdit.text(); }
+    [[nodiscard]] int getIMDBRatingRange() const { return rSliderIMDbRating.value(); }
+    [[nodiscard]] int getRottenTomatoesRatingRange() const { return rSliderRTRating.value(); }
     [[nodiscard]] QString getKeyword() const { return keywordEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorEdit.text(); }
@@ -97,6 +144,8 @@ public slots:
 
 private:
     QVBoxLayout mainLayout;
+    QPushButton searchButton;
+
     // Basic Search
     QWidget basicSectionWidget;
     QVBoxLayout basicSectionLayout;
@@ -106,20 +155,21 @@ private:
     QHBoxLayout filmRatingFieldLayout;
     QHBoxLayout languageFieldLayout;
     QWidget titleWidget;
-    QWidget yearWidget;
+    QWidget releaseYearWidget;
     QWidget genreWidget;
     QWidget filmRatingWidget;
     QWidget languageWidget;
     QLineEdit titleEdit;
-    QLineEdit yearEdit;
     QComboBox genreCombo;
     QComboBox filmRatingCombo;
     QComboBox languageCombo;
+    RangeSlider rSliderReleaseYear;
     QLabel titleFieldLabel;
     QLabel releaseYearFieldLabel;
     QLabel genreFieldLabel;
     QLabel filmRatingFieldLabel;
     QLabel languageFieldLabel;
+
     // Advanced Search
     QWidget advancedSectionWidget;
     QVBoxLayout advancedSectionLayout;
@@ -135,8 +185,8 @@ private:
     QWidget actorWidget;
     QWidget directorWidget;
     QWidget writerWidget;
-    QLineEdit imdbRatingEdit;
-    QLineEdit rottenTomatoesRatingEdit;
+    RangeSlider rSliderRTRating;
+    RangeSlider rSliderIMDbRating;
     QLineEdit keywordEdit;
     QLineEdit actorEdit;
     QLineEdit directorEdit;
@@ -148,7 +198,6 @@ private:
     QLabel directorFieldLabel;
     QLabel writerFieldLabel;
     QCheckBox advancedCheckbox;
-    QPushButton searchButton;
 };
 
 class MainGraphicsView : public QGraphicsView {
@@ -207,12 +256,12 @@ public slots:
     void performSearch() {
         // Gather search parameters from the search page
         QString title = searchPage.getTitle();
-        QString year = searchPage.getYear();
+        int releaseYearRange = searchPage.getReleaseYearRange();
         QString genre = searchPage.getGenre();
         QString rating = searchPage.getRating();
         QString language = searchPage.getLanguage();
-        QString imdbRating = searchPage.getIMDBRating();
-        QString rottenTomatoesRating = searchPage.getRottenTomatoesRating();
+        int imdbRatingRange = searchPage.getIMDBRatingRange();
+        int rottenTomatoesRatingRange = searchPage.getRottenTomatoesRatingRange();
         QString keyword = searchPage.getKeyword();
         QString actor = searchPage.getActor();
         QString director = searchPage.getDirector();
@@ -232,6 +281,14 @@ private:
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+
+    /*
+    app.setStyleSheet(
+            QWidget{ background-color: yellow; }
+            RangeSlider { background-color: rgba(255,255,255,0); }
+    );
+    */
+
     MainGraphicsView view;
     view.show();
     return app.exec();
