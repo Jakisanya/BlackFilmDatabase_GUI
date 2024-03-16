@@ -56,12 +56,56 @@ public:
         std::array<int, 3> rSliderIMDbRatingValues = {0, 10, 6};
         std::array<int, 3> rSliderRTRatingValues = {0, 100, 85};
 
+        // Create PushButton vectors
+        genrePushButtons.push_back(&ActionPB);
+        genrePushButtons.push_back(&ThrillerPB);
+        genrePushButtons.push_back(&DramaPB);
+        genrePushButtons.push_back(&SciFiPB);
+        genrePushButtons.push_back(&HorrorPB);
+        genrePushButtons.push_back(&ComedyPB);
+        genrePushButtons.push_back(&RomancePB);
+        genrePushButtons.push_back(&CrimePB);
+        genrePushButtons.push_back(&FantasyPB);
+        genrePushButtons.push_back(&AnimationPB);
+        genrePushButtons.push_back(&AdventurePB);
+        genrePushButtons.push_back(&FamilyPB);
+        genrePushButtons.push_back(&WesternPB);
+
+        filmRatingPushButtons.push_back(&U_PB);
+        filmRatingPushButtons.push_back(&PG_PB);
+        filmRatingPushButtons.push_back(&PG_THIRTEEN_PB);
+        filmRatingPushButtons.push_back(&THIRTEEN_PLUS_PB);
+        filmRatingPushButtons.push_back(&SIXTEEN_PLUS_PB);
+        filmRatingPushButtons.push_back(&R_PB);
+        filmRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
+        filmRatingPushButtons.push_back(&X_PB);
+        filmRatingPushButtons.push_back(&UNRATED_PB);
+
+        languagePushButtons.push_back(&EnglishPB);
+        languagePushButtons.push_back(&FrenchPB);
+        languagePushButtons.push_back(&SpanishPB);
+        languagePushButtons.push_back(&GermanPB);
+        languagePushButtons.push_back(&ItalianPB);
+        languagePushButtons.push_back(&JapanesePB);
+        languagePushButtons.push_back(&CantonesePB);
+        languagePushButtons.push_back(&MandarinPB);
+        languagePushButtons.push_back(&RussianPB);
+        languagePushButtons.push_back(&ArabicPB);
+
         // Basic Search Fields (Initially disabled)
-        basicSectionLayout.addWidget(createLineEditField(titleFieldLayout, "Title", titleFieldLabel, titleEdit, titleWidget));
-        basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldLayout, "Release Year", releaseYearFieldLabel, rSliderReleaseYear, releaseYearWidget, rSliderReleaseYearValues));
-        basicSectionLayout.addWidget(createComboBoxField(genreFieldLayout, "Genre", genreFieldLabel, genreCombo, genreWidget));
-        basicSectionLayout.addWidget(createComboBoxField(filmRatingFieldLayout, "Film Rating", filmRatingFieldLabel, filmRatingCombo, filmRatingWidget));
-        basicSectionLayout.addWidget(createComboBoxField(languageFieldLayout, "Language", languageFieldLabel, languageCombo, languageWidget));
+        basicSectionLayout.addWidget(
+                createLineEditField(titleFieldLayout, "Title", titleFieldLabel, titleEdit, titleWidget));
+        basicSectionLayout.addWidget(
+                createRangeSliderField(releaseYearFieldLayout, "Release Year", releaseYearFieldLabel,
+                                       rSliderReleaseYear, releaseYearWidget, rSliderReleaseYearValues));
+        basicSectionLayout.addWidget(
+                createMultiButtonField(genreFieldLayout, "Genre", genreFieldLabel, genrePushButtons, genreWidget));
+        basicSectionLayout.addWidget(
+                createMultiButtonField(filmRatingFieldLayout, "Film Rating", filmRatingFieldLabel, filmRatingPushButtons,
+                                    filmRatingWidget));
+        basicSectionLayout.addWidget(
+                createMultiButtonField(languageFieldLayout, "Language", languageFieldLabel, languagePushButtons,
+                                    languageWidget));
         basicSectionWidget.setLayout(&basicSectionLayout);
         mainLayout.addWidget(&basicSectionWidget);
 
@@ -73,12 +117,21 @@ public:
         // Advanced Search Fields (Initially disabled)
         advancedSectionWidget.setEnabled(false);
         advancedSectionWidget.setLayout(&advancedSectionLayout);
-        advancedSectionLayout.addWidget(createRangeSliderField(imdbRatingFieldLayout, "IMDB Rating", imdbRatingFieldLabel, rSliderIMDbRating, imdbRatingWidget, rSliderIMDbRatingValues));
-        advancedSectionLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldLayout, "Rotten Tomatoes Rating", rottenTomatoesRatingFieldLabel, rSliderRTRating, rottenTomatoesRatingWidget, rSliderRTRatingValues));
-        advancedSectionLayout.addWidget(createLineEditField(keywordFieldLayout, "Keyword", keywordFieldLabel, keywordEdit, keywordWidget));
-        advancedSectionLayout.addWidget(createLineEditField(actorFieldLayout, "Actor", actorFieldLabel, actorEdit, actorWidget));
-        advancedSectionLayout.addWidget(createLineEditField(directorFieldLayout, "Director", directorFieldLabel, directorEdit, directorWidget));
-        advancedSectionLayout.addWidget(createLineEditField(writerFieldLayout, "Writer", writerFieldLabel, writerEdit, writerWidget));
+        advancedSectionLayout.addWidget(
+                createRangeSliderField(imdbRatingFieldLayout, "IMDB Rating", imdbRatingFieldLabel, rSliderIMDbRating,
+                                       imdbRatingWidget, rSliderIMDbRatingValues));
+        advancedSectionLayout.addWidget(
+                createRangeSliderField(rottenTomatoesRatingFieldLayout, "Rotten Tomatoes Rating",
+                                       rottenTomatoesRatingFieldLabel, rSliderRTRating, rottenTomatoesRatingWidget,
+                                       rSliderRTRatingValues));
+        advancedSectionLayout.addWidget(
+                createLineEditField(keywordFieldLayout, "Keyword", keywordFieldLabel, keywordEdit, keywordWidget));
+        advancedSectionLayout.addWidget(
+                createLineEditField(actorFieldLayout, "Actor", actorFieldLabel, actorEdit, actorWidget));
+        advancedSectionLayout.addWidget(
+                createLineEditField(directorFieldLayout, "Director", directorFieldLabel, directorEdit, directorWidget));
+        advancedSectionLayout.addWidget(
+                createLineEditField(writerFieldLayout, "Writer", writerFieldLabel, writerEdit, writerWidget));
         advancedSectionLayout.addStretch();
         mainLayout.addWidget(&advancedSectionWidget);
 
@@ -90,7 +143,9 @@ public:
         setLayout(&mainLayout);
     }
 
-    QWidget* createLineEditField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel, QLineEdit& leWidget, QWidget& widgetContainer) {
+    QWidget *
+    createLineEditField(QHBoxLayout &fieldLayout, const QString &labelText, QLabel &fieldLabel, QLineEdit &leWidget,
+                        QWidget &widgetContainer) {
         fieldLabel.setText(labelText);
         fieldLayout.addWidget(&fieldLabel);
         leWidget.setFixedSize(400, 30);
@@ -100,11 +155,17 @@ public:
         return &widgetContainer;
     }
 
-    QWidget* createComboBoxField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel, QComboBox& cbWidget, QWidget& widgetContainer) {
+    QWidget* createMultiButtonField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel,
+                                    const std::vector<QPushButton*>& pbWidgets, QWidget& widgetContainer) {
         fieldLabel.setText(labelText);
         fieldLayout.addWidget(&fieldLabel);
-        cbWidget.setFixedSize(400, 30);
-        fieldLayout.addWidget(&cbWidget);
+
+        for (int i = 0; i < pbWidgets.size(); ++i) {
+            pbWidgets[i]->setFixedSize(400, 30);
+            pbWidgets[i]->setStyleSheet("QPushButton { border-radius: 10px; padding: 5px; }");
+            fieldLayout.addWidget(pbWidgets[i]);
+        }
+
         widgetContainer.setLayout(&fieldLayout);
         return &widgetContainer;
     }
@@ -159,9 +220,14 @@ private:
     QWidget filmRatingWidget;
     QWidget languageWidget;
     QLineEdit titleEdit;
-    QComboBox genreCombo;
-    QComboBox filmRatingCombo;
-    QComboBox languageCombo;
+    std::vector<QPushButton*> genrePushButtons;
+    std::vector<QPushButton*> filmRatingPushButtons;
+    std::vector<QPushButton*> languagePushButtons;
+    QPushButton ActionPB, ThrillerPB, DramaPB, SciFiPB, HorrorPB, ComedyPB, RomancePB, CrimePB, FantasyPB, AnimationPB,
+                AdventurePB, FamilyPB, WesternPB;
+    QPushButton U_PB, PG_PB, PG_THIRTEEN_PB, THIRTEEN_PLUS_PB, SIXTEEN_PLUS_PB, R_PB, EIGHTEEN_PLUS_PB, X_PB, UNRATED_PB;
+    QPushButton EnglishPB, FrenchPB, SpanishPB, GermanPB, ItalianPB, JapanesePB, CantonesePB, MandarinPB,
+                RussianPB, ArabicPB;
     RangeSlider rSliderReleaseYear;
     QLabel titleFieldLabel;
     QLabel releaseYearFieldLabel;
