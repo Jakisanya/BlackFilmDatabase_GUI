@@ -49,7 +49,7 @@ protected:
 class SearchPage : public QWidget {
 public:
     SearchPage() {
-        setFixedSize(640, 720);
+        setFixedSize(640, 1140);
 
         // Set up RangeSlider value arrays (minimum_value, maximum_value, starting_value)
         std::array<int, 3> rSliderReleaseYearValues = {1950, 2024, 2008};
@@ -129,25 +129,43 @@ public:
         languagePushButtonTexts.push_back(ArabicPBTextStr);
 
         // Set up layout line vectors for pushbutton widgets
+        titleFieldLayouts.push_back(&titleFieldLayout0);
+        titleFieldLayouts.push_back(&titleFieldLayout1);
+        releaseYearFieldLayouts.push_back(&releaseYearFieldLayout0);
+        releaseYearFieldLayouts.push_back(&releaseYearFieldLayout1);
+        genreFieldLayouts.push_back(&genreFieldLayoutLine0);
         genreFieldLayouts.push_back(&genreFieldLayoutLine1);
         genreFieldLayouts.push_back(&genreFieldLayoutLine2);
         genreFieldLayouts.push_back(&genreFieldLayoutLine3);
-        genreFieldLayouts.push_back(&genreFieldLayoutLine4);
+        filmRatingFieldLayouts.push_back(&filmRatingFieldLayoutLine0);
         filmRatingFieldLayouts.push_back(&filmRatingFieldLayoutLine1);
         filmRatingFieldLayouts.push_back(&filmRatingFieldLayoutLine2);
         filmRatingFieldLayouts.push_back(&filmRatingFieldLayoutLine3);
-        filmRatingFieldLayouts.push_back(&filmRatingFieldLayoutLine4);
+        languageFieldLayouts.push_back(&languageFieldLayoutLine0);
         languageFieldLayouts.push_back(&languageFieldLayoutLine1);
         languageFieldLayouts.push_back(&languageFieldLayoutLine2);
         languageFieldLayouts.push_back(&languageFieldLayoutLine3);
-        languageFieldLayouts.push_back(&languageFieldLayoutLine4);
+        imdbRatingFieldLayouts.push_back(&imdbRatingFieldLayout0);
+        imdbRatingFieldLayouts.push_back(&imdbRatingFieldLayout1);
+        rottenTomatoesRatingFieldLayouts.push_back(&rottenTomatoesRatingFieldLayout0);
+        rottenTomatoesRatingFieldLayouts.push_back(&rottenTomatoesRatingFieldLayout1);
+        keywordFieldLayouts.push_back(&keywordFieldLayout0);
+        keywordFieldLayouts.push_back(&keywordFieldLayout1);
+        actorFieldLayouts.push_back(&actorFieldLayout0);
+        actorFieldLayouts.push_back(&actorFieldLayout1);
+        directorFieldLayouts.push_back(&directorFieldLayout0);
+        directorFieldLayouts.push_back(&directorFieldLayout1);
+        writerFieldLayouts.push_back(&writerFieldLayout0);
+        writerFieldLayouts.push_back(&writerFieldLayout1);
 
         // Basic Search Fields (Initially disabled)
-        basicSectionLayout.addWidget(createLineEditField(titleFieldLayout, "Title", titleFieldLabel,
-                                                         titleEdit, titleWidget));
-        basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldLayout, "Release Year",
-                                                            releaseYearFieldLabel,rSliderReleaseYear,
-                                                            releaseYearWidget, rSliderReleaseYearValues));
+        basicSectionLayout.addWidget(createLineEditField(titleFieldMainLayout, titleFieldLayouts,
+                                                         "Title", titleFieldLabel,titleEdit,
+                                                         titleWidget));
+        basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldMainLayout, releaseYearFieldLayouts,
+                                                            "Release Year", releaseYearFieldLabel,
+                                                            rSliderReleaseYear, releaseYearWidget,
+                                                            rSliderReleaseYearValues));
         basicSectionLayout.addWidget(createMultiButtonField(genreFieldMainLayout, genreFieldLayouts,
                                                             "Genre",genreFieldLabel,
                                                             genrePushButtons,genrePushButtonTexts,
@@ -163,32 +181,44 @@ public:
         basicSectionWidget.setLayout(&basicSectionLayout);
         mainLayout.addWidget(&basicSectionWidget);
 
-        // Advanced Search Checkbox
-        advancedCheckbox.setText("Advanced Search");
-        connect(&advancedCheckbox, &QCheckBox::toggled, this, &SearchPage::toggleAdvancedSearch);
-        mainLayout.addWidget(&advancedCheckbox);
+        // Create the advanced section header button with down arrow icon
+        advancedSectionToggleButton.setIcon(QIcon(
+                R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
+        advancedSectionToggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        advancedSectionToggleButton.setText("Advanced Search");
+        mainLayout.addWidget(&advancedSectionToggleButton);
 
-        // Advanced Search Fields (Initially disabled)
-        advancedSectionWidget.setEnabled(false);
-        advancedSectionWidget.setLayout(&advancedSectionLayout);
-        advancedSectionLayout.addWidget(createRangeSliderField(imdbRatingFieldLayout, "IMDB Rating",
-                                                               imdbRatingFieldLabel, rSliderIMDbRating,
-                                                               imdbRatingWidget, rSliderIMDbRatingValues));
-        advancedSectionLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldLayout,
+        // Create the contents widget
+        advancedSectionContentsWidget.setVisible(false); // Initially hidden
+        advancedSectionContentsWidget.setLayout(&advancedSectionContentsLayout);
+        mainLayout.addWidget(&advancedSectionContentsWidget);
+
+        // Connect the toggle button's clicked signal to the toggleSection slot
+        connect(&advancedSectionToggleButton, &QToolButton::clicked, this,
+                &SearchPage::toggleAdvancedSearchSection);
+
+        advancedSectionContentsLayout.addWidget(createRangeSliderField(imdbRatingFieldMainLayout, imdbRatingFieldLayouts,
+                                                               "IMDB Rating", imdbRatingFieldLabel,
+                                                               rSliderIMDbRating, imdbRatingWidget,
+                                                               rSliderIMDbRatingValues));
+        advancedSectionContentsLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldMainLayout,
+                                                               rottenTomatoesRatingFieldLayouts,
                                                                "Rotten Tomatoes Rating",
                                                                rottenTomatoesRatingFieldLabel, rSliderRTRating,
                                                                rottenTomatoesRatingWidget,
                                                                rSliderRTRatingValues));
-        advancedSectionLayout.addWidget(createLineEditField(keywordFieldLayout, "Keyword",
-                                                            keywordFieldLabel, keywordEdit, keywordWidget));
-        advancedSectionLayout.addWidget(createLineEditField(actorFieldLayout, "Actor", actorFieldLabel,
-                                                            actorEdit, actorWidget));
-        advancedSectionLayout.addWidget(createLineEditField(directorFieldLayout, "Director",
-                                                            directorFieldLabel, directorEdit, directorWidget));
-        advancedSectionLayout.addWidget(createLineEditField(writerFieldLayout, "Writer", writerFieldLabel,
-                                                            writerEdit, writerWidget));
-        advancedSectionLayout.addStretch();
-        mainLayout.addWidget(&advancedSectionWidget);
+        advancedSectionContentsLayout.addWidget(createLineEditField(keywordFieldMainLayout, keywordFieldLayouts,
+                                                            "Keyword", keywordFieldLabel, keywordEdit,
+                                                            keywordWidget));
+        advancedSectionContentsLayout.addWidget(createLineEditField(actorFieldMainLayout, actorFieldLayouts,
+                                                            "Actor", actorFieldLabel, actorEdit,
+                                                            actorWidget));
+        advancedSectionContentsLayout.addWidget(createLineEditField(directorFieldMainLayout, directorFieldLayouts,
+                                                            "Director", directorFieldLabel, directorEdit,
+                                                            directorWidget));
+        advancedSectionContentsLayout.addWidget(createLineEditField(writerFieldMainLayout, writerFieldLayouts,
+                                                            "Writer", writerFieldLabel, writerEdit, writerWidget));
+        mainLayout.addWidget(&advancedSectionContentsWidget);
 
         // Search Button
         searchButton.setText("SEARCH");
@@ -198,14 +228,20 @@ public:
         setLayout(&mainLayout);
     }
 
-    QWidget* createLineEditField(QHBoxLayout& fieldLayout, const QString &labelText, QLabel &fieldLabel,
+    QWidget* createLineEditField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*> fieldLayouts,
+                                 const QString &labelText, QLabel &fieldLabel,
                                  QLineEdit &leWidget, QWidget &widgetContainer) {
         fieldLabel.setText(labelText);
-        fieldLayout.addWidget(&fieldLabel);
+        fieldLayouts[0]->addWidget(&fieldLabel);
+        fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
+        fieldLayouts[1]->setAlignment(Qt::AlignHCenter);
+
         leWidget.setFixedSize(400, 30);
         leWidget.setAlignment(Qt::AlignCenter);
-        fieldLayout.addWidget(&leWidget);
-        widgetContainer.setLayout(&fieldLayout);
+        fieldLayouts[1]->addWidget(&leWidget);
+        widgetContainer.setLayout(&mainFieldLayout);
+        mainFieldLayout.addLayout(fieldLayouts[0]);
+        mainFieldLayout.addLayout(fieldLayouts[1]);
         return &widgetContainer;
     }
 
@@ -215,21 +251,22 @@ public:
                                     const std::vector<QString>& pbWidgetTexts, QWidget& widgetContainer) {
         fieldLabel.setText(labelText);
         fieldLayouts[0]->addWidget(&fieldLabel);
+        fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
+        fieldLayouts[1]->setAlignment(Qt::AlignHCenter);
+        fieldLayouts[2]->setAlignment(Qt::AlignHCenter);
+        fieldLayouts[3]->setAlignment(Qt::AlignHCenter);
 
         for (int i{0}; i < pbWidgets.size(); i++) {
             pbWidgets[i]->setFixedSize(80, 30);
             pbWidgets[i]->setText(pbWidgetTexts[i]);
             // pbWidgets[i]->setStyleSheet("QPushButton {border-radius: 10px; background-color: gray}");
-            if (i < 4) {
-                fieldLayouts[0]->addWidget(pbWidgets[i]);
-            }
-            if ((i >= 4) && (i < 8)) {
+            if (i < 5) {
                 fieldLayouts[1]->addWidget(pbWidgets[i]);
             }
-            if ((i >= 8) && (i < 12)) {
+            if ((i >= 5) && (i < 10)) {
                 fieldLayouts[2]->addWidget(pbWidgets[i]);
             }
-            if (i >= 12) {
+            if (i >= 10) {
                 fieldLayouts[3]->addWidget(pbWidgets[i]);
             }
         }
@@ -239,21 +276,25 @@ public:
         mainFieldLayout.addLayout(fieldLayouts[1]);
         mainFieldLayout.addLayout(fieldLayouts[2]);
         mainFieldLayout.addLayout(fieldLayouts[3]);
-
         return &widgetContainer;
     }
 
-    QWidget* createRangeSliderField(QHBoxLayout& fieldLayout, const QString& labelText, QLabel& fieldLabel,
-                                    RangeSlider& rsWidget, QWidget& widgetContainer, std::array<int, 3> sliderValues) {
+    QWidget* createRangeSliderField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*>& fieldLayouts,
+                                    const QString& labelText, QLabel& fieldLabel, RangeSlider& rsWidget,
+                                    QWidget& widgetContainer, std::array<int, 3> sliderValues) {
         fieldLabel.setText(labelText);
-        fieldLayout.addWidget(&fieldLabel);
+        fieldLayouts[0]->addWidget(&fieldLabel);
+        fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
+        fieldLayouts[1]->setAlignment(Qt::AlignHCenter);
         rsWidget.setFixedSize(400, 30);
         rsWidget.setOrientation(Qt::Horizontal);
         rsWidget.setMinimum(sliderValues[0]); // slider's minimum value
         rsWidget.setMaximum(sliderValues[1]); // slider's maximum value
-        // rsWidget.setValue(sliderValues[2]);   // slider's starting position
-        fieldLayout.addWidget(&rsWidget);
-        widgetContainer.setLayout(&fieldLayout);
+        rsWidget.setValue(sliderValues[2]);   // slider's starting position
+        fieldLayouts[1]->addWidget(&rsWidget);
+        widgetContainer.setLayout(&mainFieldLayout);
+        mainFieldLayout.addLayout(fieldLayouts[0]);
+        mainFieldLayout.addLayout(fieldLayouts[1]);
         return &widgetContainer;
     }
 
@@ -283,28 +324,45 @@ public:
     [[nodiscard]] QString getWriter() const { return writerEdit.text(); }
 
 public slots:
-    void toggleAdvancedSearch() {
-        advancedSectionWidget.setEnabled(advancedCheckbox.isChecked());
+    void toggleAdvancedSearchSection() {
+        // Toggle the visibility of the contents widget
+        advancedSectionContentsWidget.setVisible(!advancedSectionContentsWidget.isVisible());
+        // Change the icon of the toggle button based on the visibility state
+        if (advancedSectionContentsWidget.isVisible())
+            advancedSectionToggleButton.setIcon(QIcon(
+                    R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\up_arrow.png)"));
+        else
+            advancedSectionToggleButton.setIcon(QIcon(
+                    R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\up_arrow.png)"));
     }
 
 private:
     QVBoxLayout mainLayout;
     QPushButton searchButton;
 
+    // Advanced section expand button
+    QToolButton advancedSectionToggleButton;
+    QWidget advancedSectionContentsWidget;
+    QVBoxLayout advancedSectionContentsLayout;
+
     // Basic Search
     QWidget basicSectionWidget;
     QVBoxLayout basicSectionLayout;
-    QHBoxLayout titleFieldLayout;
-    QHBoxLayout releaseYearFieldLayout;
+    QHBoxLayout titleFieldLayout0, titleFieldLayout1;
+    QHBoxLayout releaseYearFieldLayout0, releaseYearFieldLayout1;
+    QVBoxLayout titleFieldMainLayout;
+    QVBoxLayout releaseYearFieldMainLayout;
     QVBoxLayout genreFieldMainLayout;
     QVBoxLayout filmRatingFieldMainLayout;
     QVBoxLayout languageFieldMainLayout;
+    std::vector<QHBoxLayout*> titleFieldLayouts;
+    std::vector<QHBoxLayout*> releaseYearFieldLayouts;
     std::vector<QHBoxLayout*> genreFieldLayouts;
     std::vector<QHBoxLayout*> filmRatingFieldLayouts;
     std::vector<QHBoxLayout*> languageFieldLayouts;
-    QHBoxLayout genreFieldLayoutLine1, genreFieldLayoutLine2, genreFieldLayoutLine3, genreFieldLayoutLine4;
-    QHBoxLayout filmRatingFieldLayoutLine1, filmRatingFieldLayoutLine2, filmRatingFieldLayoutLine3, filmRatingFieldLayoutLine4;
-    QHBoxLayout languageFieldLayoutLine1, languageFieldLayoutLine2, languageFieldLayoutLine3, languageFieldLayoutLine4;
+    QHBoxLayout genreFieldLayoutLine0, genreFieldLayoutLine1, genreFieldLayoutLine2, genreFieldLayoutLine3;
+    QHBoxLayout filmRatingFieldLayoutLine0, filmRatingFieldLayoutLine1, filmRatingFieldLayoutLine2, filmRatingFieldLayoutLine3;
+    QHBoxLayout languageFieldLayoutLine0, languageFieldLayoutLine1, languageFieldLayoutLine2, languageFieldLayoutLine3;
     QWidget titleWidget;
     QWidget releaseYearWidget;
     QWidget genreWidget;
@@ -342,14 +400,24 @@ private:
     QLabel languageFieldLabel;
 
     // Advanced Search
-    QWidget advancedSectionWidget;
-    QVBoxLayout advancedSectionLayout;
-    QHBoxLayout imdbRatingFieldLayout;
-    QHBoxLayout rottenTomatoesRatingFieldLayout;
-    QHBoxLayout keywordFieldLayout;
-    QHBoxLayout actorFieldLayout;
-    QHBoxLayout directorFieldLayout;
-    QHBoxLayout writerFieldLayout;
+    QVBoxLayout imdbRatingFieldMainLayout;
+    QVBoxLayout rottenTomatoesRatingFieldMainLayout;
+    QVBoxLayout keywordFieldMainLayout;
+    QVBoxLayout actorFieldMainLayout;
+    QVBoxLayout directorFieldMainLayout;
+    QVBoxLayout writerFieldMainLayout;
+    std::vector<QHBoxLayout*> imdbRatingFieldLayouts;
+    std::vector<QHBoxLayout*> rottenTomatoesRatingFieldLayouts;
+    std::vector<QHBoxLayout*> keywordFieldLayouts;
+    std::vector<QHBoxLayout*> actorFieldLayouts;
+    std::vector<QHBoxLayout*> directorFieldLayouts;
+    std::vector<QHBoxLayout*> writerFieldLayouts;
+    QHBoxLayout imdbRatingFieldLayout0, imdbRatingFieldLayout1;
+    QHBoxLayout rottenTomatoesRatingFieldLayout0, rottenTomatoesRatingFieldLayout1;
+    QHBoxLayout keywordFieldLayout0, keywordFieldLayout1;
+    QHBoxLayout actorFieldLayout0, actorFieldLayout1;
+    QHBoxLayout directorFieldLayout0, directorFieldLayout1;
+    QHBoxLayout writerFieldLayout0, writerFieldLayout1;
     QWidget imdbRatingWidget;
     QWidget rottenTomatoesRatingWidget;
     QWidget keywordWidget;
