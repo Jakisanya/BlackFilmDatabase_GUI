@@ -161,7 +161,7 @@ public:
         // Basic Search Fields (Initially disabled)
         basicSectionLayout.addWidget(createLineEditField(titleFieldMainLayout, titleFieldLayouts,
                                                          "Title", titleFieldLabel,titleEdit,
-                                                         titleWidget));
+                                                         titleWidget, titleWidgetFrame));
         basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldMainLayout, releaseYearFieldLayouts,
                                                             "Release Year", releaseYearFieldLabel,
                                                             rSliderReleaseYear, releaseYearWidget,
@@ -178,10 +178,7 @@ public:
                                                             "Language",languageFieldLabel,
                                                             languagePushButtons,
                                                             languagePushButtonTexts, languageWidget));
-        QFrame basicSectionBorderFrame;
-        basicSectionBorderFrame.setFrameShape(QFrame::Box); // Set the frame shape to Box
-        basicSectionBorderFrame.setFrameShadow(QFrame::Raised); // Set the frame shadow to Raised
-        basicSectionBorderFrame.setLayout(&basicSectionLayout);
+
         basicSectionWidget.setLayout(&basicSectionLayout);
         mainLayout.addWidget(&basicSectionWidget);
 
@@ -213,15 +210,15 @@ public:
                                                                rSliderRTRatingValues));
         advancedSectionContentsLayout.addWidget(createLineEditField(keywordFieldMainLayout, keywordFieldLayouts,
                                                             "Keyword", keywordFieldLabel, keywordEdit,
-                                                            keywordWidget));
+                                                            keywordWidget, keywordWidgetFrame));
         advancedSectionContentsLayout.addWidget(createLineEditField(actorFieldMainLayout, actorFieldLayouts,
                                                             "Actor", actorFieldLabel, actorEdit,
-                                                            actorWidget));
+                                                            actorWidget, actorWidgetFrame));
         advancedSectionContentsLayout.addWidget(createLineEditField(directorFieldMainLayout, directorFieldLayouts,
                                                             "Director", directorFieldLabel, directorEdit,
-                                                            directorWidget));
+                                                            directorWidget, directorWidgetFrame));
         advancedSectionContentsLayout.addWidget(createLineEditField(writerFieldMainLayout, writerFieldLayouts,
-                                                            "Writer", writerFieldLabel, writerEdit, writerWidget));
+                                                            "Writer", writerFieldLabel, writerEdit, writerWidget, writerWidgetFrame));
         mainLayout.addWidget(&advancedSectionContentsWidget);
 
         // Search Button
@@ -234,7 +231,7 @@ public:
 
     QWidget* createLineEditField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*> fieldLayouts,
                                  const QString &labelText, QLabel &fieldLabel,
-                                 QLineEdit &leWidget, QWidget &widgetContainer) {
+                                 QLineEdit &leWidget, QWidget &widgetContainer, QFrame &widgetFrame) {
         fieldLabel.setText(labelText);
         fieldLayouts[0]->addWidget(&fieldLabel);
         fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
@@ -242,6 +239,7 @@ public:
 
         leWidget.setFixedSize(400, 30);
         leWidget.setAlignment(Qt::AlignCenter);
+
         fieldLayouts[1]->addWidget(&leWidget);
         widgetContainer.setLayout(&mainFieldLayout);
 
@@ -353,6 +351,8 @@ private:
     // Basic Search
     QWidget basicSectionWidget;
     QVBoxLayout basicSectionLayout;
+    QFrame basicSectionBorderFrame, titleWidgetFrame, releaseYearWidgetFrame, genreWidgetFrame, filmRatingWidgetFrame,
+            languageWidgetFrame, keywordWidgetFrame, actorWidgetFrame, directorWidgetFrame, writerWidgetFrame;
     QHBoxLayout titleFieldLayout0, titleFieldLayout1;
     QHBoxLayout releaseYearFieldLayout0, releaseYearFieldLayout1;
     QVBoxLayout titleFieldMainLayout;
