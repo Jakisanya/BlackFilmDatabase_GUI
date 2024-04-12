@@ -178,6 +178,10 @@ public:
                                                             "Language",languageFieldLabel,
                                                             languagePushButtons,
                                                             languagePushButtonTexts, languageWidget));
+        QFrame basicSectionBorderFrame;
+        basicSectionBorderFrame.setFrameShape(QFrame::Box); // Set the frame shape to Box
+        basicSectionBorderFrame.setFrameShadow(QFrame::Raised); // Set the frame shadow to Raised
+        basicSectionBorderFrame.setLayout(&basicSectionLayout);
         basicSectionWidget.setLayout(&basicSectionLayout);
         mainLayout.addWidget(&basicSectionWidget);
 
@@ -240,6 +244,7 @@ public:
         leWidget.setAlignment(Qt::AlignCenter);
         fieldLayouts[1]->addWidget(&leWidget);
         widgetContainer.setLayout(&mainFieldLayout);
+
         mainFieldLayout.addLayout(fieldLayouts[0]);
         mainFieldLayout.addLayout(fieldLayouts[1]);
         return &widgetContainer;
