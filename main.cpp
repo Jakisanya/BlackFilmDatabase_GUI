@@ -204,21 +204,56 @@ public:
         advancedSectionToggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         advancedSectionToggleButton.setText("Advanced Search");
         mainLayout.addWidget(&advancedSectionToggleButton);
-
-        // Create the contents widget
-        advancedSectionContentsWidget.setVisible(false); // Initially hidden
-        advancedSectionContentsWidget.setLayout(&advancedSectionContentsLayout);
-        mainLayout.addWidget(&advancedSectionContentsWidget);
-
         // Connect the toggle button's clicked signal to the toggleSection slot
         connect(&advancedSectionToggleButton, &QToolButton::clicked, this,
                 &SearchPage::toggleAdvancedSearchSection);
 
-        advancedSectionContentsLayout.addWidget(createRangeSliderField(imdbRatingFieldMainLayout, imdbRatingFieldLayouts,
+        mainLayout.addLayout(&advancedSectionLayout);
+
+        // IMDb Rating
+        imdbRatingFieldLabel.setText("IMDb Rating");
+        advancedSectionLayout.addWidget(&imdbRatingFieldLabel);
+        // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
+
+        // Rotten Tomatoes Rating
+        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Rating");
+        advancedSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
+        // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
+
+        // Keywords
+        keywordsFieldLabel.setText("Keywords");
+        advancedSectionLayout.addWidget(&keywordsFieldLabel);
+        keywordsLineEdit.setFixedSize(400, 30);
+        keywordsLineEdit.setAlignment(Qt::AlignCenter);
+        advancedSectionLayout.addWidget(&keywordsLineEdit);
+
+        // Actors
+        actorsFieldLabel.setText("Actors");
+        advancedSectionLayout.addWidget(&actorsFieldLabel);
+        actorsLineEdit.setFixedSize(400, 30);
+        actorsLineEdit.setAlignment(Qt::AlignCenter);
+        advancedSectionLayout.addWidget(&actorsLineEdit);
+
+        // Directors
+        directorsFieldLabel.setText("Directors");
+        advancedSectionLayout.addWidget(&directorsFieldLabel);
+        directorsLineEdit.setFixedSize(400, 30);
+        directorsLineEdit.setAlignment(Qt::AlignCenter);
+        advancedSectionLayout.addWidget(&directorsLineEdit);
+
+        // Writers
+        writersFieldLabel.setText("Writers");
+        advancedSectionLayout.addWidget(&writersFieldLabel);
+        writersLineEdit.setFixedSize(400, 30);
+        writersLineEdit.setAlignment(Qt::AlignCenter);
+        advancedSectionLayout.addWidget(&writersLineEdit);
+
+
+        advancedSectionLayout.addWidget(createRangeSliderField(imdbRatingFieldMainLayout, imdbRatingFieldLayouts,
                                                                "IMDB Rating", imdbRatingFieldLabel,
                                                                rSliderIMDbRating, imdbRatingWidget,
                                                                rSliderIMDbRatingValues));
-        advancedSectionContentsLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldMainLayout,
+        advancedSectionLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldMainLayout,
                                                                rottenTomatoesRatingFieldLayouts,
                                                                "Rotten Tomatoes Rating",
                                                                rottenTomatoesRatingFieldLabel, rSliderRTRating,
@@ -232,26 +267,6 @@ public:
         mainLayout.addWidget(&searchButton);
 
         setLayout(&mainLayout);
-    }
-
-    QWidget* createMultiButtonField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*> fieldLayouts,
-                                    const QString& labelText, QLabel& fieldLabel,
-                                    const std::vector<QPushButton*>& pbWidgets,
-                                    const std::vector<QString>& pbWidgetTexts, QWidget& widgetContainer) {
-        fieldLabel.setText(labelText);
-        fieldLayouts[0]->addWidget(&fieldLabel);
-        fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
-        fieldLayouts[1]->setAlignment(Qt::AlignHCenter);
-        fieldLayouts[2]->setAlignment(Qt::AlignHCenter);
-        fieldLayouts[3]->setAlignment(Qt::AlignHCenter);
-
-
-        widgetContainer.setLayout(&mainFieldLayout);
-        mainFieldLayout.addLayout(fieldLayouts[0]);
-        mainFieldLayout.addLayout(fieldLayouts[1]);
-        mainFieldLayout.addLayout(fieldLayouts[2]);
-        mainFieldLayout.addLayout(fieldLayouts[3]);
-        return &widgetContainer;
     }
 
     QWidget* createRangeSliderField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*>& fieldLayouts,
@@ -293,17 +308,21 @@ public:
     }
     [[nodiscard]] int getIMDBRatingRange() const { return rSliderIMDbRating.value(); }
     [[nodiscard]] int getRottenTomatoesRatingRange() const { return rSliderRTRating.value(); }
-    [[nodiscard]] QString getKeyword() const { return keywordEdit.text(); }
-    [[nodiscard]] QString getActor() const { return actorEdit.text(); }
-    [[nodiscard]] QString getDirector() const { return directorEdit.text(); }
-    [[nodiscard]] QString getWriter() const { return writerEdit.text(); }
+    [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
+    [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
+    [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
+    [[nodiscard]] QString getWriter() const { return writersLineEdit.text(); }
 
 public slots:
     void toggleAdvancedSearchSection() {
-        // Toggle the visibility of the contents widget
-        advancedSectionContentsWidget.setVisible(!advancedSectionContentsWidget.isVisible());
+        // Toggle the visibility of the advanced section layout
+        if (advancedSectionLayout.isEnabled())
+            advancedSectionLayout.setEnabled(false);
+        else
+            advancedSectionLayout.setEnabled(true);
+
         // Change the icon of the toggle button based on the visibility state
-        if (advancedSectionContentsWidget.isVisible())
+        if (advancedSectionLayout.isEnabled())
             advancedSectionToggleButton.setIcon(QIcon(
                     R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\up_arrow.png)"));
         else
@@ -314,11 +333,6 @@ public slots:
 private:
     QVBoxLayout mainLayout;
     QPushButton searchButton;
-
-    // Advanced section expand button
-    QToolButton advancedSectionToggleButton;
-    QWidget advancedSectionContentsWidget;
-    QVBoxLayout advancedSectionContentsLayout;
 
     // Basic Search
     QWidget basicSectionWidget;
@@ -375,12 +389,18 @@ private:
     QLabel languageFieldLabel;
 
     // Advanced Search
+
+    // Advanced section expand button
+    QToolButton advancedSectionToggleButton;
+    QWidget advancedSectionContentsWidget;
+    QVBoxLayout advancedSectionLayout;
+
     QVBoxLayout imdbRatingFieldMainLayout;
     QVBoxLayout rottenTomatoesRatingFieldMainLayout;
-    QVBoxLayout keywordFieldMainLayout;
-    QVBoxLayout actorFieldMainLayout;
-    QVBoxLayout directorFieldMainLayout;
-    QVBoxLayout writerFieldMainLayout;
+    QVBoxLayout keywordsFieldMainLayout;
+    QVBoxLayout actorsFieldMainLayout;
+    QVBoxLayout directorsFieldMainLayout;
+    QVBoxLayout writersFieldMainLayout;
     std::vector<QHBoxLayout*> imdbRatingFieldLayouts;
     std::vector<QHBoxLayout*> rottenTomatoesRatingFieldLayouts;
     std::vector<QHBoxLayout*> keywordFieldLayouts;
@@ -401,16 +421,16 @@ private:
     QWidget writerWidget;
     RangeSlider rSliderRTRating;
     RangeSlider rSliderIMDbRating;
-    QLineEdit keywordEdit;
-    QLineEdit actorEdit;
-    QLineEdit directorEdit;
-    QLineEdit writerEdit;
+    QLineEdit keywordsLineEdit;
+    QLineEdit actorsLineEdit;
+    QLineEdit directorsLineEdit;
+    QLineEdit writersLineEdit;
     QLabel imdbRatingFieldLabel;
     QLabel rottenTomatoesRatingFieldLabel;
-    QLabel keywordFieldLabel;
-    QLabel actorFieldLabel;
-    QLabel directorFieldLabel;
-    QLabel writerFieldLabel;
+    QLabel keywordsFieldLabel;
+    QLabel actorsFieldLabel;
+    QLabel directorsFieldLabel;
+    QLabel writersFieldLabel;
     QCheckBox advancedCheckbox;
 };
 
