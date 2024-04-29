@@ -16,6 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS
         Widgets
         Multimedia
         MultimediaWidgets
+        Quick
 )
 
 add_executable(BlackFilmDatabase_GUI_2 main.cpp)
@@ -25,4 +26,5 @@ target_link_libraries(BlackFilmDatabase_GUI_2
         Qt6::Widgets
         Qt6::Multimedia
         Qt6::MultimediaWidgets
+        Qt6::Quick
 )
