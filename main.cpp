@@ -166,30 +166,44 @@ public:
         genreFieldLabel.setText("Genre");
         basicSectionLayout.addWidget(&genreFieldLabel);
         basicSectionLayout.addLayout(&genreGridLayout);
+        genreGridLayout.setAlignment(Qt::AlignCenter);
         for (int i{0}; i < genrePushButtons.size(); i++) {
             genrePushButtons[i]->setFixedSize(80, 30);
             genrePushButtons[i]->setText(genrePushButtonTexts[i]);
-            genreGridLayout.addWidget(genrePushButtons[i]);
+            if (i <= 4)
+                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
+            if ((i > 4) && (i <= 9))
+                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
+            if (i > 9)
+                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
         }
 
         // Film Rating
         filmRatingFieldLabel.setText("Film Rating");
         basicSectionLayout.addWidget(&filmRatingFieldLabel);
         basicSectionLayout.addLayout(&filmRatingGridLayout);
+        filmRatingGridLayout.setAlignment(Qt::AlignCenter);
         for (int i{0}; i < filmRatingPushButtons.size(); i++) {
             filmRatingPushButtons[i]->setFixedSize(80, 30);
             filmRatingPushButtons[i]->setText(filmRatingPushButtonTexts[i]);
-            filmRatingGridLayout.addWidget(filmRatingPushButtons[i]);
+            if (i <= 4)
+                filmRatingGridLayout.addWidget(filmRatingPushButtons[i], i / 5, i % 5);
+            if (i > 4)
+                filmRatingGridLayout.addWidget(filmRatingPushButtons[i], i / 5, i % 5);
         }
 
         // Language
         languageFieldLabel.setText("Language");
         basicSectionLayout.addWidget(&languageFieldLabel);
         basicSectionLayout.addLayout(&languageGridLayout);
+        languageGridLayout.setAlignment(Qt::AlignCenter);
         for (int i{0}; i < languagePushButtons.size(); i++) {
             languagePushButtons[i]->setFixedSize(80, 30);
             languagePushButtons[i]->setText(languagePushButtonTexts[i]);
-            languageGridLayout.addWidget(languagePushButtons[i]);
+            if (i <= 4)
+                languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
+            if (i > 4)
+                languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
         }
 
         //
