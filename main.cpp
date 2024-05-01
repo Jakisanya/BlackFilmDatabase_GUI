@@ -132,41 +132,31 @@ public:
         // Set up layout line vectors for pushbutton widgets
         // titleFieldLayouts.push_back(&titleFieldLayout0);
         // titleFieldLayouts.push_back(&titleFieldLayout1);
-        releaseYearFieldLayouts.push_back(&releaseYearFieldLayout0);
-        releaseYearFieldLayouts.push_back(&releaseYearFieldLayout1);
-        imdbRatingFieldLayouts.push_back(&imdbRatingFieldLayout0);
-        imdbRatingFieldLayouts.push_back(&imdbRatingFieldLayout1);
-        rottenTomatoesRatingFieldLayouts.push_back(&rottenTomatoesRatingFieldLayout0);
-        rottenTomatoesRatingFieldLayouts.push_back(&rottenTomatoesRatingFieldLayout1);
-        keywordFieldLayouts.push_back(&keywordFieldLayout0);
-        keywordFieldLayouts.push_back(&keywordFieldLayout1);
-        actorFieldLayouts.push_back(&actorFieldLayout0);
-        actorFieldLayouts.push_back(&actorFieldLayout1);
-        directorFieldLayouts.push_back(&directorFieldLayout0);
-        directorFieldLayouts.push_back(&directorFieldLayout1);
-        writerFieldLayouts.push_back(&writerFieldLayout0);
-        writerFieldLayouts.push_back(&writerFieldLayout1);
 
         // Basic Search Fields (Initially disabled)
         mainLayout.addLayout(&basicSectionLayout);
 
         // Title
         titleFieldLabel.setText("Title");
+        titleFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&titleFieldLabel);
-        titleLineEdit.setFixedSize(400, 30);
-        titleLineEdit.setAlignment(Qt::AlignCenter);
-        basicSectionLayout.addWidget(&titleLineEdit);
+        titleLineEdit.setAlignment(Qt::AlignHCenter);
+        titleLineEdit.setFixedSize(500, 40);
+        titleLineEditLayout.addWidget(&titleLineEdit);
+        basicSectionLayout.addLayout(&titleLineEditLayout);
 
         // Release Year
         releaseYearFieldLabel.setText("Release Year");
+        releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&releaseYearFieldLabel);
         // basicSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
 
         // Genre
         genreFieldLabel.setText("Genre");
+        genreFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&genreFieldLabel);
         basicSectionLayout.addLayout(&genreGridLayout);
-        genreGridLayout.setAlignment(Qt::AlignCenter);
+        genreGridLayout.setAlignment(Qt::AlignHCenter);
         for (int i{0}; i < genrePushButtons.size(); i++) {
             genrePushButtons[i]->setFixedSize(80, 30);
             genrePushButtons[i]->setText(genrePushButtonTexts[i]);
@@ -180,9 +170,10 @@ public:
 
         // Film Rating
         filmRatingFieldLabel.setText("Film Rating");
+        filmRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&filmRatingFieldLabel);
         basicSectionLayout.addLayout(&filmRatingGridLayout);
-        filmRatingGridLayout.setAlignment(Qt::AlignCenter);
+        filmRatingGridLayout.setAlignment(Qt::AlignHCenter);
         for (int i{0}; i < filmRatingPushButtons.size(); i++) {
             filmRatingPushButtons[i]->setFixedSize(80, 30);
             filmRatingPushButtons[i]->setText(filmRatingPushButtonTexts[i]);
@@ -194,6 +185,7 @@ public:
 
         // Language
         languageFieldLabel.setText("Language");
+        languageFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&languageFieldLabel);
         basicSectionLayout.addLayout(&languageGridLayout);
         languageGridLayout.setAlignment(Qt::AlignCenter);
@@ -205,12 +197,6 @@ public:
             if (i > 4)
                 languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
         }
-
-        //
-        basicSectionLayout.addWidget(createRangeSliderField(releaseYearFieldMainLayout, releaseYearFieldLayouts,
-                                                            "Release Year", releaseYearFieldLabel,
-                                                            rSliderReleaseYear, releaseYearWidget,
-                                                            rSliderReleaseYearValues));
 
         // Create the advanced section header button with down arrow icon
         advancedSectionToggleButton.setIcon(QIcon(
@@ -226,53 +212,52 @@ public:
 
         // IMDb Rating
         imdbRatingFieldLabel.setText("IMDb Rating");
+        imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&imdbRatingFieldLabel);
         // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
 
         // Rotten Tomatoes Rating
         rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Rating");
+        rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
         // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
 
         // Keywords
         keywordsFieldLabel.setText("Keywords");
+        keywordsFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&keywordsFieldLabel);
-        keywordsLineEdit.setFixedSize(400, 30);
-        keywordsLineEdit.setAlignment(Qt::AlignCenter);
-        advancedSectionLayout.addWidget(&keywordsLineEdit);
+        keywordsLineEdit.setFixedSize(500, 40);
+        keywordsLineEdit.setAlignment(Qt::AlignHCenter);
+        keywordsLineEditLayout.addWidget(&keywordsLineEdit);
+        advancedSectionLayout.addLayout(&keywordsLineEditLayout);
 
         // Actors
         actorsFieldLabel.setText("Actors");
+        actorsFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&actorsFieldLabel);
-        actorsLineEdit.setFixedSize(400, 30);
-        actorsLineEdit.setAlignment(Qt::AlignCenter);
-        advancedSectionLayout.addWidget(&actorsLineEdit);
+        actorsLineEdit.setFixedSize(500, 40);
+        actorsLineEdit.setAlignment(Qt::AlignHCenter);
+        actorsLineEditLayout.addWidget(&actorsLineEdit);
+        advancedSectionLayout.addLayout(&actorsLineEditLayout);
 
         // Directors
         directorsFieldLabel.setText("Directors");
+        directorsFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&directorsFieldLabel);
-        directorsLineEdit.setFixedSize(400, 30);
-        directorsLineEdit.setAlignment(Qt::AlignCenter);
-        advancedSectionLayout.addWidget(&directorsLineEdit);
+        directorsLineEdit.setFixedSize(500, 40);
+        directorsLineEdit.setAlignment(Qt::AlignHCenter);
+        directorsLineEditLayout.addWidget(&directorsLineEdit);
+        advancedSectionLayout.addLayout(&directorsLineEditLayout);
 
         // Writers
         writersFieldLabel.setText("Writers");
+        writersFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&writersFieldLabel);
-        writersLineEdit.setFixedSize(400, 30);
-        writersLineEdit.setAlignment(Qt::AlignCenter);
-        advancedSectionLayout.addWidget(&writersLineEdit);
+        writersLineEdit.setFixedSize(500, 40);
+        writersLineEdit.setAlignment(Qt::AlignHCenter);
+        writersLineEditLayout.addWidget(&writersLineEdit);
+        advancedSectionLayout.addLayout(&writersLineEditLayout);
 
-
-        advancedSectionLayout.addWidget(createRangeSliderField(imdbRatingFieldMainLayout, imdbRatingFieldLayouts,
-                                                               "IMDB Rating", imdbRatingFieldLabel,
-                                                               rSliderIMDbRating, imdbRatingWidget,
-                                                               rSliderIMDbRatingValues));
-        advancedSectionLayout.addWidget(createRangeSliderField(rottenTomatoesRatingFieldMainLayout,
-                                                               rottenTomatoesRatingFieldLayouts,
-                                                               "Rotten Tomatoes Rating",
-                                                               rottenTomatoesRatingFieldLabel, rSliderRTRating,
-                                                               rottenTomatoesRatingWidget,
-                                                               rSliderRTRatingValues));
         mainLayout.addWidget(&advancedSectionContentsWidget);
 
         // Search Button
@@ -353,8 +338,8 @@ private:
     QVBoxLayout basicSectionLayout;
     QFrame basicSectionBorderFrame, titleWidgetFrame, releaseYearWidgetFrame, genreWidgetFrame, filmRatingWidgetFrame,
             languageWidgetFrame, keywordWidgetFrame, actorWidgetFrame, directorWidgetFrame, writerWidgetFrame;
-    QHBoxLayout titleFieldLayout;
-    QHBoxLayout releaseYearFieldLayout0, releaseYearFieldLayout1;
+    QHBoxLayout titleLineEditLayout;
+    QHBoxLayout releaseYearFieldLayout;
     QVBoxLayout titleFieldMainLayout;
     QVBoxLayout releaseYearFieldMainLayout;
     QVBoxLayout genreFieldMainLayout;
@@ -409,24 +394,12 @@ private:
     QWidget advancedSectionContentsWidget;
     QVBoxLayout advancedSectionLayout;
 
-    QVBoxLayout imdbRatingFieldMainLayout;
-    QVBoxLayout rottenTomatoesRatingFieldMainLayout;
-    QVBoxLayout keywordsFieldMainLayout;
-    QVBoxLayout actorsFieldMainLayout;
-    QVBoxLayout directorsFieldMainLayout;
-    QVBoxLayout writersFieldMainLayout;
-    std::vector<QHBoxLayout*> imdbRatingFieldLayouts;
-    std::vector<QHBoxLayout*> rottenTomatoesRatingFieldLayouts;
-    std::vector<QHBoxLayout*> keywordFieldLayouts;
-    std::vector<QHBoxLayout*> actorFieldLayouts;
-    std::vector<QHBoxLayout*> directorFieldLayouts;
-    std::vector<QHBoxLayout*> writerFieldLayouts;
-    QHBoxLayout imdbRatingFieldLayout0, imdbRatingFieldLayout1;
-    QHBoxLayout rottenTomatoesRatingFieldLayout0, rottenTomatoesRatingFieldLayout1;
-    QHBoxLayout keywordFieldLayout0, keywordFieldLayout1;
-    QHBoxLayout actorFieldLayout0, actorFieldLayout1;
-    QHBoxLayout directorFieldLayout0, directorFieldLayout1;
-    QHBoxLayout writerFieldLayout0, writerFieldLayout1;
+    QHBoxLayout imdbRatingFieldLayout;
+    QHBoxLayout rottenTomatoesRatingFieldLayout;
+    QHBoxLayout keywordsLineEditLayout;
+    QHBoxLayout actorsLineEditLayout;
+    QHBoxLayout directorsLineEditLayout;
+    QHBoxLayout writersLineEditLayout;
     QWidget imdbRatingWidget;
     QWidget rottenTomatoesRatingWidget;
     QWidget keywordWidget;
