@@ -15,37 +15,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QSlider>
 #include <QPaintEvent>
 #include <QCheckBox>
-#include <QtQuick>
-
-class RangeSlider : public QSlider {
-
-public:
-    RangeSlider() = default;
-
-    void paintEvent(QPaintEvent *) override {
-        QPainter p(this);
-
-        QStyleOptionSlider opt1, opt2; // Separate options for each handle
-        initStyleOption(&opt1);
-        initStyleOption(&opt2);
-
-        // First handle.
-        opt1.sliderPosition = slider.minimum();
-        opt1.subControls = QStyle::SC_SliderHandle;
-        style()->drawComplexControl(QStyle::CC_Slider, &opt1, &p, this);
-
-        // Second handle.
-        opt2.sliderPosition = slider.maximum();
-        opt2.subControls = QStyle::SC_SliderHandle;
-        style()->drawComplexControl(QStyle::CC_Slider, &opt2, &p, this);
-    }
-
-protected:
-    QSlider slider;
-};
+#include "RangeSlider.cpp"
 
 class SearchPage : public QWidget {
 public:
@@ -149,7 +121,9 @@ public:
         releaseYearFieldLabel.setText("Release Year");
         releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&releaseYearFieldLabel);
-        // basicSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
+        releaseYearFieldLayout.addWidget(&rangeSliderReleaseYear);
+        releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
+        basicSectionLayout.addLayout(&releaseYearFieldLayout);
 
         // Genre
         genreFieldLabel.setText("Genre");
@@ -268,28 +242,9 @@ public:
         setLayout(&mainLayout);
     }
 
-    QWidget* createRangeSliderField(QVBoxLayout& mainFieldLayout, std::vector<QHBoxLayout*>& fieldLayouts,
-                                    const QString& labelText, QLabel& fieldLabel, RangeSlider& rsWidget,
-                                    QWidget& widgetContainer, std::array<int, 3> sliderValues) {
-        fieldLabel.setText(labelText);
-        fieldLayouts[0]->addWidget(&fieldLabel);
-        fieldLayouts[0]->setAlignment(Qt::AlignHCenter);
-        fieldLayouts[1]->setAlignment(Qt::AlignHCenter);
-        rsWidget.setFixedSize(400, 30);
-        rsWidget.setOrientation(Qt::Horizontal);
-        rsWidget.setMinimum(sliderValues[0]); // slider's minimum value
-        rsWidget.setMaximum(sliderValues[1]); // slider's maximum value
-        rsWidget.setValue(sliderValues[2]);   // slider's starting position
-        fieldLayouts[1]->addWidget(&rsWidget);
-        widgetContainer.setLayout(&mainFieldLayout);
-        mainFieldLayout.addLayout(fieldLayouts[0]);
-        mainFieldLayout.addLayout(fieldLayouts[1]);
-        return &widgetContainer;
-    }
-
     // Accessors for search fields
     [[nodiscard]] QString getTitle() const { return titleLineEdit.text(); }
-    [[nodiscard]] int getReleaseYearRange() const { return rSliderReleaseYear.value(); }
+    // [[nodiscard]] int getReleaseYearRange() const { return rangeSliderReleaseYear.value(); }
     [[nodiscard]] QString getGenre() const {
         // checks whether pushbuttons are pressed...
         // if selected/pressed, add button text to output vector
@@ -305,8 +260,8 @@ public:
         // if selected/pressed, add button text to output vector
         // return vector output;
     }
-    [[nodiscard]] int getIMDBRatingRange() const { return rSliderIMDbRating.value(); }
-    [[nodiscard]] int getRottenTomatoesRatingRange() const { return rSliderRTRating.value(); }
+    // [[nodiscard]] int getIMDBRatingRange() const { return rangeSliderIMDbRating.value(); }
+    // [[nodiscard]] int getRottenTomatoesRatingRange() const { return rangeSliderRTRating.value(); }
     [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
@@ -380,7 +335,7 @@ private:
             GermanPBTextStr = "GERMAN", ItalianPBTextStr = "ITALIAN", JapanesePBTextStr = "JAPANESE",
             CantonesePBTextStr = "CANTONESE", MandarinPBTextStr = "MANDARIN", RussianPBTextStr = "RUSSIAN",
             ArabicPBTextStr = "ARABIC";
-    RangeSlider rSliderReleaseYear;
+    RangeSlider rangeSliderReleaseYear;
     QLabel titleFieldLabel;
     QLabel releaseYearFieldLabel;
     QLabel genreFieldLabel;
@@ -406,8 +361,8 @@ private:
     QWidget actorWidget;
     QWidget directorWidget;
     QWidget writerWidget;
-    RangeSlider rSliderRTRating;
-    RangeSlider rSliderIMDbRating;
+    RangeSlider rangeSliderRTRating;
+    RangeSlider rangeSliderIMDbRating;
     QLineEdit keywordsLineEdit;
     QLineEdit actorsLineEdit;
     QLineEdit directorsLineEdit;
@@ -477,12 +432,12 @@ public slots:
     void performSearch() {
         // Gather search parameters from the search page
         QString title = searchPage.getTitle();
-        int releaseYearRange = searchPage.getReleaseYearRange();
+        // int releaseYearRange = searchPage.getReleaseYearRange();
         QString genre = searchPage.getGenre();
         QString rating = searchPage.getRating();
         QString language = searchPage.getLanguage();
-        int imdbRatingRange = searchPage.getIMDBRatingRange();
-        int rottenTomatoesRatingRange = searchPage.getRottenTomatoesRatingRange();
+        // int imdbRatingRange = searchPage.getIMDBRatingRange();
+        // int rottenTomatoesRatingRange = searchPage.getRottenTomatoesRatingRange();
         QString keyword = searchPage.getKeyword();
         QString actor = searchPage.getActor();
         QString director = searchPage.getDirector();
