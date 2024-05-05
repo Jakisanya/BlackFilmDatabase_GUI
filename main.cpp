@@ -264,7 +264,7 @@ public:
 
     // Accessors for search fields
     [[nodiscard]] QString getTitle() const { return titleLineEdit.text(); }
-    // [[nodiscard]] int getReleaseYearRange() const { return rangeSliderReleaseYear.value(); }
+    // [[nodiscard]] int getReleaseYearRange() const { return .value(); }
     [[nodiscard]] QString getGenre() const {
         // checks whether pushbuttons are pressed...
         // if selected/pressed, add button text to output vector
@@ -280,8 +280,8 @@ public:
         // if selected/pressed, add button text to output vector
         // return vector output;
     }
-    // [[nodiscard]] int getIMDBRatingRange() const { return rangeSliderIMDbRating.value(); }
-    // [[nodiscard]] int getRottenTomatoesRatingRange() const { return SliderRTRating.value(); }
+    // [[nodiscard]] int getIMDBRating() const { return .value(); }
+    // [[nodiscard]] int getRottenTomatoesRating() const { return .value(); }
     [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
