@@ -4,13 +4,10 @@
 #include <QApplication>
 #include <QtWidgets>
 #include <QWidget>
-#include <QtCore>
 #include <QtMultimedia>
-#include <QtMultimediaWidgets>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsVideoItem>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -21,12 +18,7 @@
 class SearchPage : public QWidget {
 public:
     SearchPage() {
-        setFixedSize(640, 1140);
-
-        // Set up RangeSlider value arrays (minimum_value, maximum_value, starting_value)
-        std::array<int, 3> rSliderReleaseYearValues = {1950, 2024, 2008};
-        std::array<int, 3> rSliderIMDbRatingValues = {0, 10, 6};
-        std::array<int, 3> rSliderRTRatingValues = {0, 100, 85};
+        setFixedSize(640, 1180);
 
         // Create PushButton vectors
         genrePushButtons.push_back(&ActionPB);
@@ -100,12 +92,11 @@ public:
         languagePushButtonTexts.push_back(RussianPBTextStr);
         languagePushButtonTexts.push_back(ArabicPBTextStr);
 
-        // Set up layout line vectors for pushbutton widgets
-        // titleFieldLayouts.push_back(&titleFieldLayout0);
-        // titleFieldLayouts.push_back(&titleFieldLayout1);
+        mainLayout.addSpacerItem(&sectionGap);
 
-        // Basic Search Fields (Initially disabled)
+        // Basic Search Fields
         mainLayout.addLayout(&basicSectionLayout);
+        basicSectionLayout.setSizeConstraint(QLayout::SetMinAndMaxSize);
 
         // Title
         titleFieldLabel.setText("Title");
@@ -186,16 +177,22 @@ public:
                 languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
         }
 
+        mainLayout.addSpacerItem(&sectionGap);
+
         // Create the advanced section header button with down arrow icon
+        mainLayout.addLayout(&advancedSectionToggleButtonLayout);
         advancedSectionToggleButton.setIcon(QIcon(
                 R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
         advancedSectionToggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         advancedSectionToggleButton.setText("Advanced Search");
-        mainLayout.addWidget(&advancedSectionToggleButton);
+        advancedSectionToggleButton.setFixedSize(120, 40);
+        advancedSectionToggleButtonLayout.addWidget(&advancedSectionToggleButton);
+        advancedSectionToggleButtonLayout.setAlignment(Qt::AlignHCenter);
         // Connect the toggle button's clicked signal to the toggleSection slot
         connect(&advancedSectionToggleButton, &QToolButton::clicked, this,
                 &SearchPage::toggleAdvancedSearchSection);
 
+        mainLayout.addSpacerItem(&sectionGap);
         mainLayout.addLayout(&advancedSectionLayout);
 
         // IMDb Rating
@@ -203,7 +200,7 @@ public:
         imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&imdbRatingFieldLabel);
         advancedSectionLayout.addLayout(&imdbRatingLineEditLayout);
-        imdbRatingLineEdit.setFixedSize(70, 50);
+        imdbRatingLineEdit.setFixedSize(70, 40);
         imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
         imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
 
@@ -212,7 +209,7 @@ public:
         rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
         advancedSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
-        rottenTomatoesRatingLineEdit.setFixedSize(70, 50);
+        rottenTomatoesRatingLineEdit.setFixedSize(70, 40);
         rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
         rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
@@ -252,12 +249,14 @@ public:
         writersLineEditLayout.addWidget(&writersLineEdit);
         advancedSectionLayout.addLayout(&writersLineEditLayout);
 
-        mainLayout.addWidget(&advancedSectionContentsWidget);
+        mainLayout.addSpacerItem(&sectionGap);
 
         // Search Button
         searchButton.setText("SEARCH");
         searchButton.setFixedSize(200, 50);
-        mainLayout.addWidget(&searchButton);
+        searchButtonLayout.addWidget(&searchButton);
+        searchButtonLayout.setAlignment(Qt::AlignHCenter);
+        mainLayout.addLayout(&searchButtonLayout);
 
         setLayout(&mainLayout);
     }
@@ -290,41 +289,55 @@ public:
 public slots:
     void toggleAdvancedSearchSection() {
         // Toggle the visibility of the advanced section layout
-        if (advancedSectionLayout.isEnabled())
+        if (advancedSectionLayout.isEnabled()) {
+            imdbRatingFieldLabel.hide();
+            imdbRatingLineEdit.hide();
+            rottenTomatoesRatingFieldLabel.hide();
+            rottenTomatoesRatingLineEdit.hide();
+            keywordsFieldLabel.hide();
+            keywordsLineEdit.hide();
+            actorsFieldLabel.hide();
+            actorsLineEdit.hide();
+            directorsFieldLabel.hide();
+            directorsLineEdit.hide();
+            writersFieldLabel.hide();
+            writersLineEdit.hide();
             advancedSectionLayout.setEnabled(false);
-        else
+        }
+        else {
+            imdbRatingFieldLabel.show();
+            imdbRatingLineEdit.show();
+            rottenTomatoesRatingFieldLabel.show();
+            rottenTomatoesRatingLineEdit.show();
+            keywordsFieldLabel.show();
+            keywordsLineEdit.show();
+            actorsFieldLabel.show();
+            actorsLineEdit.show();
+            directorsFieldLabel.show();
+            directorsLineEdit.show();
+            writersFieldLabel.show();
+            writersLineEdit.show();
             advancedSectionLayout.setEnabled(true);
-
+        }
         // Change the icon of the toggle button based on the visibility state
         if (advancedSectionLayout.isEnabled())
             advancedSectionToggleButton.setIcon(QIcon(
                     R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\up_arrow.png)"));
         else
             advancedSectionToggleButton.setIcon(QIcon(
-                    R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\up_arrow.png)"));
+                    R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
     }
 
 private:
     QVBoxLayout mainLayout;
+    QHBoxLayout searchButtonLayout;
     QPushButton searchButton;
 
     // Basic Search
     QWidget basicSectionWidget;
     QVBoxLayout basicSectionLayout;
-    QFrame basicSectionBorderFrame, titleWidgetFrame, releaseYearWidgetFrame, genreWidgetFrame, filmRatingWidgetFrame,
-            languageWidgetFrame, keywordWidgetFrame, actorWidgetFrame, directorWidgetFrame, writerWidgetFrame;
     QHBoxLayout titleLineEditLayout;
     QHBoxLayout releaseYearFieldLayout;
-    QVBoxLayout titleFieldMainLayout;
-    QVBoxLayout releaseYearFieldMainLayout;
-    QVBoxLayout genreFieldMainLayout;
-    QVBoxLayout filmRatingFieldMainLayout;
-    QVBoxLayout languageFieldMainLayout;
-    std::vector<QHBoxLayout*> titleFieldLayouts;
-    std::vector<QHBoxLayout*> releaseYearFieldLayouts;
-    std::vector<QHBoxLayout*> genreFieldLayouts;
-    std::vector<QHBoxLayout*> filmRatingFieldLayouts;
-    std::vector<QHBoxLayout*> languageFieldLayouts;
     QGridLayout genreGridLayout, filmRatingGridLayout, languageGridLayout;
     QWidget titleWidget;
     QWidget releaseYearWidget;
@@ -364,11 +377,12 @@ private:
     QLabel languageFieldLabel;
 
     // Advanced Search
-
     // Advanced section expand button
+    QSpacerItem sectionGap{0, 40};
     QToolButton advancedSectionToggleButton;
     QWidget advancedSectionContentsWidget;
     QVBoxLayout advancedSectionLayout;
+    QHBoxLayout advancedSectionToggleButtonLayout;
     QHBoxLayout imdbRatingLineEditLayout;
     QHBoxLayout rottenTomatoesRatingLineEditLayout;
     QHBoxLayout keywordsLineEditLayout;
@@ -487,5 +501,5 @@ int main(int argc, char *argv[]) {
 
     MainGraphicsView view;
     view.show();
-    return app.exec();
+    return QApplication::exec();
 }
