@@ -17,7 +17,6 @@
 #include <QPushButton>
 #include <QPaintEvent>
 #include <QCheckBox>
-#include "RangeSlider.cpp"
 
 class SearchPage : public QWidget {
 public:
@@ -121,7 +120,22 @@ public:
         releaseYearFieldLabel.setText("Release Year");
         releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&releaseYearFieldLabel);
-        releaseYearFieldLayout.addWidget(&rangeSliderReleaseYear);
+        releaseYearFromLabel.setText("From");
+        releaseYearFromLabel.setFixedSize(70, 50);
+        releaseYearFromLabel.setAlignment(Qt::AlignCenter);
+        releaseYearFieldLayout.addWidget(&releaseYearFromLabel);
+        releaseYearFromLineEdit.setFixedSize(125, 40);
+        releaseYearFromLineEdit.setMaxLength(4);
+        releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
+        releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
+        releaseYearToLabel.setText("To");
+        releaseYearToLabel.setFixedSize(70, 50);
+        releaseYearToLabel.setAlignment(Qt::AlignCenter);
+        releaseYearFieldLayout.addWidget(&releaseYearToLabel);
+        releaseYearToLineEdit.setFixedSize(125, 40);
+        releaseYearToLineEdit.setMaxLength(4);
+        releaseYearToLineEdit.setAlignment(Qt::AlignHCenter);
+        releaseYearFieldLayout.addWidget(&releaseYearToLineEdit);
         releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addLayout(&releaseYearFieldLayout);
 
@@ -185,16 +199,22 @@ public:
         mainLayout.addLayout(&advancedSectionLayout);
 
         // IMDb Rating
-        imdbRatingFieldLabel.setText("IMDb Rating");
+        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0-100)");
         imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&imdbRatingFieldLabel);
-        // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
+        advancedSectionLayout.addLayout(&imdbRatingLineEditLayout);
+        imdbRatingLineEdit.setFixedSize(70, 50);
+        imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
 
         // Rotten Tomatoes Rating
-        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Rating");
+        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0-100)");
         rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         advancedSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
-        // advancedSectionLayout.addWidget(&) // rangeSlider QtQuick.Controls.rangeSlider
+        advancedSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
+        rottenTomatoesRatingLineEdit.setFixedSize(70, 50);
+        rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
         // Keywords
         keywordsFieldLabel.setText("Keywords");
@@ -261,7 +281,7 @@ public:
         // return vector output;
     }
     // [[nodiscard]] int getIMDBRatingRange() const { return rangeSliderIMDbRating.value(); }
-    // [[nodiscard]] int getRottenTomatoesRatingRange() const { return rangeSliderRTRating.value(); }
+    // [[nodiscard]] int getRottenTomatoesRatingRange() const { return SliderRTRating.value(); }
     [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
@@ -312,6 +332,7 @@ private:
     QWidget filmRatingWidget;
     QWidget languageWidget;
     QLineEdit titleLineEdit;
+    QLineEdit releaseYearFromLineEdit, releaseYearToLineEdit;
     std::vector<QPushButton*> genrePushButtons;
     std::vector<QPushButton*> filmRatingPushButtons;
     std::vector<QPushButton*> languagePushButtons;
@@ -335,9 +356,9 @@ private:
             GermanPBTextStr = "GERMAN", ItalianPBTextStr = "ITALIAN", JapanesePBTextStr = "JAPANESE",
             CantonesePBTextStr = "CANTONESE", MandarinPBTextStr = "MANDARIN", RussianPBTextStr = "RUSSIAN",
             ArabicPBTextStr = "ARABIC";
-    RangeSlider rangeSliderReleaseYear;
+
     QLabel titleFieldLabel;
-    QLabel releaseYearFieldLabel;
+    QLabel releaseYearFieldLabel, releaseYearFromLabel, releaseYearToLabel;
     QLabel genreFieldLabel;
     QLabel filmRatingFieldLabel;
     QLabel languageFieldLabel;
@@ -348,9 +369,8 @@ private:
     QToolButton advancedSectionToggleButton;
     QWidget advancedSectionContentsWidget;
     QVBoxLayout advancedSectionLayout;
-
-    QHBoxLayout imdbRatingFieldLayout;
-    QHBoxLayout rottenTomatoesRatingFieldLayout;
+    QHBoxLayout imdbRatingLineEditLayout;
+    QHBoxLayout rottenTomatoesRatingLineEditLayout;
     QHBoxLayout keywordsLineEditLayout;
     QHBoxLayout actorsLineEditLayout;
     QHBoxLayout directorsLineEditLayout;
@@ -361,8 +381,8 @@ private:
     QWidget actorWidget;
     QWidget directorWidget;
     QWidget writerWidget;
-    RangeSlider rangeSliderRTRating;
-    RangeSlider rangeSliderIMDbRating;
+    QLineEdit imdbRatingLineEdit;
+    QLineEdit rottenTomatoesRatingLineEdit;
     QLineEdit keywordsLineEdit;
     QLineEdit actorsLineEdit;
     QLineEdit directorsLineEdit;
