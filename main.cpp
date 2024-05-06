@@ -92,6 +92,21 @@ public:
         languagePushButtonTexts.push_back(RussianPBTextStr);
         languagePushButtonTexts.push_back(ArabicPBTextStr);
 
+        enteredKeywordLabels.push_back(&enteredKeyword1);
+        enteredKeywordLabels.push_back(&enteredKeyword2);
+        enteredKeywordLabels.push_back(&enteredKeyword3);
+        enteredKeywordLabels.push_back(&enteredKeyword4);
+        enteredKeywordLabels.push_back(&enteredKeyword5);
+        enteredKeywordLabels.push_back(&enteredKeyword6);
+        enteredKeywordLabels.push_back(&enteredKeyword7);
+        removeKeywordButtons.push_back(&removeKeywordButton1);
+        removeKeywordButtons.push_back(&removeKeywordButton2);
+        removeKeywordButtons.push_back(&removeKeywordButton3);
+        removeKeywordButtons.push_back(&removeKeywordButton4);
+        removeKeywordButtons.push_back(&removeKeywordButton5);
+        removeKeywordButtons.push_back(&removeKeywordButton6);
+        removeKeywordButtons.push_back(&removeKeywordButton7);
+
         mainLayout.addSpacerItem(&sectionGap);
 
         // Basic Search Fields
@@ -221,6 +236,9 @@ public:
         keywordsLineEdit.setAlignment(Qt::AlignHCenter);
         keywordsLineEditLayout.addWidget(&keywordsLineEdit);
         advancedSectionLayout.addLayout(&keywordsLineEditLayout);
+        enteredKeywordsLayout.setAlignment(Qt::AlignHCenter);
+        advancedSectionLayout.addLayout(&enteredKeywordsLayout);
+        connect(&keywordsLineEdit, &QLineEdit::returnPressed, this, &SearchPage::addKeyword);
 
         // Actors
         actorsFieldLabel.setText("Actors");
@@ -259,6 +277,15 @@ public:
         mainLayout.addLayout(&searchButtonLayout);
 
         setLayout(&mainLayout);
+    }
+
+    // KeyPressEvents function
+    void keyPressEvent(QKeyEvent* event) override {
+        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+            addKeyword();
+        } else {
+            QWidget::keyPressEvent(event);
+        }
     }
 
     // Accessors for search fields
@@ -328,6 +355,31 @@ public slots:
                     R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
     }
 
+    void addKeyword() {
+        QString enteredKeywordText = keywordsLineEdit.text().trimmed();
+        if (!enteredKeywordText.isEmpty()) {
+            enteredKeywordLabels[enteredKeywordCount].setStyleSheet("border: 1px solid black; padding: 2px; "
+                                                                    "margin-right: 5px;");
+            enteredKeywordLabels[enteredKeywordCount].setText(enteredKeywordText);
+            enteredKeywordsLayout.addWidget(&enteredKeywordLabels[enteredKeywordCount]);
+
+            removeKeywordButtons[enteredKeywordCount].setText("x");
+            removeKeywordButtons[enteredKeywordCount].setStyleSheet("padding: 0;");
+            enteredKeywordsLayout.addWidget(&removeKeywordButtons[enteredKeywordCount]);
+
+            connect(&removeKeywordButtons[enteredKeywordCount], &QPushButton::clicked, this,
+                    &SearchPage::removeKeyword);
+
+            keywordsLineEdit.clear();
+        }
+    }
+
+    void removeKeyword() {
+        enteredKeywordsLayout.removeWidget(&enteredKeywordLabels[enteredKeywordCount]);
+        enteredKeywordLabels[enteredKeywordCount].deleteLater();
+        removeKeywordButtons[enteredKeywordCount].deleteLater();
+    }
+
 private:
     QVBoxLayout mainLayout;
     QHBoxLayout searchButtonLayout;
@@ -385,7 +437,7 @@ private:
     QHBoxLayout advancedSectionToggleButtonLayout;
     QHBoxLayout imdbRatingLineEditLayout;
     QHBoxLayout rottenTomatoesRatingLineEditLayout;
-    QHBoxLayout keywordsLineEditLayout;
+    QHBoxLayout keywordsLineEditLayout, enteredKeywordsLayout;
     QHBoxLayout actorsLineEditLayout;
     QHBoxLayout directorsLineEditLayout;
     QHBoxLayout writersLineEditLayout;
@@ -404,6 +456,13 @@ private:
     QLabel imdbRatingFieldLabel;
     QLabel rottenTomatoesRatingFieldLabel;
     QLabel keywordsFieldLabel;
+    int enteredKeywordCount{0};
+    std::vector<QLabel*> enteredKeywordLabels;
+    QLabel enteredKeyword1, enteredKeyword2, enteredKeyword3, enteredKeyword4, enteredKeyword5, enteredKeyword6,
+           enteredKeyword7;
+    std::vector<QPushButton*> removeKeywordButtons;
+    QPushButton removeKeywordButton1, removeKeywordButton2, removeKeywordButton3, removeKeywordButton4,
+                removeKeywordButton5, removeKeywordButton6, removeKeywordButton7;
     QLabel actorsFieldLabel;
     QLabel directorsFieldLabel;
     QLabel writersFieldLabel;
@@ -500,6 +559,7 @@ int main(int argc, char *argv[]) {
     */
 
     MainGraphicsView view;
+    view.move(475, 30);
     view.show();
     return QApplication::exec();
 }
