@@ -358,26 +358,43 @@ public slots:
     void addKeyword() {
         QString enteredKeywordText = keywordsLineEdit.text().trimmed();
         if (!enteredKeywordText.isEmpty()) {
-            enteredKeywordLabels[enteredKeywordCount].setStyleSheet("border: 1px solid black; padding: 2px; "
-                                                                    "margin-right: 5px;");
-            enteredKeywordLabels[enteredKeywordCount].setText(enteredKeywordText);
-            enteredKeywordsLayout.addWidget(&enteredKeywordLabels[enteredKeywordCount]);
+            enteredKeywordLabels[enteredKeywordCount]->setStyleSheet("border: 1px solid black; padding: 2px; "
+                                                                     "margin-right: 5px;");
+            enteredKeywordLabels[enteredKeywordCount]->setText(enteredKeywordText);
+            enteredKeywordsLayout.addWidget(enteredKeywordLabels[enteredKeywordCount]);
 
-            removeKeywordButtons[enteredKeywordCount].setText("x");
-            removeKeywordButtons[enteredKeywordCount].setStyleSheet("padding: 0;");
-            enteredKeywordsLayout.addWidget(&removeKeywordButtons[enteredKeywordCount]);
+            std::cout << enteredKeywordCount << "\n";
+            removeKeywordButtons[enteredKeywordCount]->show();
+            removeKeywordButtons[enteredKeywordCount]->setText("x");
+            removeKeywordButtons[enteredKeywordCount]->setStyleSheet("padding: 0;");
+            enteredKeywordsLayout.addWidget(removeKeywordButtons[enteredKeywordCount]);
 
-            connect(&removeKeywordButtons[enteredKeywordCount], &QPushButton::clicked, this,
+            connect(removeKeywordButtons[enteredKeywordCount], &QPushButton::clicked, this,
                     &SearchPage::removeKeyword);
 
             keywordsLineEdit.clear();
+            enteredKeywordCount++;
+            if (enteredKeywordCount == 7) {
+                keywordsLineEdit.setStyleSheet("QLineEdit { background-color: f1f1f1; }");
+                keywordsLineEdit.setEnabled(false);
+            }
         }
     }
 
     void removeKeyword() {
-        enteredKeywordsLayout.removeWidget(&enteredKeywordLabels[enteredKeywordCount]);
-        enteredKeywordLabels[enteredKeywordCount].deleteLater();
-        removeKeywordButtons[enteredKeywordCount].deleteLater();
+        std::cout << enteredKeywordCount << "\n";
+        enteredKeywordCount--;
+        std::cout << enteredKeywordCount << "\n";
+        enteredKeywordLabels[enteredKeywordCount]->clear();
+        enteredKeywordLabels[enteredKeywordCount]->setStyleSheet("");
+        removeKeywordButtons[enteredKeywordCount]->hide();
+        enteredKeywordsLayout.removeWidget(enteredKeywordLabels[enteredKeywordCount]);
+        std::cout << enteredKeywordCount << "\n";
+        if (enteredKeywordCount < 7) {
+            std::cout << "do i go here?" << "\n";
+            keywordsLineEdit.setEnabled(true);
+            keywordsLineEdit.setStyleSheet("");
+        }
     }
 
 private:
@@ -516,7 +533,8 @@ public slots:
         scene.addItem(proxyWidget);
 
         // Connect search button to perform search function
-        QObject::connect(&searchButton, &QPushButton::clicked, this, &MainGraphicsView::performSearch);
+        QObject::connect(&searchButton, &QPushButton::clicked, this,
+                         &MainGraphicsView::performSearch);
 
         // Change page dimensions
         setFixedSize(640, 720);
