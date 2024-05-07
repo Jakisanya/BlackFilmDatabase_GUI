@@ -18,14 +18,14 @@ The search page will have two sections, 'Basic Search' and 'Advanced Search'. Th
 3. Genre -> A set of selectable options (boxes).
 4. Film Rating -> A set of selectable options (boxes).
 5. Language -> A set of selectable options (boxes).
+6. IMDb Rating -> A range-based slider.
+7. Rotten Tomatoes Rating -> A range-based slider.
 
 The 'Advanced Search' section will allow the user to narrow their search by offering 6 more fields. These are:
-1. IMDb Rating -> A range-based slider.
-2. Rotten Tomatoes Rating -> A range-based slider.
-3. Keyword -> A general text field.
-4. Actor -> A general text field. 
-5. Director -> A general text field. 
-6. Writer -> A general text field.
+1. Keyword -> A general text field.
+2. Actor -> A general text field. 
+3. Director -> A general text field. 
+4. Writer -> A general text field.
 
 Each of the 11 fields will alter the final query sent to the database, and at the bottom of the Search Page there will 
 be the 'SEARCH BUTTON' allowing the user to send the query. 
