@@ -18,7 +18,7 @@
 class SearchPage : public QWidget {
 public:
     SearchPage() {
-        setFixedSize(640, 1180);
+        setFixedSize(640, 1080);
 
         // Create PushButton vectors
         genrePushButtons.push_back(&ActionPB);
@@ -192,6 +192,24 @@ public:
                 languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
         }
 
+        // IMDb Rating
+        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0-100)");
+        imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+        basicSectionLayout.addWidget(&imdbRatingFieldLabel);
+        basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
+        imdbRatingLineEdit.setFixedSize(70, 40);
+        imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
+
+        // Rotten Tomatoes Rating
+        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0-100)");
+        rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+        basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
+        basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
+        rottenTomatoesRatingLineEdit.setFixedSize(70, 40);
+        rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
+
         mainLayout.addSpacerItem(&sectionGap);
 
         // Create the advanced section header button with down arrow icon
@@ -209,24 +227,6 @@ public:
 
         mainLayout.addSpacerItem(&sectionGap);
         mainLayout.addLayout(&advancedSectionLayout);
-
-        // IMDb Rating
-        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0-100)");
-        imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&imdbRatingFieldLabel);
-        advancedSectionLayout.addLayout(&imdbRatingLineEditLayout);
-        imdbRatingLineEdit.setFixedSize(70, 40);
-        imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
-        imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
-
-        // Rotten Tomatoes Rating
-        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0-100)");
-        rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
-        advancedSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
-        rottenTomatoesRatingLineEdit.setFixedSize(70, 40);
-        rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
-        rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
         // Keywords
         keywordsFieldLabel.setText("Keywords");
@@ -257,15 +257,6 @@ public:
         directorsLineEdit.setAlignment(Qt::AlignHCenter);
         directorsLineEditLayout.addWidget(&directorsLineEdit);
         advancedSectionLayout.addLayout(&directorsLineEditLayout);
-
-        // Writers
-        writersFieldLabel.setText("Writers");
-        writersFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&writersFieldLabel);
-        writersLineEdit.setFixedSize(500, 40);
-        writersLineEdit.setAlignment(Qt::AlignHCenter);
-        writersLineEditLayout.addWidget(&writersLineEdit);
-        advancedSectionLayout.addLayout(&writersLineEditLayout);
 
         mainLayout.addSpacerItem(&sectionGap);
 
@@ -311,7 +302,6 @@ public:
     [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
     [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
     [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
-    [[nodiscard]] QString getWriter() const { return writersLineEdit.text(); }
 
 public slots:
     void toggleAdvancedSearchSection() {
@@ -327,8 +317,6 @@ public slots:
             actorsLineEdit.hide();
             directorsFieldLabel.hide();
             directorsLineEdit.hide();
-            writersFieldLabel.hide();
-            writersLineEdit.hide();
             advancedSectionLayout.setEnabled(false);
         }
         else {
@@ -342,8 +330,6 @@ public slots:
             actorsLineEdit.show();
             directorsFieldLabel.show();
             directorsLineEdit.show();
-            writersFieldLabel.show();
-            writersLineEdit.show();
             advancedSectionLayout.setEnabled(true);
         }
         // Change the icon of the toggle button based on the visibility state
@@ -421,13 +407,19 @@ private:
     QHBoxLayout titleLineEditLayout;
     QHBoxLayout releaseYearFieldLayout;
     QGridLayout genreGridLayout, filmRatingGridLayout, languageGridLayout;
+    QHBoxLayout imdbRatingLineEditLayout;
+    QHBoxLayout rottenTomatoesRatingLineEditLayout;
     QWidget titleWidget;
     QWidget releaseYearWidget;
     QWidget genreWidget;
     QWidget filmRatingWidget;
     QWidget languageWidget;
+    QWidget imdbRatingWidget;
+    QWidget rottenTomatoesRatingWidget;
     QLineEdit titleLineEdit;
     QLineEdit releaseYearFromLineEdit, releaseYearToLineEdit;
+    QLineEdit imdbRatingLineEdit;
+    QLineEdit rottenTomatoesRatingLineEdit;
     std::vector<QPushButton*> genrePushButtons;
     std::vector<QPushButton*> filmRatingPushButtons;
     std::vector<QPushButton*> languagePushButtons;
@@ -457,6 +449,8 @@ private:
     QLabel genreFieldLabel;
     QLabel filmRatingFieldLabel;
     QLabel languageFieldLabel;
+    QLabel imdbRatingFieldLabel;
+    QLabel rottenTomatoesRatingFieldLabel;
 
     // Advanced Search
     // Advanced section expand button
@@ -465,26 +459,17 @@ private:
     QWidget advancedSectionContentsWidget;
     QVBoxLayout advancedSectionLayout;
     QHBoxLayout advancedSectionToggleButtonLayout;
-    QHBoxLayout imdbRatingLineEditLayout;
-    QHBoxLayout rottenTomatoesRatingLineEditLayout;
     QHBoxLayout keywordsLineEditLayout, enteredKeywordsLayout;
     QHBoxLayout actorsLineEditLayout;
     QHBoxLayout directorsLineEditLayout;
-    QHBoxLayout writersLineEditLayout;
-    QWidget imdbRatingWidget;
-    QWidget rottenTomatoesRatingWidget;
+
     QWidget keywordWidget;
     QWidget actorWidget;
     QWidget directorWidget;
-    QWidget writerWidget;
-    QLineEdit imdbRatingLineEdit;
-    QLineEdit rottenTomatoesRatingLineEdit;
     QLineEdit keywordsLineEdit;
     QLineEdit actorsLineEdit;
     QLineEdit directorsLineEdit;
-    QLineEdit writersLineEdit;
-    QLabel imdbRatingFieldLabel;
-    QLabel rottenTomatoesRatingFieldLabel;
+
     QLabel keywordsFieldLabel;
     int enteredKeywordCount{0};
     std::vector<QLabel*> enteredKeywordLabels;
@@ -495,7 +480,6 @@ private:
                 removeKeywordButton5, removeKeywordButton6, removeKeywordButton7;
     QLabel actorsFieldLabel;
     QLabel directorsFieldLabel;
-    QLabel writersFieldLabel;
     QCheckBox advancedCheckbox;
 };
 
@@ -565,7 +549,6 @@ public slots:
         QString keyword = searchPage.getKeyword();
         QString actor = searchPage.getActor();
         QString director = searchPage.getDirector();
-        QString writer = searchPage.getWriter();
 
         // Implement the search functionality, query the database, and display results
     }
