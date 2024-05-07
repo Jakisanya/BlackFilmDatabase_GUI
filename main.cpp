@@ -18,7 +18,7 @@
 class SearchPage : public QWidget {
 public:
     SearchPage() {
-        setFixedSize(640, 1080);
+        setFixedSize(640, 740);
 
         // Create PushButton vectors
         genrePushButtons.push_back(&ActionPB);
@@ -92,6 +92,7 @@ public:
         languagePushButtonTexts.push_back(RussianPBTextStr);
         languagePushButtonTexts.push_back(ArabicPBTextStr);
 
+        /*
         enteredKeywordLabels.push_back(&enteredKeyword1);
         enteredKeywordLabels.push_back(&enteredKeyword2);
         enteredKeywordLabels.push_back(&enteredKeyword3);
@@ -106,6 +107,7 @@ public:
         removeKeywordButtons.push_back(&removeKeywordButton5);
         removeKeywordButtons.push_back(&removeKeywordButton6);
         removeKeywordButtons.push_back(&removeKeywordButton7);
+        */
 
         mainLayout.addSpacerItem(&sectionGap);
 
@@ -212,6 +214,7 @@ public:
 
         mainLayout.addSpacerItem(&sectionGap);
 
+        /*
         // Create the advanced section header button with down arrow icon
         mainLayout.addLayout(&advancedSectionToggleButtonLayout);
         advancedSectionToggleButton.setIcon(QIcon(
@@ -258,6 +261,8 @@ public:
         directorsLineEditLayout.addWidget(&directorsLineEdit);
         advancedSectionLayout.addLayout(&directorsLineEditLayout);
 
+         */
+
         mainLayout.addSpacerItem(&sectionGap);
 
         // Search Button
@@ -267,13 +272,15 @@ public:
         searchButtonLayout.setAlignment(Qt::AlignHCenter);
         mainLayout.addLayout(&searchButtonLayout);
 
+        mainLayout.addSpacerItem(&sectionGap);
+
         setLayout(&mainLayout);
     }
 
     // KeyPressEvents function
     void keyPressEvent(QKeyEvent* event) override {
         if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-            addKeyword();
+            // addKeyword();
         } else {
             QWidget::keyPressEvent(event);
         }
@@ -297,12 +304,16 @@ public:
         // if selected/pressed, add button text to output vector
         // return vector output;
     }
+    [[nodiscard]] QString getIMDbRating() const {}
+    [[nodiscard]] QString getRottenTomatoesRating() const {}
+
     // [[nodiscard]] int getIMDBRating() const { return .value(); }
     // [[nodiscard]] int getRottenTomatoesRating() const { return .value(); }
-    [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
-    [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
-    [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
+    // [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
+    // [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
+    // [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
 
+    /*
 public slots:
     void toggleAdvancedSearchSection() {
         // Toggle the visibility of the advanced section layout
@@ -396,10 +407,12 @@ public slots:
         }
     }
 
+     */
 private:
     QVBoxLayout mainLayout;
     QHBoxLayout searchButtonLayout;
     QPushButton searchButton;
+    QSpacerItem sectionGap{0, 10};
 
     // Basic Search
     QWidget basicSectionWidget;
@@ -452,9 +465,9 @@ private:
     QLabel imdbRatingFieldLabel;
     QLabel rottenTomatoesRatingFieldLabel;
 
-    // Advanced Search
+    // Advanced Search: To be updated
     // Advanced section expand button
-    QSpacerItem sectionGap{0, 40};
+    /*
     QToolButton advancedSectionToggleButton;
     QWidget advancedSectionContentsWidget;
     QVBoxLayout advancedSectionLayout;
@@ -481,6 +494,7 @@ private:
     QLabel actorsFieldLabel;
     QLabel directorsFieldLabel;
     QCheckBox advancedCheckbox;
+    */
 };
 
 class MainGraphicsView : public QGraphicsView {
@@ -534,7 +548,7 @@ public slots:
                          &MainGraphicsView::performSearch);
 
         // Change page dimensions
-        setFixedSize(640, 720);
+        setFixedSize(640, 740);
     }
 
     void performSearch() {
@@ -546,9 +560,9 @@ public slots:
         QString language = searchPage.getLanguage();
         // int imdbRatingRange = searchPage.getIMDBRatingRange();
         // int rottenTomatoesRatingRange = searchPage.getRottenTomatoesRatingRange();
-        QString keyword = searchPage.getKeyword();
-        QString actor = searchPage.getActor();
-        QString director = searchPage.getDirector();
+        // QString keyword = searchPage.getKeywords();
+        // QString actor = searchPage.getActors();
+        // QString director = searchPage.getDirectors();
 
         // Implement the search functionality, query the database, and display results
     }
