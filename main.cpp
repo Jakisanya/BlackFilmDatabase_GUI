@@ -382,18 +382,31 @@ public slots:
     }
 
     void removeKeyword() {
-        std::cout << enteredKeywordCount << "\n";
+        std::cout << "Incremented keyword count: " << enteredKeywordCount << "\n";
         enteredKeywordCount--;
-        std::cout << enteredKeywordCount << "\n";
-        enteredKeywordLabels[enteredKeywordCount]->clear();
-        enteredKeywordLabels[enteredKeywordCount]->setStyleSheet("");
-        removeKeywordButtons[enteredKeywordCount]->hide();
-        enteredKeywordsLayout.removeWidget(enteredKeywordLabels[enteredKeywordCount]);
-        std::cout << enteredKeywordCount << "\n";
-        if (enteredKeywordCount < 7) {
-            std::cout << "do i go here?" << "\n";
-            keywordsLineEdit.setEnabled(true);
-            keywordsLineEdit.setStyleSheet("");
+        std::cout << "Updated keyword count after 1 removal: " << enteredKeywordCount << "\n";
+        QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
+        if (clickedButton) {
+            // Find the index of the clicked button in the removeKeywordButtons array
+            int index = -1;
+            for (int i = 0; i <= enteredKeywordCount; ++i) {
+                if (clickedButton == removeKeywordButtons[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index != -1) {
+                enteredKeywordLabels[index]->clear();
+                enteredKeywordLabels[index]->setStyleSheet("");
+                removeKeywordButtons[index]->hide();
+                enteredKeywordsLayout.removeWidget(enteredKeywordLabels[index]);
+
+                if (enteredKeywordCount < 7) {
+                    std::cout << "do i go here?" << "\n";
+                    keywordsLineEdit.setEnabled(true);
+                    keywordsLineEdit.setStyleSheet("");
+                }
+            }
         }
     }
 
