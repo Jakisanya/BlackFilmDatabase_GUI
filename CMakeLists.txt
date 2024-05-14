@@ -21,10 +21,13 @@ find_package(Qt6 REQUIRED COMPONENTS
 
 add_executable(BlackFilmDatabase_GUI_2 main.cpp)
 
+add_subdirectory(libpqxx-master)
+
 target_link_libraries(BlackFilmDatabase_GUI_2
         Qt6::Core
         Qt6::Widgets
         Qt6::Multimedia
         Qt6::MultimediaWidgets
         Qt6::QuickControls2
+        pqxx
 )

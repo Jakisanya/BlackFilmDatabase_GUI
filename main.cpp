@@ -14,6 +14,42 @@
 #include <QPushButton>
 #include <QPaintEvent>
 #include <QCheckBox>
+#include <pqxx/pqxx>
+
+/*
+pqxx::result query()
+{
+    pqxx::connection c{"postgresql://accounting@localhost/company"};
+    pqxx::work txn{c};
+
+    // Silly example: Add up all salaries.  Normally you'd let the database do
+    // this for you.
+    long total = 0;
+    for (auto [salary] : txn.query("SELECT salary FROM Employee"))
+        total += salary;
+    std::cout << "Total salary: " << total << '\n';
+
+    // Execute and process some data.
+    pqxx::result r{txn.exec("SELECT name, salary FROM Employee")};
+    for (auto row: r)
+        std::cout
+                // Address column by name.  Use c_str() to get C-style string.
+                << row["name"].c_str()
+                << " makes "
+                // Address column by zero-based index.  Use as<int>() to parse as int.
+                << row[1].as<int>()
+                << "."
+                << std::endl;
+
+    // Not really needed, since we made no changes, but good habit to be
+    // explicit about when the transaction is done.
+    txn.commit();
+
+    // Connection object goes out of scope here.  It closes automatically.
+    // But the result object remains valid.
+    return r;
+}
+*/
 
 class SearchPage : public QWidget {
 public:
@@ -35,6 +71,11 @@ public:
         genrePushButtons.push_back(&FamilyPB);
         genrePushButtons.push_back(&WesternPB);
 
+        for (QPushButton* button: genrePushButtons) {
+            button->setCheckable(true);
+            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
+        }
+
         filmRatingPushButtons.push_back(&U_PB);
         filmRatingPushButtons.push_back(&PG_PB);
         filmRatingPushButtons.push_back(&PG_THIRTEEN_PB);
@@ -44,6 +85,11 @@ public:
         filmRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
         filmRatingPushButtons.push_back(&X_PB);
         filmRatingPushButtons.push_back(&UNRATED_PB);
+
+        for (QPushButton* button: filmRatingPushButtons) {
+            button->setCheckable(true);
+            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
+        }
 
         languagePushButtons.push_back(&EnglishPB);
         languagePushButtons.push_back(&FrenchPB);
@@ -55,6 +101,11 @@ public:
         languagePushButtons.push_back(&MandarinPB);
         languagePushButtons.push_back(&RussianPB);
         languagePushButtons.push_back(&ArabicPB);
+
+        for (QPushButton* button: languagePushButtons) {
+            button->setCheckable(true);
+            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
+        }
 
         // Create Push Button Text Vectors
         genrePushButtonTexts.push_back(ActionPBTextStr);
@@ -195,21 +246,23 @@ public:
         }
 
         // IMDb Rating
-        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0-100)");
+        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0.0 - 10.0)");
         imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&imdbRatingFieldLabel);
         basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
         imdbRatingLineEdit.setFixedSize(70, 40);
         imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        imdbRatingLineEdit.setMaxLength(4);
         imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
 
         // Rotten Tomatoes Rating
-        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0-100)");
+        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0 - 100)");
         rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
         basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
         rottenTomatoesRatingLineEdit.setFixedSize(70, 40);
         rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
+        rottenTomatoesRatingLineEdit.setMaxLength(3);
         rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
         mainLayout.addSpacerItem(&sectionGap);
@@ -408,6 +461,19 @@ public slots:
     }
 
      */
+
+public slots:
+    void selectButton() {
+        auto* clickedButton = qobject_cast<QPushButton*>(sender());
+        if (clickedButton->isChecked()) {
+            // Apply a different style when button is checked
+            clickedButton->setStyleSheet("background-color: blue");
+        } else {
+            // Apply the default style when button is unchecked
+            clickedButton->setStyleSheet(""); // Clearing stylesheet to revert to default
+        }
+};
+
 private:
     QVBoxLayout mainLayout;
     QHBoxLayout searchButtonLayout;
