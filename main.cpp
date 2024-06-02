@@ -16,30 +16,39 @@
 #include <QCheckBox>
 #include <pqxx/pqxx>
 
-pqxx::result query()
-{
-    const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
-    pqxx::connection connectionObject(connectionString.c_str());
-    pqxx::work txn{connectionObject};
 
-    // Build the query based on the search parameters
+class ResultsPage : public QWidget {
+    Q_OBJECT
+public:
+    ResultsPage() {
+        // display the results in widgets and layouts etc.
+        setFixedSize(640, 740);
+    }
 
-    // Execute and process some data.
-    pqxx::result resultObject{txn.exec("SELECT name, salary FROM Employee")};
-    for (auto row: resultObject)
-        std::cout
-                // Address column by name.  Use c_str() to get C-style string.
-                << row["name"].c_str()
-                << " makes "
-                // Address column by zero-based index.  Use as<int>() to parse as int.
-                << row[1].as<int>()
-                << "."
-                << std::endl;
+public slots:
+    void handleQueryResults(const pqxx::result& resultObject) {
+        // pass the results object and split the data into widgets
+        /*
+        for (auto row: resultObject)
+            std::cout
+                    // Address column by name.  Use c_str() to get C-style string.
+                    << row["name"].c_str()
+                    << " makes "
+                    // Address column by zero-based index.  Use as<int>() to parse as int.
+                    << row[1].as<int>()
+                    << "."
+                    << std::endl;
+        */
+    };
 
-    return resultObject;
-}
+private:
+    // initialise the layouts and widgets that I'll need for the results page
+
+
+};
 
 class SearchPage : public QWidget {
+    Q_OBJECT
 public:
     SearchPage() {
         setFixedSize(640, 740);
@@ -307,15 +316,18 @@ public:
         mainLayout.addSpacerItem(&sectionGap);
 
         // Search Button
-        searchButton.setText("SEARCH");
-        searchButton.setFixedSize(200, 50);
-        searchButtonLayout.addWidget(&searchButton);
-        searchButtonLayout.setAlignment(Qt::AlignHCenter);
-        mainLayout.addLayout(&searchButtonLayout);
+        searchDatabaseButton.setText("SEARCH");
+        searchDatabaseButton.setFixedSize(200, 50);
+        searchDatabaseButtonLayout.addWidget(&searchDatabaseButton);
+        searchDatabaseButtonLayout.setAlignment(Qt::AlignHCenter);
+        mainLayout.addLayout(&searchDatabaseButtonLayout);
 
         mainLayout.addSpacerItem(&sectionGap);
 
         setLayout(&mainLayout);
+
+        QObject::connect(&searchDatabaseButton, &QPushButton::clicked, this,
+                         &SearchPage::onSearchButtonClicked);
     }
 
     // KeyPressEvents function
@@ -327,32 +339,58 @@ public:
         }
     }
 
-    // Accessors for search fields
-    [[nodiscard]] QString getTitle() const { return titleLineEdit.text(); }
-    // [[nodiscard]] int getReleaseYearRange() const { return .value(); }
-    [[nodiscard]] QString getGenre() const {
-        // checks whether pushbuttons are pressed...
-        // if selected/pressed, add button text to output vector
-        // return vector output;
+    // Accessors to build search query
+    [[nodiscard]] std::string getTitle() const {
+        std::string inputtedTitle = titleLineEdit.text().toStdString();
+        std::transform(inputtedTitle.begin(), inputtedTitle.end(),
+                       inputtedTitle.begin(), ::toupper);
+        return inputtedTitle;
     }
-    [[nodiscard]] QString getRating() const {
-        // checks whether pushbuttons are pressed...
-        // if selected/pressed, add button text to output vector
-        // return vector output;
-    }
-    [[nodiscard]] QString getLanguage() const {
-        // checks whether pushbuttons are pressed...
-        // if selected/pressed, add button text to output vector
-        // return vector output;
-    }
-    [[nodiscard]] QString getIMDbRating() const {}
-    [[nodiscard]] QString getRottenTomatoesRating() const {}
 
-    // [[nodiscard]] int getIMDBRating() const { return .value(); }
-    // [[nodiscard]] int getRottenTomatoesRating() const { return .value(); }
-    // [[nodiscard]] QString getKeyword() const { return keywordsLineEdit.text(); }
-    // [[nodiscard]] QString getActor() const { return actorsLineEdit.text(); }
-    // [[nodiscard]] QString getDirector() const { return directorsLineEdit.text(); }
+    [[nodiscard]] std::string getReleaseYearFromValue() const { return releaseYearFromLineEdit.text().toStdString(); }
+    [[nodiscard]] std::string getReleaseYearToValue() const { return releaseYearFromLineEdit.text().toStdString(); }
+
+    [[nodiscard]] std::string getGenre() const {
+        std::string selectedGenres;
+        for (QPushButton* genrePB: genrePushButtons) {
+            if (genrePB->isChecked()) {
+                selectedGenres += genrePB->text().toStdString();
+                selectedGenres += ", ";
+            }
+        }
+        selectedGenres = selectedGenres.substr(0, selectedGenres.length() - 2);
+        std::transform(selectedGenres.begin(), selectedGenres.end(), selectedGenres.begin(), ::toupper);
+        return selectedGenres;
+    }
+
+    [[nodiscard]] std::string getLanguage() const {
+        std::string selectedLanguages;
+        for (QPushButton* languagePB: languagePushButtons) {
+            if (languagePB->isChecked()) {
+                selectedLanguages += languagePB->text().toStdString();
+                selectedLanguages += ", ";
+            }
+        }
+        selectedLanguages = selectedLanguages.substr(0, selectedLanguages.length() - 2);
+        std::transform(selectedLanguages.begin(), selectedLanguages.end(), selectedLanguages.begin(), ::toupper);
+        return selectedLanguages;
+    }
+
+    [[nodiscard]] std::string getRating() const {
+        std::string selectedRatings;
+        for (QPushButton* filmRatingPB: filmRatingPushButtons) {
+            if (filmRatingPB->isChecked()) {
+                selectedRatings += filmRatingPB->text().toStdString();
+                selectedRatings += ", ";
+            }
+        };
+        selectedRatings = selectedRatings.substr(0, selectedRatings.length() - 2);
+        std::transform(selectedRatings.begin(), selectedRatings.end(), selectedRatings.begin(), ::toupper);
+        return selectedRatings;
+    }
+
+    [[nodiscard]] std::string getIMDbRating() const { return imdbRatingLineEdit.text().toStdString(); }
+    [[nodiscard]] std::string getRottenTomatoesRating() const { return rottenTomatoesRatingLineEdit.text().toStdString(); }
 
     /*
 public slots:
@@ -449,6 +487,31 @@ public slots:
     }
 
      */
+    [[nodiscard]] std::string buildQueryString() const {
+        return std::format("SELECT * "
+                           "FROM complete_movie_data"
+                           "WHERE Title = '{}'"
+                           "AND Year BETWEEN '{}' AND '{}'"
+                           "AND Genre IN ({})"
+                           "AND Language IN ({}) ", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+                           getGenre(), getLanguage());
+    }
+
+    [[nodiscard]] pqxx::result queryDatabase() const {
+        const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
+        pqxx::connection connectionObject(connectionString.c_str());
+        pqxx::work txn{connectionObject};
+
+        // Build the query based on the search parameters
+        std::string queryString = buildQueryString();
+
+        // Execute and process some data.
+        pqxx::result resultObject{txn.exec(queryString)};
+        return resultObject;
+    }
+
+signals:
+    void searchDatabaseButtonClicked(const pqxx::result&) {};
 
 public slots:
     void selectButton() {
@@ -462,10 +525,15 @@ public slots:
         }
 };
 
+    void onSearchButtonClicked() {
+        pqxx::result queryResults = queryDatabase();
+        emit searchDatabaseButtonClicked(queryResults);
+    }
+
 private:
     QVBoxLayout mainLayout;
-    QHBoxLayout searchButtonLayout;
-    QPushButton searchButton;
+    QHBoxLayout searchDatabaseButtonLayout;
+    QPushButton searchDatabaseButton;
     QSpacerItem sectionGap{0, 10};
 
     // Basic Search
@@ -520,7 +588,6 @@ private:
     QLabel rottenTomatoesRatingFieldLabel;
 
     // Advanced Search: To be updated
-    // Advanced section expand button
     /*
     QToolButton advancedSectionToggleButton;
     QWidget advancedSectionContentsWidget;
@@ -573,18 +640,26 @@ public:
 
         // Create central button by wrapping it in a QGraphics proxy widget (allows me to manipulate its properties)
         proxyWidget = scene.addWidget(new QWidget);
-        searchButton.setText("SEARCH DATABASE");
-        searchButton.setFixedSize(200, 50);
-        proxyWidget->setWidget(&searchButton);
-        proxyWidget->setPos(static_cast<float>((this->width() - searchButton.width())) / 2.0,
-                            static_cast<float>((this->height() - searchButton.height())) / 2.0);
+        searchPageButton.setText("SEARCH DATABASE");
+        searchPageButton.setFixedSize(200, 50);
+        proxyWidget->setWidget(&searchPageButton);
+        proxyWidget->setPos(static_cast<float>((this->width() - searchPageButton.width())) / 2.0,
+                            static_cast<float>((this->height() - searchPageButton.height())) / 2.0);
 
         // Play video
         mediaPlayer.play();
 
         // Connect button to "Go to Search Page" action
-        QObject::connect(&searchButton, &QPushButton::clicked, this,
+        QObject::connect(&searchPageButton, &QPushButton::clicked, this,
                          &MainGraphicsView::showSearchPage);
+
+        // Switch to results page
+        QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this,
+                         &MainGraphicsView::showResultsPage);
+
+        // Let the results page handle the pqxx::results object
+        QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage,
+                         &ResultsPage::handleQueryResults);
     }
 
 public slots:
@@ -597,37 +672,24 @@ public slots:
         proxyWidget->setWidget(&searchPage);
         scene.addItem(proxyWidget);
 
-        // Connect search button to perform search function
-        QObject::connect(&searchButton, &QPushButton::clicked, this,
-                         &MainGraphicsView::performSearch);
-
         // Change page dimensions
         setFixedSize(640, 740);
     }
 
-    void performSearch() {
-        // Gather search parameters from the search page
-        QString title = searchPage.getTitle();
-        // int releaseYearRange = searchPage.getReleaseYearRange();
-        QString genre = searchPage.getGenre();
-        QString rating = searchPage.getRating();
-        QString language = searchPage.getLanguage();
-        // int imdbRatingRange = searchPage.getIMDBRatingRange();
-        // int rottenTomatoesRatingRange = searchPage.getRottenTomatoesRatingRange();
-        // QString keyword = searchPage.getKeywords();
-        // QString actor = searchPage.getActors();
-        // QString director = searchPage.getDirectors();
-
-        // Implement the search functionality, query the database, and display results
+    void showResultsPage() {
+        scene.removeItem(proxyWidget);
+        proxyWidget->setWidget(&resultsPage);
+        scene.addItem(proxyWidget);
     }
 
 private:
     QGraphicsScene scene;
     QGraphicsVideoItem videoItem;
     QMediaPlayer mediaPlayer;
-    QPushButton searchButton;
+    QPushButton searchPageButton;
     QGraphicsProxyWidget* proxyWidget;
     SearchPage searchPage;
+    ResultsPage resultsPage;
 };
 
 int main(int argc, char *argv[]) {
