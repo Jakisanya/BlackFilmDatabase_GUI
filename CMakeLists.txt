@@ -19,7 +19,18 @@ find_package(Qt6 REQUIRED COMPONENTS
         QuickControls2
 )
 
-add_executable(BlackFilmDatabase_GUI_2 main.cpp)
+# Add your source files
+set(SOURCES
+        main.cpp
+        SearchPage.cpp
+        ResultsPage.cpp
+        MainGraphicsView.cpp
+)
+
+# Tell CMake to generate the MOC files for your source files directly
+qt6_wrap_cpp(MOC_SOURCES ${SOURCES})
+
+add_executable(BlackFilmDatabase_GUI_2 ${SOURCES} SearchPage.h ResultsPage.h MainGraphicsView.h)
 
 add_subdirectory(libpqxx-master)
 
