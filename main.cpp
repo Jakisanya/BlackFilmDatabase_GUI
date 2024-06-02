@@ -16,22 +16,17 @@
 #include <QCheckBox>
 #include <pqxx/pqxx>
 
-/*
 pqxx::result query()
 {
-    pqxx::connection c{"postgresql://accounting@localhost/company"};
-    pqxx::work txn{c};
+    const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
+    pqxx::connection connectionObject(connectionString.c_str());
+    pqxx::work txn{connectionObject};
 
-    // Silly example: Add up all salaries.  Normally you'd let the database do
-    // this for you.
-    long total = 0;
-    for (auto [salary] : txn.query("SELECT salary FROM Employee"))
-        total += salary;
-    std::cout << "Total salary: " << total << '\n';
+    // Build the query based on the search parameters
 
     // Execute and process some data.
-    pqxx::result r{txn.exec("SELECT name, salary FROM Employee")};
-    for (auto row: r)
+    pqxx::result resultObject{txn.exec("SELECT name, salary FROM Employee")};
+    for (auto row: resultObject)
         std::cout
                 // Address column by name.  Use c_str() to get C-style string.
                 << row["name"].c_str()
@@ -41,15 +36,8 @@ pqxx::result query()
                 << "."
                 << std::endl;
 
-    // Not really needed, since we made no changes, but good habit to be
-    // explicit about when the transaction is done.
-    txn.commit();
-
-    // Connection object goes out of scope here.  It closes automatically.
-    // But the result object remains valid.
-    return r;
+    return resultObject;
 }
-*/
 
 class SearchPage : public QWidget {
 public:
