@@ -33,7 +33,7 @@ public:
     [[nodiscard]] std::string getReleaseYearToValue() const;
     [[nodiscard]] std::string getGenre() const;
     [[nodiscard]] std::string getLanguage() const;
-    [[nodiscard]] std::string getRating() const;
+    [[nodiscard]] std::string getAgeRating() const;
     [[nodiscard]] std::string getIMDbRating() const;
     [[nodiscard]] std::string getRottenTomatoesRating() const;
 
@@ -69,13 +69,13 @@ private:
     QVBoxLayout basicSectionLayout;
     QHBoxLayout titleLineEditLayout;
     QHBoxLayout releaseYearFieldLayout;
-    QGridLayout genreGridLayout, filmRatingGridLayout, languageGridLayout;
+    QGridLayout genreGridLayout, ageRatingGridLayout, languageGridLayout;
     QHBoxLayout imdbRatingLineEditLayout;
     QHBoxLayout rottenTomatoesRatingLineEditLayout;
     QWidget titleWidget;
     QWidget releaseYearWidget;
     QWidget genreWidget;
-    QWidget filmRatingWidget;
+    QWidget ageRatingWidget;
     QWidget languageWidget;
     QWidget imdbRatingWidget;
     QWidget rottenTomatoesRatingWidget;
@@ -84,10 +84,10 @@ private:
     QLineEdit imdbRatingLineEdit;
     QLineEdit rottenTomatoesRatingLineEdit;
     std::vector<QPushButton*> genrePushButtons;
-    std::vector<QPushButton*> filmRatingPushButtons;
+    std::vector<QPushButton*> ageRatingPushButtons;
     std::vector<QPushButton*> languagePushButtons;
     std::vector<QString> genrePushButtonTexts;
-    std::vector<QString> filmRatingPushButtonTexts;
+    std::vector<QString> ageRatingPushButtonTexts;
     std::vector<QString> languagePushButtonTexts;
     QPushButton ActionPB, ThrillerPB, DramaPB, SciFiPB, HorrorPB, ComedyPB, RomancePB, CrimePB, FantasyPB, AnimationPB,
             AdventurePB, FamilyPB, WesternPB;
@@ -110,7 +110,7 @@ private:
     QLabel titleFieldLabel;
     QLabel releaseYearFieldLabel, releaseYearFromLabel, releaseYearToLabel;
     QLabel genreFieldLabel;
-    QLabel filmRatingFieldLabel;
+    QLabel ageRatingFieldLabel;
     QLabel languageFieldLabel;
     QLabel imdbRatingFieldLabel;
     QLabel rottenTomatoesRatingFieldLabel;

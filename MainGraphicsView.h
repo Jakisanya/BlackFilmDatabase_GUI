@@ -24,6 +24,7 @@ public:
 public slots:
     void showSearchPage();
     void showResultsPage();
+    void goBackToSearchPageFromResultsPage();
 
 private:
     QGraphicsScene scene;

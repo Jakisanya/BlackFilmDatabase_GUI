@@ -45,6 +45,10 @@ MainGraphicsView::MainGraphicsView() {
     // Let the results page handle the pqxx::results object
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage,
                      &ResultsPage::handleQueryResults);
+
+    // Go back to search page from results page
+    QObject::connect(&resultsPage, &ResultsPage::backToSearchPageButtonClicked, this,
+                     &MainGraphicsView::goBackToSearchPageFromResultsPage);
 }
 
 void MainGraphicsView::showSearchPage() {
@@ -55,6 +59,16 @@ void MainGraphicsView::showSearchPage() {
     // Display the search page
     proxyWidget->setWidget(&searchPage);
     scene.addItem(proxyWidget);
+
+    // Change page dimensions
+    setFixedSize(640, 740);
+}
+
+void MainGraphicsView::goBackToSearchPageFromResultsPage(){
+    // Clear the scene
+
+    // Display the search page
+    proxyWidget->setWidget(&searchPage);
 
     // Change page dimensions
     setFixedSize(640, 740);

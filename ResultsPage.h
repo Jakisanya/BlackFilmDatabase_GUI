@@ -28,12 +28,19 @@ Q_OBJECT
 public:
     ResultsPage();
 
+signals:
+    void backToSearchPageButtonClicked();
+
 public slots:
     void handleQueryResults(const pqxx::result& resultObject);
+    void onBackToSearchPageButtonClicked();
 
 private:
     // initialise the layouts and widgets that I'll need for the results page
-
+    QVBoxLayout mainLayout;
+    QHBoxLayout backToSearchPageButtonLayout;
+    QPushButton backToSearchPageButton;
+    QSpacerItem sectionGap{0, 10};
 };
 
 

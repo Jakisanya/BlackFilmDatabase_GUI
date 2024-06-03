@@ -26,17 +26,17 @@ SearchPage::SearchPage() {
             connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
         }
 
-        filmRatingPushButtons.push_back(&U_PB);
-        filmRatingPushButtons.push_back(&PG_PB);
-        filmRatingPushButtons.push_back(&PG_THIRTEEN_PB);
-        filmRatingPushButtons.push_back(&THIRTEEN_PLUS_PB);
-        filmRatingPushButtons.push_back(&SIXTEEN_PLUS_PB);
-        filmRatingPushButtons.push_back(&R_PB);
-        filmRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
-        filmRatingPushButtons.push_back(&X_PB);
-        filmRatingPushButtons.push_back(&UNRATED_PB);
+        ageRatingPushButtons.push_back(&U_PB);
+        ageRatingPushButtons.push_back(&PG_PB);
+        ageRatingPushButtons.push_back(&PG_THIRTEEN_PB);
+        ageRatingPushButtons.push_back(&THIRTEEN_PLUS_PB);
+        ageRatingPushButtons.push_back(&SIXTEEN_PLUS_PB);
+        ageRatingPushButtons.push_back(&R_PB);
+        ageRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
+        ageRatingPushButtons.push_back(&X_PB);
+        ageRatingPushButtons.push_back(&UNRATED_PB);
 
-        for (QPushButton* button: filmRatingPushButtons) {
+        for (QPushButton* button: ageRatingPushButtons) {
             button->setCheckable(true);
             connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
         }
@@ -72,15 +72,15 @@ SearchPage::SearchPage() {
         genrePushButtonTexts.push_back(FamilyPBTextStr);
         genrePushButtonTexts.push_back(WesternPBTextStr);
 
-        filmRatingPushButtonTexts.push_back(U_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(PG_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(PG_THIRTEEN_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(THIRTEEN_PLUS_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(SIXTEEN_PLUS_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(R_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(EIGHTEEN_PLUS_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(X_PB_TextStr);
-        filmRatingPushButtonTexts.push_back(UNRATED_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(U_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(PG_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(PG_THIRTEEN_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(THIRTEEN_PLUS_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(SIXTEEN_PLUS_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(R_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(EIGHTEEN_PLUS_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(X_PB_TextStr);
+        ageRatingPushButtonTexts.push_back(UNRATED_PB_TextStr);
 
         languagePushButtonTexts.push_back(EnglishPBTextStr);
         languagePushButtonTexts.push_back(FrenchPBTextStr);
@@ -166,18 +166,18 @@ SearchPage::SearchPage() {
         }
 
         // Film Rating
-        filmRatingFieldLabel.setText("Film Rating");
-        filmRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&filmRatingFieldLabel);
-        basicSectionLayout.addLayout(&filmRatingGridLayout);
-        filmRatingGridLayout.setAlignment(Qt::AlignHCenter);
-        for (int i{0}; i < filmRatingPushButtons.size(); i++) {
-            filmRatingPushButtons[i]->setFixedSize(80, 30);
-            filmRatingPushButtons[i]->setText(filmRatingPushButtonTexts[i]);
+        ageRatingFieldLabel.setText("Age Rating");
+        ageRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+        basicSectionLayout.addWidget(&ageRatingFieldLabel);
+        basicSectionLayout.addLayout(&ageRatingGridLayout);
+        ageRatingGridLayout.setAlignment(Qt::AlignHCenter);
+        for (int i{0}; i < ageRatingPushButtons.size(); i++) {
+            ageRatingPushButtons[i]->setFixedSize(80, 30);
+            ageRatingPushButtons[i]->setText(ageRatingPushButtonTexts[i]);
             if (i <= 4)
-                filmRatingGridLayout.addWidget(filmRatingPushButtons[i], i / 5, i % 5);
+                ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
             if (i > 4)
-                filmRatingGridLayout.addWidget(filmRatingPushButtons[i], i / 5, i % 5);
+                ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
         }
 
         // Language
@@ -309,45 +309,66 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 }
 
 [[nodiscard]] std::string SearchPage::getGenre() const {
-    std::string selectedGenres;
+    std::vector<std::string> selectedGenres;
     for (QPushButton* genrePB: genrePushButtons) {
         if (genrePB->isChecked()) {
-            selectedGenres += "'" + genrePB->text().toStdString() + "'";
-            selectedGenres += ", ";
+            selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
         }
     }
-    selectedGenres = selectedGenres.substr(0, selectedGenres.length() - 2);
-    std::transform(selectedGenres.begin(), selectedGenres.end(), selectedGenres.begin(), ::toupper);
-    return selectedGenres;
+
+    std::string selectedGenresFormatted;
+    for (int i{0}; i < selectedGenres.size(); i++) {
+        std::transform(selectedGenres[i].begin(), selectedGenres[i].end(), selectedGenres[i].begin(), ::toupper);
+        if (i == 0) {
+            selectedGenresFormatted += selectedGenres[i];
+        }
+        if (i > 0) {
+            selectedGenresFormatted += " OR \"Genre\" LIKE " + selectedGenres[i];
+        }
+    }
+    return selectedGenresFormatted;
 }
 
 [[nodiscard]] std::string SearchPage::getLanguage() const {
-    std::string selectedLanguages;
-    for (int i{0}; i < languagePushButtons.size(); i++) {
-        QPushButton* languagePB = languagePushButtons[i];
+    std::vector<std::string> selectedLanguages;
+    for (QPushButton* languagePB: languagePushButtons) {
         if (languagePB->isChecked()) {
-            selectedLanguages += "'%" + languagePB->text().toStdString() + "%'";
-            selectedLanguages += ", ";
+            selectedLanguages.push_back("'%" + languagePB->text().toStdString() + "%'");
+        }
     }
-        if
-}
+
+    std::string selectedLanguagesFormatted;
+    for (int i{0}; i < selectedLanguages.size(); i++) {
+        std::transform(selectedLanguages[i].begin(), selectedLanguages[i].end(), selectedLanguages[i].begin(), ::toupper);
+        if (i == 0) {
+            selectedLanguagesFormatted += selectedLanguages[i];
+        }
+        if (i > 0) {
+            selectedLanguagesFormatted += " OR \"Language\" LIKE " + selectedLanguages[i];
+        }
     }
-    selectedLanguages = selectedLanguages.substr(0, selectedLanguages.length() - 2);
-    std::transform(selectedLanguages.begin(), selectedLanguages.end(), selectedLanguages.begin(), ::toupper);
-    return selectedLanguages;
+    return selectedLanguagesFormatted;
 }
 
-[[nodiscard]] std::string SearchPage::getRating() const {
-    std::string selectedRatings;
-    for (QPushButton* filmRatingPB: filmRatingPushButtons) {
-        if (filmRatingPB->isChecked()) {
-            selectedRatings += filmRatingPB->text().toStdString();
-            selectedRatings += ", ";
+[[nodiscard]] std::string SearchPage::getAgeRating() const {
+    std::vector<std::string> selectedAgeRatings;
+    for (QPushButton* ageRatingPB: ageRatingPushButtons) {
+        if (ageRatingPB->isChecked()) {
+            selectedAgeRatings.push_back("'%" + ageRatingPB->text().toStdString() + "%'");
         }
-    };
-    selectedRatings = selectedRatings.substr(0, selectedRatings.length() - 2);
-    std::transform(selectedRatings.begin(), selectedRatings.end(), selectedRatings.begin(), ::toupper);
-    return selectedRatings;
+    }
+
+    std::string selectedAgeRatingsFormatted;
+    for (int i{0}; i < selectedAgeRatings.size(); i++) {
+        std::transform(selectedAgeRatings[i].begin(), selectedAgeRatings[i].end(), selectedAgeRatings[i].begin(), ::toupper);
+        if (i == 0) {
+            selectedAgeRatingsFormatted += selectedAgeRatings[i];
+        }
+        if (i > 0) {
+            selectedAgeRatingsFormatted += " OR \"Rated\" LIKE " + selectedAgeRatings[i];
+        }
+    }
+    return selectedAgeRatingsFormatted;
 }
 
 [[nodiscard]] std::string SearchPage::getIMDbRating() const { return imdbRatingLineEdit.text().toStdString(); }
@@ -448,13 +469,14 @@ void SearchPage::removeKeyword() {
 
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
-    std::string builtQuery = std::format("SELECT * "
-                       "FROM general.complete_movie_data "
-                       "WHERE \"Title\" LIKE '{}' "
-                       "AND \"Year\" BETWEEN '{}' AND '{}' "
-                       "AND \"Genre\" = ANY({}) "
-                       "AND \"Language\" = ANY({});", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
-                       getGenre(), getLanguage());
+    std::string builtQuery = std::format("SELECT COUNT(*) "
+               "FROM general.complete_movie_data "
+               "WHERE \"Title\" LIKE '{}' "
+               "AND \"Year\" BETWEEN '{}' AND '{}' "
+               "AND \"Genre\" LIKE {} "
+               "AND \"Rated\" LIKE {} "
+               "AND \"Language\" LIKE {};", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+                       getGenre(), getAgeRating(), getLanguage());
     std::cout << builtQuery << "\n";
     return builtQuery;
 }
@@ -473,6 +495,7 @@ void SearchPage::removeKeyword() {
 }
 
 void SearchPage::onSearchDatabaseButtonClicked() {
+    std::cout << "Do I get here again?" << "\n";
     pqxx::result queryResults = queryDatabase();
     emit searchDatabaseButtonClicked(queryResults);
 };
