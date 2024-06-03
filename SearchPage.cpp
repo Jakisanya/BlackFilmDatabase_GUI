@@ -300,14 +300,19 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
     return inputtedTitle;
 }
 
-[[nodiscard]] std::string SearchPage::getReleaseYearFromValue() const { return releaseYearFromLineEdit.text().toStdString(); }
-[[nodiscard]] std::string SearchPage::getReleaseYearToValue() const { return releaseYearFromLineEdit.text().toStdString(); }
+[[nodiscard]] std::string SearchPage::getReleaseYearFromValue() const {
+    return releaseYearFromLineEdit.text().toStdString();
+}
+
+[[nodiscard]] std::string SearchPage::getReleaseYearToValue() const {
+    return releaseYearToLineEdit.text().toStdString();
+}
 
 [[nodiscard]] std::string SearchPage::getGenre() const {
     std::string selectedGenres;
     for (QPushButton* genrePB: genrePushButtons) {
         if (genrePB->isChecked()) {
-            selectedGenres += genrePB->text().toStdString();
+            selectedGenres += "'" + genrePB->text().toStdString() + "'";
             selectedGenres += ", ";
         }
     }
@@ -318,11 +323,14 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 
 [[nodiscard]] std::string SearchPage::getLanguage() const {
     std::string selectedLanguages;
-    for (QPushButton* languagePB: languagePushButtons) {
+    for (int i{0}; i < languagePushButtons.size(); i++) {
+        QPushButton* languagePB = languagePushButtons[i];
         if (languagePB->isChecked()) {
-            selectedLanguages += languagePB->text().toStdString();
+            selectedLanguages += "'%" + languagePB->text().toStdString() + "%'";
             selectedLanguages += ", ";
-        }
+    }
+        if
+}
     }
     selectedLanguages = selectedLanguages.substr(0, selectedLanguages.length() - 2);
     std::transform(selectedLanguages.begin(), selectedLanguages.end(), selectedLanguages.begin(), ::toupper);
@@ -440,13 +448,15 @@ void SearchPage::removeKeyword() {
 
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
-    return std::format("SELECT * "
-                       "FROM complete_movie_data"
-                       "WHERE Title = '{}'"
-                       "AND Year BETWEEN '{}' AND '{}'"
-                       "AND Genre IN ({})"
-                       "AND Language IN ({}) ", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+    std::string builtQuery = std::format("SELECT * "
+                       "FROM general.complete_movie_data "
+                       "WHERE \"Title\" LIKE '{}' "
+                       "AND \"Year\" BETWEEN '{}' AND '{}' "
+                       "AND \"Genre\" = ANY({}) "
+                       "AND \"Language\" = ANY({});", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
                        getGenre(), getLanguage());
+    std::cout << builtQuery << "\n";
+    return builtQuery;
 }
 
 [[nodiscard]] pqxx::result SearchPage::queryDatabase() const {
