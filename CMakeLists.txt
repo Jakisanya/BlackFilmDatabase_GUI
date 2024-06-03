@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project(BlackFilmDatabase_GUI_2)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_AUTOMOC OFF)
+set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC OFF)
 set(CMAKE_AUTOUIC OFF)
 
@@ -19,18 +19,23 @@ find_package(Qt6 REQUIRED COMPONENTS
         QuickControls2
 )
 
-# Add your source files
 set(SOURCES
         main.cpp
+        MainGraphicsView.cpp
         SearchPage.cpp
         ResultsPage.cpp
-        MainGraphicsView.cpp
 )
 
-# Tell CMake to generate the MOC files for your source files directly
-qt6_wrap_cpp(MOC_SOURCES ${SOURCES})
+set(HEADERS
+        MainGraphicsView.h
+        SearchPage.h
+        ResultsPage.h
+)
 
-add_executable(BlackFilmDatabase_GUI_2 ${SOURCES} SearchPage.h ResultsPage.h MainGraphicsView.h)
+# This line processes the Q_OBJECT macro in the header files
+qt6_wrap_cpp(MOC_SOURCES ${HEADERS})
+
+add_executable(BlackFilmDatabase_GUI_2 ${SOURCES} ${MOC_SOURCES})
 
 add_subdirectory(libpqxx-master)
 

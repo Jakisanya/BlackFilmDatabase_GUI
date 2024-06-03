@@ -16,7 +16,7 @@
 #include "ResultsPage.h"
 
 class MainGraphicsView : public QGraphicsView {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     MainGraphicsView();

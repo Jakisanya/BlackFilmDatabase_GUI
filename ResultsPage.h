@@ -24,6 +24,7 @@
 
 class ResultsPage : public QWidget {
 Q_OBJECT
+
 public:
     ResultsPage();
 

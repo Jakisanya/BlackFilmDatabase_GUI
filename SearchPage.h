@@ -23,6 +23,7 @@
 
 class SearchPage : public QWidget {
 Q_OBJECT
+
 public:
     SearchPage();
 
@@ -47,7 +48,15 @@ public slots:
     [[nodiscard]] pqxx::result queryDatabase() const;
 
 signals:
-    void searchDatabaseButtonClicked(const pqxx::result&);
+    void searchDatabaseButtonClicked(pqxx::result&);
+
+private slots:
+    void selectButton();
+    void onSearchDatabaseButtonClicked();
+    // Other slots...
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     QVBoxLayout mainLayout;
@@ -135,14 +144,6 @@ private:
     QLabel directorsFieldLabel;
     QCheckBox advancedCheckbox;
     */
-
-private slots:
-    void selectButton();
-    void onSearchButtonClicked();
-    // Other slots...
-
-protected:
-    void keyPressEvent(QKeyEvent* event) override;
 };
 
 

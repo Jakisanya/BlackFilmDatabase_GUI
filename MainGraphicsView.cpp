@@ -2,8 +2,8 @@
 // Created by jorda on 02/06/2024.
 //
 #include "MainGraphicsView.h"
-#include "SearchPage.cpp"
-#include "ResultsPage.cpp"
+#include "SearchPage.h"
+#include "ResultsPage.h"
 
 MainGraphicsView::MainGraphicsView() {
     setFixedSize(640, 360);

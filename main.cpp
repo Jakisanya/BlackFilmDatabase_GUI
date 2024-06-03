@@ -1,6 +1,6 @@
 // --- BlackFilmDatabase_GUI --- \\
 
-#include "MainGraphicsView.cpp"
+#include "MainGraphicsView.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

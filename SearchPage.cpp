@@ -264,7 +264,7 @@ SearchPage::SearchPage() {
         directorsLineEditLayout.addWidget(&directorsLineEdit);
         advancedSectionLayout.addLayout(&directorsLineEditLayout);
 
-         */
+        */
 
         mainLayout.addSpacerItem(&sectionGap);
 
@@ -280,7 +280,7 @@ SearchPage::SearchPage() {
         setLayout(&mainLayout);
 
         QObject::connect(&searchDatabaseButton, &QPushButton::clicked, this,
-                         &SearchPage::onSearchButtonClicked);
+                         &SearchPage::onSearchDatabaseButtonClicked);
     }
 
 // KeyPressEvents function
@@ -462,7 +462,10 @@ void SearchPage::removeKeyword() {
     return resultObject;
 }
 
-void SearchPage::searchDatabaseButtonClicked(const pqxx::result&) {};
+void SearchPage::onSearchDatabaseButtonClicked() {
+    pqxx::result queryResults = queryDatabase();
+    emit searchDatabaseButtonClicked(queryResults);
+};
 
 void SearchPage::selectButton() {
     auto* clickedButton = qobject_cast<QPushButton*>(sender());
@@ -474,8 +477,3 @@ void SearchPage::selectButton() {
         clickedButton->setStyleSheet(""); // Clearing stylesheet to revert to default
     }
 };
-
-void SearchPage::onSearchButtonClicked() {
-    pqxx::result queryResults = queryDatabase();
-    emit searchDatabaseButtonClicked(queryResults);
-}
