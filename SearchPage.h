@@ -47,10 +47,12 @@ public slots:
     [[nodiscard]] std::string buildQueryString() const;
     [[nodiscard]] pqxx::result queryDatabase() const;
 
+    void setupConnections();
+
 signals:
     void searchDatabaseButtonClicked(pqxx::result&);
 
-private slots:
+public slots:
     void selectButton();
     void onSearchDatabaseButtonClicked();
     // Other slots...

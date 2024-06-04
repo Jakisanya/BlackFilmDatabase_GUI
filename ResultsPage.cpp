@@ -3,6 +3,7 @@
 //
 
 #include "ResultsPage.h"
+#include "MainGraphicsView.h"
 
 ResultsPage::ResultsPage() {
         // display the results in widgets and layouts etc.

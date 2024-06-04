@@ -279,9 +279,14 @@ SearchPage::SearchPage() {
 
         setLayout(&mainLayout);
 
-        QObject::connect(&searchDatabaseButton, &QPushButton::clicked, this,
-                         &SearchPage::onSearchDatabaseButtonClicked);
+        setupConnections();
     }
+
+void SearchPage::setupConnections() {
+    // Connect the signal to the slot
+    disconnect(&searchDatabaseButton, &QPushButton::clicked, this, &SearchPage::onSearchDatabaseButtonClicked);
+    connect(&searchDatabaseButton, &QPushButton::clicked, this, &SearchPage::onSearchDatabaseButtonClicked);
+}
 
 // KeyPressEvents function
 void SearchPage::keyPressEvent(QKeyEvent* event) {
@@ -469,6 +474,7 @@ void SearchPage::removeKeyword() {
 
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
+    std::cout << "Do I reach the buildQueryString function again?" << "\n";
     std::string builtQuery = std::format("SELECT COUNT(*) "
                "FROM general.complete_movie_data "
                "WHERE \"Title\" LIKE '{}' "
@@ -482,6 +488,7 @@ void SearchPage::removeKeyword() {
 }
 
 [[nodiscard]] pqxx::result SearchPage::queryDatabase() const {
+    std::cout << "Do I reach the queryDatabase function again?" << "\n";
     const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
     pqxx::connection connectionObject(connectionString.c_str());
     pqxx::work txn{connectionObject};

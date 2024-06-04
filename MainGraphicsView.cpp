@@ -60,15 +60,20 @@ void MainGraphicsView::showSearchPage() {
     proxyWidget->setWidget(&searchPage);
     scene.addItem(proxyWidget);
 
+    searchPage.setupConnections();
+
     // Change page dimensions
     setFixedSize(640, 740);
 }
 
 void MainGraphicsView::goBackToSearchPageFromResultsPage(){
-    // Clear the scene
-
+    std::cout << "Do I reach the goBackToSearchPageFromResultsPage slot?" << "\n";
     // Display the search page
+    scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&searchPage);
+    scene.addItem(proxyWidget);
+
+    searchPage.setupConnections();
 
     // Change page dimensions
     setFixedSize(640, 740);

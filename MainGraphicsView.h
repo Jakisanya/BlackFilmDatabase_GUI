@@ -20,6 +20,7 @@ class MainGraphicsView : public QGraphicsView {
 
 public:
     MainGraphicsView();
+    void setupConnections();
 
 public slots:
     void showSearchPage();
