@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QCheckBox>
 #include <pqxx/pqxx>
+#include "MovieTableModel.h"
 
 class ResultsPage : public QWidget {
 Q_OBJECT
@@ -37,8 +38,9 @@ private:
     QHBoxLayout backToSearchPageButtonLayout;
     QPushButton backToSearchPageButton;
     QSpacerItem sectionGap{0, 10};
-    QTableView* tableView;
-    MovieTableModel* model;
+    QTableView tableView;
+    MovieTableModel model;
+    QVBoxLayout tableViewLayout;
 };
 
 

@@ -42,6 +42,7 @@ public slots:
 
     [[nodiscard]] std::string buildQueryString() const;
     [[nodiscard]] pqxx::result queryDatabase() const;
+    pqxx::result& getResultsObject() const;
 
 signals:
     void searchDatabaseButtonClicked(pqxx::result&);

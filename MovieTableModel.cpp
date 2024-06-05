@@ -1,17 +1,15 @@
-//
-// Created by jorda on 05/06/2024.
-//
-
 #include "MovieTableModel.h"
 
-MovieTableModel::MovieTableModel();
+MovieTableModel::MovieTableModel() {std::cout << "MovieTableModel instance created." << "\n";};
 
 void MovieTableModel::setQueryResults(const pqxx::result& resultObject) {
+    std::cout << "I get into the setQueryResults function." << "\n";
     beginResetModel();
     allRowData.clear();
     headers.clear();
 
     if (resultObject.empty()) {
+        std::cout << "the resultObject is empty..." << "\n";
         endResetModel();
         return;
     }
@@ -33,11 +31,11 @@ void MovieTableModel::setQueryResults(const pqxx::result& resultObject) {
     endResetModel();
 }
 
-int MovieTableModel::rowCount() const {
+int MovieTableModel::rowCount(const QModelIndex& parent) const {
     return static_cast<int>(allRowData.size());
 }
 
-int MovieTableModel::columnCount() const {
+int MovieTableModel::columnCount(const QModelIndex& parent) const {
     return static_cast<int>(headers.size());
 }
 

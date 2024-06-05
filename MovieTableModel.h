@@ -5,6 +5,7 @@
 #include <pqxx/pqxx>
 #include <vector>
 #include <QString>
+#include <iostream>
 
 class MovieTableModel : public QAbstractTableModel {
 Q_OBJECT
@@ -14,11 +15,12 @@ public:
 
     void setQueryResults(const pqxx::result& resultObject);
 
-    int rowCount() const;
-    int columnCount() const;
+    [[nodiscard]] virtual int rowCount(const QModelIndex& parent) const;
+    [[nodiscard]] virtual int columnCount(const QModelIndex& parent) const;
 
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    // role = Qt::DisplayRole for both
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 private:
     std::vector<QString> headers;

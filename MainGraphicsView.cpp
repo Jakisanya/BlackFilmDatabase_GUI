@@ -34,7 +34,7 @@ MainGraphicsView::MainGraphicsView() {
     // Connect button to "Go to Search Page" action
     QObject::connect(&searchPageButton, &QPushButton::clicked, this,
                      &MainGraphicsView::showSearchPage);
-
+    /*
     // Switch to results page
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this,
                      &MainGraphicsView::showResultsPage);
@@ -42,6 +42,11 @@ MainGraphicsView::MainGraphicsView() {
     // Let the results page handle the pqxx::results object
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage,
                      &ResultsPage::handleQueryResults);
+    */
+    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
+        showResultsPage();
+        resultsPage.handleQueryResults(searchPage.queryDatabase());
+    });
 
     // Go back to search page from results page
     QObject::connect(&resultsPage, &ResultsPage::backToSearchPageButtonClicked, this,
@@ -88,4 +93,6 @@ void MainGraphicsView::showResultsPage() {
     // Reconnect the handleQueryResults slot to the searchDatabaseButtonClicked signal to prepare to use it again.
     QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage, &ResultsPage::handleQueryResults);
+
+    std::cout << "The showResultsPage function works fine.." << "\n";
 }

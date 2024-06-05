@@ -468,7 +468,7 @@ void SearchPage::removeKeyword() {
 
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
-    std::cout << "I reach the SearchPage::buildQueryString function again." << "\n";
+    std::cout << "I reach the SearchPage::buildQueryString() function." << "\n";
     std::string builtQuery = std::format("SELECT COUNT(*) "
                "FROM general.complete_movie_data "
                "WHERE \"Title\" LIKE '{}' "
@@ -482,7 +482,7 @@ void SearchPage::removeKeyword() {
 }
 
 [[nodiscard]] pqxx::result SearchPage::queryDatabase() const {
-    std::cout << "I reach the SearchPage::queryDatabase() function again." << "\n";
+    std::cout << "I reach the SearchPage::queryDatabase() function." << "\n";
     const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
     pqxx::connection connectionObject(connectionString.c_str());
     pqxx::work txn{connectionObject};
@@ -496,7 +496,7 @@ void SearchPage::removeKeyword() {
 }
 
 void SearchPage::onSearchDatabaseButtonClicked() {
-    std::cout << "I get to the SearchPage::onSearchDatabaseButtonClicked() again." << "\n";
+    std::cout << "I get to the SearchPage::onSearchDatabaseButtonClicked() signal." << "\n";
     pqxx::result queryResults = queryDatabase();
     emit searchDatabaseButtonClicked(queryResults);
 };
