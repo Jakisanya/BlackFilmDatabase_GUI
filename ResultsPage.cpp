@@ -1,9 +1,4 @@
-//
-// Created by jorda on 02/06/2024.
-//
-
 #include "ResultsPage.h"
-#include "MainGraphicsView.h"
 
 ResultsPage::ResultsPage() {
         // display the results in widgets and layouts etc.

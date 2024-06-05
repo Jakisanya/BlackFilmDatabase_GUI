@@ -1,6 +1,3 @@
-//
-// Created by jorda on 02/06/2024.
-//
 #include "MainGraphicsView.h"
 #include "SearchPage.h"
 #include "ResultsPage.h"

@@ -1,7 +1,3 @@
-//
-// Created by jorda on 02/06/2024.
-//
-
 #ifndef BLACKFILMDATABASE_GUI_2_SEARCHPAGE_H
 #define BLACKFILMDATABASE_GUI_2_SEARCHPAGE_H
 
