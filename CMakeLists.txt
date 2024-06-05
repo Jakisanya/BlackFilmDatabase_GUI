@@ -24,6 +24,8 @@ set(SOURCES
         MainGraphicsView.cpp
         SearchPage.cpp
         ResultsPage.cpp
+        MovieTableModel.cpp
+        MovieTableModel.h
 )
 
 set(HEADERS

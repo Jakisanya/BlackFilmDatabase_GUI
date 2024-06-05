@@ -1,8 +1,8 @@
 #include "ResultsPage.h"
 
 ResultsPage::ResultsPage() {
-        // display the results in widgets and layouts etc.
-        setFixedSize(640, 740);
+    // display the results in widgets and layouts etc.
+    setFixedSize(640, 740);
 
     mainLayout.addSpacerItem(&sectionGap);
 
@@ -14,6 +14,16 @@ ResultsPage::ResultsPage() {
     mainLayout.addLayout(&backToSearchPageButtonLayout);
 
     mainLayout.addSpacerItem(&sectionGap);
+
+    tableView = new QTableView(this);
+    model = new MovieTableModel(this);
+
+    tableView->setModel(model);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(tableView);
 
     setLayout(&mainLayout);
 
@@ -27,7 +37,5 @@ void ResultsPage::onBackToSearchPageButtonClicked() {
 
 void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
     // pass the results object and split the data into widgets
-    std::cout << "count: " << resultObject.size() << "\n";
-    for (auto row: resultObject)
-        std::cout << row[2].c_str() << "\n";
+    model->setQueryResults(resultObject);
 }

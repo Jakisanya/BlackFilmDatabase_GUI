@@ -37,6 +37,8 @@ private:
     QHBoxLayout backToSearchPageButtonLayout;
     QPushButton backToSearchPageButton;
     QSpacerItem sectionGap{0, 10};
+    QTableView* tableView;
+    MovieTableModel* model;
 };
 
 

@@ -290,6 +290,9 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 
 // Accessors to build search query
 [[nodiscard]] std::string SearchPage::getTitle() const {
+    if (titleLineEdit.text().isEmpty()) {
+        titleLineEdit.text() = "%";
+    }
     std::string inputtedTitle = titleLineEdit.text().toStdString();
     std::transform(inputtedTitle.begin(), inputtedTitle.end(),
                    inputtedTitle.begin(), ::toupper);
