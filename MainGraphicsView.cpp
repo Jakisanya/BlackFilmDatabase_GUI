@@ -60,20 +60,24 @@ void MainGraphicsView::showSearchPage() {
     proxyWidget->setWidget(&searchPage);
     scene.addItem(proxyWidget);
 
-    searchPage.setupConnections();
-
     // Change page dimensions
     setFixedSize(640, 740);
 }
 
 void MainGraphicsView::goBackToSearchPageFromResultsPage(){
-    std::cout << "Do I reach the goBackToSearchPageFromResultsPage slot?" << "\n";
+    std::cout << "I reach the goBackToSearchPageFromResultsPage slot." << "\n";
     // Display the search page
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&searchPage);
     scene.addItem(proxyWidget);
 
-    searchPage.setupConnections();
+    // Reconnect the onSearchDatabaseButtonClicked slot to searchDatabaseButton::clicked signal to prepare to use it again.
+    QObject::disconnect(&searchPageButton, &QPushButton::clicked, nullptr, nullptr);
+    QObject::connect(&searchPageButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
+
+    // Reconnect the showResultsPage slot to searchDatabaseButtonClicked signal to prepare to use it again.
+    QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
+    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, &MainGraphicsView::showResultsPage);
 
     // Change page dimensions
     setFixedSize(640, 740);
@@ -83,4 +87,8 @@ void MainGraphicsView::showResultsPage() {
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&resultsPage);
     scene.addItem(proxyWidget);
+
+    // Reconnect the handleQueryResults slot to the searchDatabaseButtonClicked signal to prepare to use it again.
+    QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
+    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage, &ResultsPage::handleQueryResults);
 }

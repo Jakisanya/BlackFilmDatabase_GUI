@@ -27,7 +27,7 @@ ResultsPage::ResultsPage() {
     }
 
 void ResultsPage::onBackToSearchPageButtonClicked() {
-    emit backToSearchPageButtonClicked();
+    emit ResultsPage::backToSearchPageButtonClicked();
 }
 
 void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
