@@ -77,9 +77,12 @@ void MainGraphicsView::goBackToSearchPageFromResultsPage(){
     QObject::disconnect(&searchPageButton, &QPushButton::clicked, nullptr, nullptr);
     QObject::connect(&searchPageButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
 
-    // Reconnect the showResultsPage slot to searchDatabaseButtonClicked signal to prepare to use it again.
+    // Reconnect the showResultsPage and handleQueryResults slots to searchDatabaseButtonClicked signal to prepare to use them again.
     QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
-    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, &MainGraphicsView::showResultsPage);
+    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
+        showResultsPage();
+        resultsPage.handleQueryResults(searchPage.queryDatabase());
+    });
 
     // Change page dimensions
     setFixedSize(640, 740);

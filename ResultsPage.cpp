@@ -21,6 +21,7 @@ ResultsPage::ResultsPage() {
 
     tableViewLayout.addWidget(&tableView);
 
+    mainLayout.addLayout(&tableViewLayout);
     setLayout(&mainLayout);
 
     QObject::connect(&backToSearchPageButton, &QPushButton::clicked, this,

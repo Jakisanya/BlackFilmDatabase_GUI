@@ -469,14 +469,18 @@ void SearchPage::removeKeyword() {
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
     std::cout << "I reach the SearchPage::buildQueryString() function." << "\n";
-    std::string builtQuery = std::format("SELECT COUNT(*) "
+    std::string builtQuery = std::format(
+               "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
+               "\"Language\", \"imdbRating\", \"rtRating\" "
                "FROM general.complete_movie_data "
                "WHERE \"Title\" LIKE '{}' "
                "AND \"Year\" BETWEEN '{}' AND '{}' "
                "AND \"Genre\" LIKE {} "
                "AND \"Rated\" LIKE {} "
-               "AND \"Language\" LIKE {};", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
-                       getGenre(), getAgeRating(), getLanguage());
+               "AND \"Language\" LIKE {} "
+               "AND \"imdbRating\"::DECIMAL >= {} "
+               "AND \"rtRating\"::DECIMAL >= {};", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+                       getGenre(), getAgeRating(), getLanguage(), getIMDbRating(), getRottenTomatoesRating());
     std::cout << builtQuery << "\n";
     return builtQuery;
 }

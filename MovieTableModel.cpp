@@ -16,6 +16,7 @@ void MovieTableModel::setQueryResults(const pqxx::result& resultObject) {
 
     headers.reserve(resultObject.columns());
     for (auto col = 0; col < resultObject.columns(); ++col) {
+        std::cout << "col: " << col << " ; name: " << resultObject.column_name(col) << "\n";
         headers.push_back(QString::fromStdString(resultObject.column_name(col)));
     }
 
