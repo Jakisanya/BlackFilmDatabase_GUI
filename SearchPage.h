@@ -25,13 +25,13 @@ public:
 
     // Accessors to build search query
     [[nodiscard]] std::string getTitle() const;
-    [[nodiscard]] std::string getReleaseYearFromValue() const;
-    [[nodiscard]] std::string getReleaseYearToValue() const;
+    [[nodiscard]] int getReleaseYearFromValue() const;
+    [[nodiscard]] int getReleaseYearToValue() const;
     [[nodiscard]] std::string getGenre() const;
     [[nodiscard]] std::string getLanguage() const;
     [[nodiscard]] std::string getAgeRating() const;
-    [[nodiscard]] std::string getIMDbRating() const;
-    [[nodiscard]] std::string getRottenTomatoesRating() const;
+    [[nodiscard]] float getIMDbRating() const;
+    [[nodiscard]] int getRottenTomatoesRating() const;
 
     /*
 public slots:

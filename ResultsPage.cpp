@@ -36,4 +36,11 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
     // pass the results object and split the data into widgets
     std::cout << "In handleQueryResults function." << "\n";
     model.setQueryResults(resultObject);
+
+    /*
+    // Resize each column to fit the content after setting the query results
+    for (int col = 0; col < model.columnCount(QModelIndex()); ++col) {
+        tableView.resizeColumnToContents(col);
+    }
+    */
 }

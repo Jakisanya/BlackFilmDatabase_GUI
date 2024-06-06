@@ -292,19 +292,23 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 [[nodiscard]] std::string SearchPage::getTitle() const {
     if (titleLineEdit.text().isEmpty()) {
         titleLineEdit.text() = "%";
+        std::string inputtedTitle = "'" + titleLineEdit.text().toStdString() + "'";
+        return inputtedTitle;
     }
-    std::string inputtedTitle = titleLineEdit.text().toStdString();
-    std::transform(inputtedTitle.begin(), inputtedTitle.end(),
-                   inputtedTitle.begin(), ::toupper);
-    return inputtedTitle;
+    else {
+        std::string inputtedTitle = "'%" + titleLineEdit.text().toStdString() + "%'";
+        std::transform(inputtedTitle.begin(), inputtedTitle.end(),
+                       inputtedTitle.begin(), ::toupper);
+        return inputtedTitle;
+    }
 }
 
-[[nodiscard]] std::string SearchPage::getReleaseYearFromValue() const {
-    return releaseYearFromLineEdit.text().toStdString();
+[[nodiscard]] int SearchPage::getReleaseYearFromValue() const {
+    return releaseYearFromLineEdit.text().toInt();
 }
 
-[[nodiscard]] std::string SearchPage::getReleaseYearToValue() const {
-    return releaseYearToLineEdit.text().toStdString();
+[[nodiscard]] int SearchPage::getReleaseYearToValue() const {
+    return releaseYearToLineEdit.text().toInt();
 }
 
 [[nodiscard]] std::string SearchPage::getGenre() const {
@@ -370,8 +374,8 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
     return selectedAgeRatingsFormatted;
 }
 
-[[nodiscard]] std::string SearchPage::getIMDbRating() const { return imdbRatingLineEdit.text().toStdString(); }
-[[nodiscard]] std::string SearchPage::getRottenTomatoesRating() const { return rottenTomatoesRatingLineEdit.text().toStdString(); }
+[[nodiscard]] float SearchPage::getIMDbRating() const { return imdbRatingLineEdit.text().toFloat(); }
+[[nodiscard]] int SearchPage::getRottenTomatoesRating() const { return rottenTomatoesRatingLineEdit.text().toInt(); }
 
 /*
 void SearchPage::toggleAdvancedSearchSection() {
@@ -473,13 +477,12 @@ void SearchPage::removeKeyword() {
                "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
                "\"Language\", \"imdbRating\", \"rtRating\" "
                "FROM general.complete_movie_data "
-               "WHERE \"Title\" LIKE '{}' "
-               "AND \"Year\" BETWEEN '{}' AND '{}' "
+               "WHERE \"Year\"::INTEGER BETWEEN {} AND {} "
                "AND \"Genre\" LIKE {} "
                "AND \"Rated\" LIKE {} "
                "AND \"Language\" LIKE {} "
                "AND \"imdbRating\"::DECIMAL >= {} "
-               "AND \"rtRating\"::DECIMAL >= {};", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+               "AND \"rtRating\"::INTEGER >= {};", getReleaseYearFromValue(), getReleaseYearToValue(),
                        getGenre(), getAgeRating(), getLanguage(), getIMDbRating(), getRottenTomatoesRating());
     std::cout << builtQuery << "\n";
     return builtQuery;
