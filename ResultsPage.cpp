@@ -15,7 +15,9 @@ ResultsPage::ResultsPage() {
 
     mainLayout.addSpacerItem(&sectionGap);
 
-    tableView.setModel(&model);
+    proxyModel.setSourceModel(&model);
+    tableView.setModel(&proxyModel);
+    tableView.setSortingEnabled(true);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView.setWordWrap(true);

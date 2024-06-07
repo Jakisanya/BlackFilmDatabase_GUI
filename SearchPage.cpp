@@ -328,7 +328,9 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 [[nodiscard]] std::string SearchPage::getGenre() const {
     std::vector<std::string> selectedGenres;
     for (QPushButton* genrePB: genrePushButtons) {
-        selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
+        if (genrePB->isChecked()) {
+            selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
+        }
     }
 
     std::string selectedGenresFormatted;
@@ -489,7 +491,7 @@ void SearchPage::removeKeyword() {
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
     std::string builtQuery = std::format(
                "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
-               "\"Language\", \"imdbRating\", \"rtRating\" "
+               "\"Language\", \"imdbRating\"::DECIMAL, \"rtRating\"::INTEGER "
                "FROM general.complete_movie_data "
                "WHERE \"Title\" LIKE {} "
                "AND (\"Year\"::INTEGER BETWEEN {} AND {}) "
@@ -497,7 +499,8 @@ void SearchPage::removeKeyword() {
                "AND (\"Rated\" LIKE {}) "
                "AND (\"Language\" LIKE {}) "
                "AND (\"imdbRating\"::DECIMAL >= {}) "
-               "AND (\"rtRating\"::INTEGER >= {});", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+               "AND (\"rtRating\"::INTEGER >= {}) "
+               "ORDER BY \"rtRating\" DESC;", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
                        getGenre(), getAgeRating(), getLanguage(), getIMDbRating(), getRottenTomatoesRating());
     std::cout << builtQuery << "\n";
     return builtQuery;

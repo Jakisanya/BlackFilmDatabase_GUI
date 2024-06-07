@@ -40,6 +40,7 @@ private:
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
     MovieTableModel model;
+    QSortFilterProxyModel proxyModel;
     QVBoxLayout tableViewLayout;
 };
 
