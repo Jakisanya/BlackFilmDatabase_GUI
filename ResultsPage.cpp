@@ -2,7 +2,7 @@
 
 ResultsPage::ResultsPage() {
     // display the results in widgets and layouts etc.
-    setFixedSize(640, 760);
+    setFixedSize(1280, 760);
 
     mainLayout.addSpacerItem(&sectionGap);
 
@@ -18,7 +18,7 @@ ResultsPage::ResultsPage() {
     tableView.setModel(&model);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
-
+    tableView.setWordWrap(true);
     tableViewLayout.addWidget(&tableView);
 
     mainLayout.addLayout(&tableViewLayout);
@@ -38,12 +38,11 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 
     // Resize each column to fit the content after setting the query results
     for (int col = 0; col < model.columnCount(QModelIndex()); ++col) {
-        if (col == 1) {
-            tableView.setColumnWidth(col, 50);
-        }
-        else if ((col == 3) || (col == 5) || (col == 6)) {
+        if ((col == 1) || (col == 3) || (col == 5) || (col == 6)) {
             tableView.setColumnWidth(col, 80);
         }
-        else tableView.resizeColumnToContents(col);
+        else tableView.setColumnWidth(col, 300);
     }
+
+    tableView.resizeRowsToContents();
 }

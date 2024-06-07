@@ -126,20 +126,26 @@ SearchPage::SearchPage() {
         releaseYearFieldLabel.setText("Release Year");
         releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&releaseYearFieldLabel);
+
         releaseYearFromLabel.setText("From");
         releaseYearFromLabel.setFixedSize(70, 50);
         releaseYearFromLabel.setAlignment(Qt::AlignCenter);
         releaseYearFieldLayout.addWidget(&releaseYearFromLabel);
         releaseYearFromLineEdit.setFixedSize(125, 40);
+        releaseYearFromLineEditIntValidator.setRange(1800, 2100);
+        releaseYearFromLineEdit.setValidator(&releaseYearFromLineEditIntValidator);
         releaseYearFromLineEdit.setMaxLength(4);
         releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
         releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
+
         releaseYearToLabel.setText("To");
         releaseYearToLabel.setFixedSize(70, 50);
         releaseYearToLabel.setAlignment(Qt::AlignCenter);
         releaseYearFieldLayout.addWidget(&releaseYearToLabel);
         releaseYearToLineEdit.setFixedSize(125, 40);
         releaseYearToLineEdit.setMaxLength(4);
+        releaseYearToLineEditIntValidator.setRange(1800, 2100);
+        releaseYearToLineEdit.setValidator(&releaseYearToLineEditIntValidator);
         releaseYearToLineEdit.setAlignment(Qt::AlignHCenter);
         releaseYearFieldLayout.addWidget(&releaseYearToLineEdit);
         releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
@@ -202,6 +208,7 @@ SearchPage::SearchPage() {
         imdbRatingLineEdit.setMaxLength(4);
         imdbRatingDoubleValidator.setRange(0.0, 10.0, 1);
         imdbRatingLineEdit.setValidator(&imdbRatingDoubleValidator);
+        imdbRatingDoubleValidator.setNotation(QDoubleValidator::StandardNotation);
         imdbRatingLineEdit.setPlaceholderText("Enter a value between 0.0 and 10.0");
         imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
 

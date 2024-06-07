@@ -81,6 +81,8 @@ private:
     QLineEdit imdbRatingLineEdit;
     QLineEdit rottenTomatoesRatingLineEdit;
     QDoubleValidator imdbRatingDoubleValidator;
+    QDoubleValidator releaseYearFromLineEditIntValidator;
+    QDoubleValidator releaseYearToLineEditIntValidator;
     QIntValidator rottenTomatoesRatingIntValidator;
     std::vector<QPushButton*> genrePushButtons;
     std::vector<QPushButton*> ageRatingPushButtons;

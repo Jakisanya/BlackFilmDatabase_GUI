@@ -83,4 +83,7 @@ void MainGraphicsView::showResultsPage() {
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&resultsPage);
     scene.addItem(proxyWidget);
+
+    // Change page dimensions
+    setFixedSize(1280, 740);
 }
