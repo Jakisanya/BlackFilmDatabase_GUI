@@ -1,9 +1,8 @@
 #include "MovieTableModel.h"
 
-MovieTableModel::MovieTableModel() {std::cout << "MovieTableModel instance created." << "\n";};
+MovieTableModel::MovieTableModel() {};
 
 void MovieTableModel::setQueryResults(const pqxx::result& resultObject) {
-    std::cout << "I get into the setQueryResults function." << "\n";
     beginResetModel();
     allRowData.clear();
     headers.clear();
@@ -16,7 +15,6 @@ void MovieTableModel::setQueryResults(const pqxx::result& resultObject) {
 
     headers.reserve(resultObject.columns());
     for (auto col = 0; col < resultObject.columns(); ++col) {
-        std::cout << "col: " << col << " ; name: " << resultObject.column_name(col) << "\n";
         headers.push_back(QString::fromStdString(resultObject.column_name(col)));
     }
 

@@ -193,23 +193,29 @@ SearchPage::SearchPage() {
         }
 
         // IMDb Rating
-        imdbRatingFieldLabel.setText("IMDb Minimum Rating (0.0 - 10.0)");
+        imdbRatingFieldLabel.setText("IMDb Minimum Rating");
         imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&imdbRatingFieldLabel);
         basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
-        imdbRatingLineEdit.setFixedSize(70, 40);
+        imdbRatingLineEdit.setFixedSize(250, 40);
         imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
         imdbRatingLineEdit.setMaxLength(4);
+        imdbRatingDoubleValidator.setRange(0.0, 10.0, 1);
+        imdbRatingLineEdit.setValidator(&imdbRatingDoubleValidator);
+        imdbRatingLineEdit.setPlaceholderText("Enter a value between 0.0 and 10.0");
         imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
 
         // Rotten Tomatoes Rating
-        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating (0 - 100)");
+        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating");
         rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
         basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
-        rottenTomatoesRatingLineEdit.setFixedSize(70, 40);
+        rottenTomatoesRatingLineEdit.setFixedSize(250, 40);
         rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
         rottenTomatoesRatingLineEdit.setMaxLength(3);
+        rottenTomatoesRatingIntValidator.setRange(0, 100);
+        rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
+        rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
         rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
         mainLayout.addSpacerItem(&sectionGap);
@@ -290,9 +296,10 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 
 // Accessors to build search query
 [[nodiscard]] std::string SearchPage::getTitle() const {
+    QString titleText = titleLineEdit.text();
     if (titleLineEdit.text().isEmpty()) {
-        titleLineEdit.text() = "%";
-        std::string inputtedTitle = "'" + titleLineEdit.text().toStdString() + "'";
+        titleText = "%";
+        std::string inputtedTitle = "'" + titleText.toStdString() + "'";
         return inputtedTitle;
     }
     else {
@@ -314,9 +321,7 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 [[nodiscard]] std::string SearchPage::getGenre() const {
     std::vector<std::string> selectedGenres;
     for (QPushButton* genrePB: genrePushButtons) {
-        if (genrePB->isChecked()) {
-            selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
-        }
+        selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
     }
 
     std::string selectedGenresFormatted;
@@ -357,7 +362,10 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
     std::vector<std::string> selectedAgeRatings;
     for (QPushButton* ageRatingPB: ageRatingPushButtons) {
         if (ageRatingPB->isChecked()) {
-            selectedAgeRatings.push_back("'%" + ageRatingPB->text().toStdString() + "%'");
+            if (ageRatingPB->text() == "U") {
+                selectedAgeRatings.push_back("'" + ageRatingPB->text().toStdString() + "'");
+            }
+            else selectedAgeRatings.push_back("'%" + ageRatingPB->text().toStdString() + "%'");
         }
     }
 
@@ -472,24 +480,23 @@ void SearchPage::removeKeyword() {
 
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
-    std::cout << "I reach the SearchPage::buildQueryString() function." << "\n";
     std::string builtQuery = std::format(
                "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
                "\"Language\", \"imdbRating\", \"rtRating\" "
                "FROM general.complete_movie_data "
-               "WHERE \"Year\"::INTEGER BETWEEN {} AND {} "
-               "AND \"Genre\" LIKE {} "
-               "AND \"Rated\" LIKE {} "
-               "AND \"Language\" LIKE {} "
-               "AND \"imdbRating\"::DECIMAL >= {} "
-               "AND \"rtRating\"::INTEGER >= {};", getReleaseYearFromValue(), getReleaseYearToValue(),
+               "WHERE \"Title\" LIKE {} "
+               "AND (\"Year\"::INTEGER BETWEEN {} AND {}) "
+               "AND (\"Genre\" LIKE {}) "
+               "AND (\"Rated\" LIKE {}) "
+               "AND (\"Language\" LIKE {}) "
+               "AND (\"imdbRating\"::DECIMAL >= {}) "
+               "AND (\"rtRating\"::INTEGER >= {});", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
                        getGenre(), getAgeRating(), getLanguage(), getIMDbRating(), getRottenTomatoesRating());
     std::cout << builtQuery << "\n";
     return builtQuery;
 }
 
 [[nodiscard]] pqxx::result SearchPage::queryDatabase() const {
-    std::cout << "I reach the SearchPage::queryDatabase() function." << "\n";
     const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
     pqxx::connection connectionObject(connectionString.c_str());
     pqxx::work txn{connectionObject};
@@ -503,9 +510,7 @@ void SearchPage::removeKeyword() {
 }
 
 void SearchPage::onSearchDatabaseButtonClicked() {
-    std::cout << "I get to the SearchPage::onSearchDatabaseButtonClicked() signal." << "\n";
-    pqxx::result queryResults = queryDatabase();
-    emit searchDatabaseButtonClicked(queryResults);
+    emit searchDatabaseButtonClicked();
 };
 
 void SearchPage::selectButton() {

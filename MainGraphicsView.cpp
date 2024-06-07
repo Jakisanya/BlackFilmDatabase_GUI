@@ -34,15 +34,7 @@ MainGraphicsView::MainGraphicsView() {
     // Connect button to "Go to Search Page" action
     QObject::connect(&searchPageButton, &QPushButton::clicked, this,
                      &MainGraphicsView::showSearchPage);
-    /*
-    // Switch to results page
-    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this,
-                     &MainGraphicsView::showResultsPage);
 
-    // Let the results page handle the pqxx::results object
-    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage,
-                     &ResultsPage::handleQueryResults);
-    */
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
         showResultsPage();
         resultsPage.handleQueryResults(searchPage.queryDatabase());
@@ -67,7 +59,6 @@ void MainGraphicsView::showSearchPage() {
 }
 
 void MainGraphicsView::goBackToSearchPageFromResultsPage(){
-    std::cout << "I reach the goBackToSearchPageFromResultsPage slot." << "\n";
     // Display the search page
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&searchPage);
@@ -92,10 +83,4 @@ void MainGraphicsView::showResultsPage() {
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&resultsPage);
     scene.addItem(proxyWidget);
-
-    // Reconnect the handleQueryResults slot to the searchDatabaseButtonClicked signal to prepare to use it again.
-    QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
-    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, &resultsPage, &ResultsPage::handleQueryResults);
-
-    std::cout << "The showResultsPage function works fine.." << "\n";
 }

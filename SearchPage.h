@@ -8,6 +8,7 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QDoubleValidator>
 #include <QLabel>
 #include <QSpacerItem>
 #include <QKeyEvent>
@@ -42,10 +43,9 @@ public slots:
 
     [[nodiscard]] std::string buildQueryString() const;
     [[nodiscard]] pqxx::result queryDatabase() const;
-    pqxx::result& getResultsObject() const;
 
 signals:
-    void searchDatabaseButtonClicked(pqxx::result&);
+    void searchDatabaseButtonClicked();
 
 public slots:
     void selectButton();
@@ -80,6 +80,8 @@ private:
     QLineEdit releaseYearFromLineEdit, releaseYearToLineEdit;
     QLineEdit imdbRatingLineEdit;
     QLineEdit rottenTomatoesRatingLineEdit;
+    QDoubleValidator imdbRatingDoubleValidator;
+    QIntValidator rottenTomatoesRatingIntValidator;
     std::vector<QPushButton*> genrePushButtons;
     std::vector<QPushButton*> ageRatingPushButtons;
     std::vector<QPushButton*> languagePushButtons;
