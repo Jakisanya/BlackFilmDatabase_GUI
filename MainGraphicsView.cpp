@@ -79,6 +79,27 @@ void MainGraphicsView::goBackToSearchPageFromResultsPage(){
     setFixedSize(640, 740);
 }
 
+void MainGraphicsView::goBackToResultsPageFromFilmHighlightPage() {
+    // Display the search page
+    scene.removeItem(proxyWidget);
+    proxyWidget->setWidget(&resultsPage);
+    scene.addItem(proxyWidget);
+
+    // Reconnect the onTitleSelected slot to searchDatabaseForSingleTitle signal to prepare to use it again.
+    QObject::disconnect(&searchPageButton, &QPushButton::clicked, nullptr, nullptr);
+    QObject::connect(&searchPageButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
+
+    // Reconnect the showResultsPage and handleQueryResults slots to searchDatabaseButtonClicked signal to prepare to use them again.
+    QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
+    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
+        showResultsPage();
+        resultsPage.handleQueryResults(searchPage.queryDatabase());
+    });
+
+    // Change page dimensions
+    setFixedSize(640, 760);
+}
+
 void MainGraphicsView::showResultsPage() {
     scene.removeItem(proxyWidget);
     proxyWidget->setWidget(&resultsPage);

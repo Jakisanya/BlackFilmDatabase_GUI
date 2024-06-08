@@ -10,6 +10,7 @@
 
 #include "SearchPage.h"
 #include "ResultsPage.h"
+#include "FilmHighlightPage.h"
 
 class MainGraphicsView : public QGraphicsView {
     Q_OBJECT
@@ -21,6 +22,7 @@ public slots:
     void showSearchPage();
     void showResultsPage();
     void goBackToSearchPageFromResultsPage();
+    void goBackToResultsPageFromFilmHighlightPage();
 
 private:
     QGraphicsScene scene;
@@ -30,6 +32,7 @@ private:
     QGraphicsProxyWidget* proxyWidget;
     SearchPage searchPage;
     ResultsPage resultsPage;
+    FilmHighlightPage filmHighlightPage;
 };
 
 

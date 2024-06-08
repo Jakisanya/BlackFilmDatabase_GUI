@@ -47,4 +47,39 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
     }
 
     tableView.resizeRowsToContents();
+
+    // Connect the selection changed signal to the slot
+    connect(tableView.selectionModel(), &QItemSelectionModel::selectionChanged, this, &ResultsPage::onTitleSelected);
 }
+
+[[nodiscard]] std::string ResultsPage::getTitle() const {
+    // get title from QTableView row when its film title field is selected
+
+};
+
+[[nodiscard]] std::string ResultsPage::buildQueryString() const {
+    std::string builtQuery = std::format(
+            "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
+            "\"Language\", \"imdbRating\"::DECIMAL, \"rtRating\"::INTEGER "
+            "FROM general.complete_movie_data "
+            "WHERE \"Title\" = {};", getTitle());
+    std::cout << builtQuery << "\n";
+    return builtQuery;
+}
+
+[[nodiscard]] pqxx::result ResultsPage::queryDatabase() const {
+    const std::string connectionString = "host=localhost port=5432 dbname=BFilmDB user=postgres";
+    pqxx::connection connectionObject(connectionString.c_str());
+    pqxx::work txn{connectionObject};
+
+    // Build the query based on the search parameters
+    std::string queryString = buildQueryString();
+
+    // Execute and process some data.
+    pqxx::result resultObject{txn.exec(queryString)};
+    return resultObject;
+}
+
+void ResultsPage::onTitleSelected() { // select title in QTableView; so not a button
+
+};

@@ -25,13 +25,20 @@ Q_OBJECT
 
 public:
     ResultsPage();
+    std::string getTitle() const;
+    [[nodiscard]] std::string buildQueryString() const;
+    [[nodiscard]] pqxx::result queryDatabase() const;
 
 signals:
     void backToSearchPageButtonClicked();
+    void searchDatabaseButtonClicked();
 
 public slots:
     void handleQueryResults(const pqxx::result& resultObject);
     void onBackToSearchPageButtonClicked();
+    void onTitleSelected();
+
+    void selectFilmTitle();
 
 private:
     // initialise the layouts and widgets that I'll need for the results page

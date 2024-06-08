@@ -50,7 +50,6 @@ signals:
 public slots:
     void selectButton();
     void onSearchDatabaseButtonClicked();
-    // Other slots...
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
