@@ -26,6 +26,8 @@ set(SOURCES
         ResultsPage.cpp
         MovieTableModel.cpp
         MovieTableModel.h
+        CustomSortFilterProxyModel.cpp
+        CustomSortFilterProxyModel.h
 )
 
 set(HEADERS

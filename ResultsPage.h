@@ -18,6 +18,7 @@
 #include <QCheckBox>
 #include <pqxx/pqxx>
 #include "MovieTableModel.h"
+#include "CustomSortFilterProxyModel.h"
 
 class ResultsPage : public QWidget {
 Q_OBJECT
@@ -40,7 +41,7 @@ private:
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
     MovieTableModel model;
-    QSortFilterProxyModel proxyModel;
+    CustomSortFilterProxyModel proxyModel;
     QVBoxLayout tableViewLayout;
 };
 

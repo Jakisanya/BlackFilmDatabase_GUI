@@ -220,8 +220,8 @@ SearchPage::SearchPage() {
         rottenTomatoesRatingLineEdit.setFixedSize(250, 40);
         rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
         rottenTomatoesRatingLineEdit.setMaxLength(3);
-        rottenTomatoesRatingIntValidator.setRange(0, 100);
-        rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
+        // rottenTomatoesRatingIntValidator.setRange(0, 100);
+        // rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
         rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
         rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
@@ -499,8 +499,7 @@ void SearchPage::removeKeyword() {
                "AND (\"Rated\" LIKE {}) "
                "AND (\"Language\" LIKE {}) "
                "AND (\"imdbRating\"::DECIMAL >= {}) "
-               "AND (\"rtRating\"::INTEGER >= {}) "
-               "ORDER BY \"rtRating\" DESC;", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
+               "AND (\"rtRating\"::INTEGER >= {});", getTitle(), getReleaseYearFromValue(), getReleaseYearToValue(),
                        getGenre(), getAgeRating(), getLanguage(), getIMDbRating(), getRottenTomatoesRating());
     std::cout << builtQuery << "\n";
     return builtQuery;
