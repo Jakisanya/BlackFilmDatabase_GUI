@@ -21,6 +21,7 @@ public:
 public slots:
     void showSearchPage();
     void showResultsPage();
+    void showFilmHighlightPage();
     void goBackToSearchPageFromResultsPage();
     void goBackToResultsPageFromFilmHighlightPage();
 

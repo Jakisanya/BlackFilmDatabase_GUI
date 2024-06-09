@@ -31,7 +31,7 @@ public:
 
 signals:
     void backToSearchPageButtonClicked();
-    void titleQueried(pqxx::result resultObject);
+    void titleQueried(pqxx::result& resultObject);
 
 public slots:
     void handleQueryResults(const pqxx::result& resultObject);

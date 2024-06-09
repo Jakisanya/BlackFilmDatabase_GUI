@@ -57,9 +57,9 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 };
 
 [[nodiscard]] std::string ResultsPage::buildQueryString(std::string& selectedTitle) const {
+    selectedTitle = "'" + selectedTitle + "'";
     std::string builtQuery = std::format(
-            "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
-            "\"Language\", \"imdbRating\"::DECIMAL, \"rtRating\"::INTEGER "
+            "SELECT * "
             "FROM general.complete_movie_data "
             "WHERE \"Title\" = {};", selectedTitle);
     std::cout << builtQuery << "\n";

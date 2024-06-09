@@ -24,6 +24,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
+#include <QAbstractTableModel>
 #include "MovieTableModel.h"
 #include "TransposedMovieTableModel.h"
 
@@ -33,14 +34,12 @@ Q_OBJECT
 public:
     FilmHighlightPage();
     void loadImageFromUrl(const QString& url, QLabel* label);
-    QString getPosterUrl() const;
 
 signals:
     void backToResultsPageButtonClicked();
-    void titleSelected();
 
 public slots:
-    void handleQueryResults(const pqxx::result& resultObject);
+    void handleQueryResults(pqxx::result& resultObject);
     void onBackToResultsPageButtonClicked();
 
 private:
@@ -55,6 +54,7 @@ private:
     TransposedMovieTableModel model{originalModel};
     QNetworkAccessManager manager;
     QLabel imageLabel;
+    QString posterUrl;
 };
 
 

@@ -16,7 +16,7 @@ FilmHighlightPage::FilmHighlightPage() {
 
     // Create a label for the image
     imageLabel.setAlignment(Qt::AlignCenter);
-    loadImageFromUrl(getPosterUrl(), &imageLabel);
+    loadImageFromUrl(posterUrl, &imageLabel);
 
     // Add the image label to the left layout
     leftFilmHighlightContentsVBoxLayout.addWidget(&imageLabel);
@@ -26,7 +26,6 @@ FilmHighlightPage::FilmHighlightPage() {
 
     // Add tableView to the right layout
     tableView.setModel(&model);
-    tableView.setSortingEnabled(true);
     // No further selection at the moment
     // tableView.setSelectionMode();
     // tableView.setSelectionBehavior();
@@ -40,10 +39,11 @@ FilmHighlightPage::FilmHighlightPage() {
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
 }
 
+/*
 QString FilmHighlightPage::getPosterUrl() const {
     // Get poster URL from query results
-
 }
+*/
 
 void FilmHighlightPage::loadImageFromUrl(const QString& url, QLabel* label) {
     manager.setParent(label);
@@ -64,9 +64,10 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
     emit FilmHighlightPage::backToResultsPageButtonClicked();
 }
 
-void FilmHighlightPage::handleQueryResults(const pqxx::result& resultObject) {
+void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     // pass the results object to the model
     originalModel.setQueryResults(resultObject);
+    posterUrl = model.data(model.index(0, 15), Qt::DisplayRole).toString();
     model.transposeModel();
 
     // Resize each column to fit the content after setting the query results

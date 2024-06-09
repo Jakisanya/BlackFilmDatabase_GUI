@@ -96,9 +96,9 @@ void MainGraphicsView::goBackToResultsPageFromFilmHighlightPage() {
 
     // Reconnect the showFilmHighlightPage and handleQueryResults slots to tableView::clicked signal to prepare to use them again.
     QObject::disconnect(&resultsPage, &ResultsPage::titleQueried, nullptr, nullptr);
-    QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this]() {
+    QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this](pqxx::result& resultObject) {
         showFilmHighlightPage();
-        filmHighlightPage.handleQueryResults(searchPage.queryDatabase());
+        filmHighlightPage.handleQueryResults(resultObject);
     });
 
     // Change page dimensions
@@ -115,5 +115,10 @@ void MainGraphicsView::showResultsPage() {
 }
 
 void MainGraphicsView::showFilmHighlightPage() {
-    scene
+    scene.removeItem(proxyWidget);
+    proxyWidget->setWidget(&filmHighlightPage);
+    scene.addItem(proxyWidget);
+
+    // Change page dimensions
+    setFixedSize(640, 760);
 }

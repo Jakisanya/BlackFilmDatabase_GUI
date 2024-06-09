@@ -10,7 +10,7 @@
 class MovieTableModel : public QAbstractTableModel {
 Q_OBJECT
 
-    MovieTableModel(const MovieTableModel model);
+    MovieTableModel(const MovieTableModel&);
 
 
 public:
