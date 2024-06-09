@@ -65,16 +65,13 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
 }
 
 void FilmHighlightPage::handleQueryResults(const pqxx::result& resultObject) {
-    // pass the results object and split the data into widgets
-    model.setQueryResults(resultObject);
+    // pass the results object to the model
+    originalModel.setQueryResults(resultObject);
+    model.transposeModel();
 
     // Resize each column to fit the content after setting the query results
-    for (int col = 0; col < model.columnCount(QModelIndex()); ++col) {
-        if ((col == 1) || (col == 3) || (col == 5) || (col == 6)) {
-            tableView.setColumnWidth(col, 80);
-        }
-        else tableView.setColumnWidth(col, 300);
-    }
+    tableView.setColumnWidth(0, 80);
+    tableView.setColumnWidth(1, 210);
 
     tableView.resizeRowsToContents();
 }

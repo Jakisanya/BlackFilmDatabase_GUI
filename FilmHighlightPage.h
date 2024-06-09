@@ -21,13 +21,14 @@
 #include <QObject>
 #include <QCheckBox>
 #include <pqxx/pqxx>
-#include "MovieTableModel.h"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
+#include "MovieTableModel.h"
+#include "TransposedMovieTableModel.h"
 
-class FilmHighlightPage : QWidget {
-    Q_OBJECT
+class FilmHighlightPage : public QWidget {
+Q_OBJECT
 
 public:
     FilmHighlightPage();
@@ -50,7 +51,8 @@ private:
     QVBoxLayout leftFilmHighlightContentsVBoxLayout, rightFilmHighlightContentsVBoxLayout;
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
-    MovieTableModel model;
+    MovieTableModel originalModel;
+    TransposedMovieTableModel model{originalModel};
     QNetworkAccessManager manager;
     QLabel imageLabel;
 };

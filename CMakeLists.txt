@@ -30,6 +30,8 @@ set(SOURCES
         CustomSortFilterProxyModel.h
         FilmHighlightPage.cpp
         FilmHighlightPage.h
+        TransposedMovieTableModel.cpp
+        TransposedMovieTableModel.h
 )
 
 set(HEADERS

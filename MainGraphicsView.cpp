@@ -43,6 +43,10 @@ MainGraphicsView::MainGraphicsView() {
     // Go back to search page from results page
     QObject::connect(&resultsPage, &ResultsPage::backToSearchPageButtonClicked, this,
                      &MainGraphicsView::goBackToSearchPageFromResultsPage);
+
+    // Go back to results page from film highlight page
+    QObject::connect(&filmHighlightPage, &FilmHighlightPage::backToResultsPageButtonClicked, this,
+                     &MainGraphicsView::goBackToResultsPageFromFilmHighlightPage);
 }
 
 void MainGraphicsView::showSearchPage() {
@@ -85,15 +89,16 @@ void MainGraphicsView::goBackToResultsPageFromFilmHighlightPage() {
     proxyWidget->setWidget(&resultsPage);
     scene.addItem(proxyWidget);
 
-    // Reconnect the onTitleSelected slot to searchDatabaseForSingleTitle signal to prepare to use it again.
-    QObject::disconnect(&searchPageButton, &QPushButton::clicked, nullptr, nullptr);
-    QObject::connect(&searchPageButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
+    // Reconnect the onTitleSelected slot to tableView::clicked signal to prepare to use it again.
+    QObject::disconnect(resultsPage.getTableView(), &QTableView::clicked,nullptr, nullptr);
+    QObject::connect(resultsPage.getTableView(), &QTableView::clicked,&resultsPage,
+                     &ResultsPage::onTitleSelected);
 
-    // Reconnect the showResultsPage and handleQueryResults slots to searchDatabaseButtonClicked signal to prepare to use them again.
-    QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
-    QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
-        showResultsPage();
-        resultsPage.handleQueryResults(searchPage.queryDatabase());
+    // Reconnect the showFilmHighlightPage and handleQueryResults slots to tableView::clicked signal to prepare to use them again.
+    QObject::disconnect(&resultsPage, &ResultsPage::titleQueried, nullptr, nullptr);
+    QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this]() {
+        showFilmHighlightPage();
+        filmHighlightPage.handleQueryResults(searchPage.queryDatabase());
     });
 
     // Change page dimensions
@@ -107,4 +112,8 @@ void MainGraphicsView::showResultsPage() {
 
     // Change page dimensions
     setFixedSize(1280, 740);
+}
+
+void MainGraphicsView::showFilmHighlightPage() {
+    scene
 }
