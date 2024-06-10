@@ -51,7 +51,7 @@ private:
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
     MovieTableModel originalModel;
-    TransposedMovieTableModel model{originalModel};
+    TransposedMovieTableModel transposedModel{originalModel};
     QNetworkAccessManager manager;
     QLabel imageLabel;
     QString posterUrl;

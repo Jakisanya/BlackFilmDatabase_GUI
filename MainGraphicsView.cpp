@@ -108,7 +108,7 @@ void MainGraphicsView::goBackToResultsPageFromFilmHighlightPage() {
     });
 
     // Change page dimensions
-    setFixedSize(640, 760);
+    setFixedSize(1280, 740);
 }
 
 void MainGraphicsView::showResultsPage() {
