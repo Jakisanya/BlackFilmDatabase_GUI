@@ -40,6 +40,12 @@ MainGraphicsView::MainGraphicsView() {
         resultsPage.handleQueryResults(searchPage.queryDatabase());
     });
 
+    // Connect the showFilmHighlightPage and handleQueryResults slots to tableView::clicked signal
+    QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this](pqxx::result& resultObject) {
+        showFilmHighlightPage();
+        filmHighlightPage.handleQueryResults(resultObject);
+    });
+
     // Go back to search page from results page
     QObject::connect(&resultsPage, &ResultsPage::backToSearchPageButtonClicked, this,
                      &MainGraphicsView::goBackToSearchPageFromResultsPage);
@@ -120,5 +126,5 @@ void MainGraphicsView::showFilmHighlightPage() {
     scene.addItem(proxyWidget);
 
     // Change page dimensions
-    setFixedSize(640, 760);
+    setFixedSize(760, 640);
 }

@@ -1,7 +1,7 @@
 #include "FilmHighlightPage.h"
 
 FilmHighlightPage::FilmHighlightPage() {
-    setFixedSize(640, 760);
+    setFixedSize(760, 640);
 
     mainLayout.addSpacerItem(&sectionGap);
 
@@ -17,6 +17,7 @@ FilmHighlightPage::FilmHighlightPage() {
     // Create a label for the image
     imageLabel.setAlignment(Qt::AlignCenter);
     loadImageFromUrl(posterUrl, &imageLabel);
+    std::cout << imageLabel.text().toStdString() << "\n";
 
     // Add the image label to the left layout
     leftFilmHighlightContentsVBoxLayout.addWidget(&imageLabel);
@@ -67,12 +68,13 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
 void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     // pass the results object to the model
     originalModel.setQueryResults(resultObject);
-    posterUrl = model.data(model.index(0, 15), Qt::DisplayRole).toString();
-    model.transposeModel();
+    posterUrl = originalModel.data(originalModel.index(0, 15), Qt::DisplayRole).toString();
+    model.setQueryResults(resultObject);
+    // model.transposeModel();
 
     // Resize each column to fit the content after setting the query results
-    tableView.setColumnWidth(0, 80);
-    tableView.setColumnWidth(1, 210);
+    // tableView.setColumnWidth(0, 80);
+    // tableView.setColumnWidth(1, 210);
 
     tableView.resizeRowsToContents();
 }

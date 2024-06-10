@@ -18,8 +18,8 @@ ResultsPage::ResultsPage() {
     proxyModel.setSourceModel(&model);
     tableView.setModel(&proxyModel);
     tableView.setSortingEnabled(true);
+    tableView.setSelectionBehavior(QAbstractItemView::SelectItems);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
-    tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView.setWordWrap(true);
     tableViewLayout.addWidget(&tableView);
 
@@ -48,7 +48,7 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 
     tableView.resizeRowsToContents();
 
-    // Connect the selection changed signal to the slot
+    // Connect the clicked signal to the slot
     QObject::connect(&tableView, &QTableView::clicked, this, &ResultsPage::onTitleSelected);
 }
 
@@ -78,7 +78,9 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 
 void ResultsPage::onTitleSelected(const QModelIndex& index) { // select title in QTableView; so not a button
     // search database for title
+    std::cout << "title index: row -> " << index.row() << " col -> " << index.column() << "\n";
     std::string itemText = model.data(index, Qt::DisplayRole).toString().toStdString();
+    qDebug() << "itemText (std::string): " << itemText << "\n";
     std::string builtQuery;
     builtQuery = buildQueryString(itemText);
     pqxx::result result;
