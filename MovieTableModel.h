@@ -12,7 +12,6 @@ Q_OBJECT
 
     MovieTableModel(const MovieTableModel&);
 
-
 public:
     MovieTableModel();
 

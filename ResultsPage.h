@@ -19,6 +19,7 @@
 #include <pqxx/pqxx>
 #include "MovieTableModel.h"
 #include "CustomSortFilterProxyModel.h"
+#include "CustomItemSelectionModel.h"
 
 class ResultsPage : public QWidget {
 Q_OBJECT
@@ -47,6 +48,7 @@ private:
     QTableView tableView;
     MovieTableModel model;
     CustomSortFilterProxyModel proxyModel;
+    CustomItemSelectionModel customItemSelectionModel{&proxyModel};
     QVBoxLayout tableViewLayout;
 };
 

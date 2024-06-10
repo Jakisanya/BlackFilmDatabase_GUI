@@ -32,6 +32,8 @@ set(SOURCES
         FilmHighlightPage.h
         TransposedMovieTableModel.cpp
         TransposedMovieTableModel.h
+        CustomItemSelectionModel.cpp
+        CustomItemSelectionModel.h
 )
 
 set(HEADERS

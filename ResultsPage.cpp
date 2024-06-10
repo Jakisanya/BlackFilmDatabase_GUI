@@ -18,6 +18,7 @@ ResultsPage::ResultsPage() {
     proxyModel.setSourceModel(&model);
     tableView.setModel(&proxyModel);
     tableView.setSortingEnabled(true);
+    tableView.setSelectionModel(&customItemSelectionModel);
     tableView.setSelectionBehavior(QAbstractItemView::SelectItems);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
     tableView.setWordWrap(true);
@@ -78,6 +79,9 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 
 void ResultsPage::onTitleSelected(const QModelIndex& index) { // select title in QTableView; so not a button
     // search database for title
+    if (index.column() != 1) {
+        return
+    }
     std::cout << "title index: row -> " << index.row() << " col -> " << index.column() << "\n";
     std::string itemText = model.data(index, Qt::DisplayRole).toString().toStdString();
     qDebug() << "itemText (std::string): " << itemText << "\n";
