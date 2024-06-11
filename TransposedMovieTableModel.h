@@ -13,15 +13,16 @@ class TransposedMovieTableModel : public MovieTableModel {
 Q_OBJECT
 
 public:
-    explicit TransposedMovieTableModel(MovieTableModel&);
-    void transposeModel();
+    explicit TransposedMovieTableModel();
+    void initialiseOriginalModel(MovieTableModel& model);
+    void transpose();
 
 private:
-    MovieTableModel& originalModel;
+    MovieTableModel* originalModel;
     std::vector<QString> headers;
     std::vector<std::vector<QString>> allRowData;
-    int rows;
-    int cols;
+    int rows{};
+    int cols{};
 };
 
 #endif //BLACKFILMDATABASE_GUI_2_TRANSPOSEDMOVIETABLEMODEL_H

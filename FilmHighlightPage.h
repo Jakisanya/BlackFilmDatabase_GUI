@@ -1,7 +1,3 @@
-//
-// Created by jorda on 08/06/2024.
-//
-
 #ifndef BLACKFILMDATABASE_GUI_2_FILMHIGHLIGHTPAGE_H
 #define BLACKFILMDATABASE_GUI_2_FILMHIGHLIGHTPAGE_H
 
@@ -33,6 +29,7 @@ Q_OBJECT
 
 public:
     FilmHighlightPage();
+    void initialiseModels(MovieTableModel&, TransposedMovieTableModel&);
     void loadImageFromUrl(const QString& url, QLabel* label);
 
 signals:
@@ -50,8 +47,8 @@ private:
     QVBoxLayout leftFilmHighlightContentsVBoxLayout, rightFilmHighlightContentsVBoxLayout;
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
-    MovieTableModel originalModel;
-    TransposedMovieTableModel transposedModel{originalModel};
+    MovieTableModel* originalModel;
+    TransposedMovieTableModel* transposedModel;
     QNetworkAccessManager manager;
     QLabel imageLabel;
     QString posterUrl;

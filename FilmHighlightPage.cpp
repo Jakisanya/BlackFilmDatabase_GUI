@@ -1,6 +1,7 @@
 #include "FilmHighlightPage.h"
 
-FilmHighlightPage::FilmHighlightPage() {
+FilmHighlightPage::FilmHighlightPage()
+    : originalModel(nullptr), transposedModel(nullptr) {
     setFixedSize(760, 640);
 
     mainLayout.addSpacerItem(&sectionGap);
@@ -22,6 +23,15 @@ FilmHighlightPage::FilmHighlightPage() {
 
     QObject::connect(&backToResultsPageButton, &QPushButton::clicked, this,
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
+}
+
+void FilmHighlightPage::initialiseModels(MovieTableModel& model, TransposedMovieTableModel& tModel) {
+    if (originalModel == nullptr) {
+        originalModel = &model;
+    }
+    if (transposedModel == nullptr) {
+        transposedModel = &tModel;
+    }
 }
 
 void FilmHighlightPage::loadImageFromUrl(const QString& url, QLabel* label) {
@@ -47,11 +57,13 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
 
 void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     // pass the results object to the model
-    originalModel.setQueryResults(resultObject);
-    posterUrl = originalModel.data(originalModel.index(0, 15), Qt::DisplayRole).toString();
+    originalModel->setQueryResults(resultObject);
+    TransposedMovieTableModel tModel;
+    initialiseModels(reinterpret_cast<MovieTableModel &>(originalModel), reinterpret_cast<TransposedMovieTableModel &>(tModel));
+    posterUrl = originalModel->data(originalModel->index(0, 15), Qt::DisplayRole).toString();
     qDebug() << "PosterURL: " << posterUrl << "\n";
-    transposedModel.setQueryResults(resultObject);
-    transposedModel.transposeModel();
+    transposedModel->initialiseOriginalModel(reinterpret_cast<MovieTableModel & >(originalModel));
+    transposedModel->transpose();
 
     // Resize each column to fit the content after setting the query results
     // tableView.setColumnWidth(0, 80);
@@ -74,7 +86,7 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     leftFilmHighlightContentsVBoxLayout.addStretch(); // Add stretch to fill space
 
     // Add tableView to the right layout
-    tableView.setModel(&transposedModel);
+    tableView.setModel(transposedModel);
     tableView.setWordWrap(true);
     rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
 
@@ -90,3 +102,5 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
         reply->deleteLater();
     });
 }
+
+
