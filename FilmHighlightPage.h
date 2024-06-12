@@ -22,14 +22,13 @@
 #include <QUrl>
 #include <QAbstractTableModel>
 #include "MovieTableModel.h"
-#include "TransposedMovieTableModel.h"
 
 class FilmHighlightPage : public QWidget {
 Q_OBJECT
 
 public:
     FilmHighlightPage();
-    void initialiseModels();
+    void initialiseOriginalModel();
     void loadImageFromUrl(const QString& url, QLabel* label);
 
 signals:
@@ -48,7 +47,7 @@ private:
     QSpacerItem sectionGap{0, 10};
     QTableView tableView;
     MovieTableModel* originalModel;
-    TransposedMovieTableModel* transposedModel;
+    QTransposeProxyModel transposeProxyModel;
     QNetworkAccessManager manager;
     QLabel imageLabel;
     QString posterUrl;

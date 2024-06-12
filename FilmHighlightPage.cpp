@@ -1,7 +1,7 @@
 #include "FilmHighlightPage.h"
 
 FilmHighlightPage::FilmHighlightPage()
-    : originalModel(nullptr), transposedModel(nullptr) {
+    : originalModel(nullptr) {
     setFixedSize(760, 640);
 
     mainLayout.addSpacerItem(&sectionGap);
@@ -25,13 +25,10 @@ FilmHighlightPage::FilmHighlightPage()
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
 }
 
-void FilmHighlightPage::initialiseModels() {
+void FilmHighlightPage::initialiseOriginalModel() {
     // Ensure models are allocated
     if (originalModel == nullptr) {
         originalModel = new MovieTableModel();
-    }
-    if (transposedModel == nullptr) {
-        transposedModel = new TransposedMovieTableModel();
     }
 }
 
@@ -58,22 +55,11 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
 
 void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     // initialise models
-    initialiseModels();
+    initialiseOriginalModel();
     // pass the results object to the model
     originalModel->setQueryResults(resultObject);
     posterUrl = originalModel->data(originalModel->index(0, 15), Qt::DisplayRole).toString();
     qDebug() << "PosterURL: " << posterUrl << "\n";
-    transposedModel->setQueryResults(resultObject);
-    transposedModel->initialiseOriginalModel(originalModel);
-    std::cout << "\n";
-    std::cout << "Do I get here?" << "\n";
-    transposedModel->transpose();
-
-    // Resize each column to fit the content after setting the query results
-    // tableView.setColumnWidth(0, 80);
-    // tableView.setColumnWidth(1, 210);
-
-    tableView.resizeRowsToContents();
 
     // Create a label for the image
     imageLabel.setAlignment(Qt::AlignCenter);
@@ -89,8 +75,13 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     leftFilmHighlightContentsVBoxLayout.addWidget(&imageLabel);
     leftFilmHighlightContentsVBoxLayout.addStretch(); // Add stretch to fill space
 
-    // Add tableView to the right layout
-    tableView.setModel(transposedModel);
+    // Create the transpose proxy model and set the source model
+    transposeProxyModel.setSourceModel(originalModel);
+
+    // Set QTableView to the transpose proxy model
+    tableView.setModel(&transposeProxyModel);
+    tableView.resizeRowsToContents();
+    tableView.setColumnWidth(0, 216);
     tableView.setWordWrap(true);
     rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
 

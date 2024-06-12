@@ -57,12 +57,13 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
     return &tableView;
 };
 
-[[nodiscard]] std::string ResultsPage::buildQueryString(std::string& selectedTitle) const {
+[[nodiscard]] std::string ResultsPage::buildQueryString(std::string& selectedTitle, int& selectedYear) const {
     selectedTitle = "'" + selectedTitle + "'";
     std::string builtQuery = std::format(
             "SELECT * "
             "FROM general.complete_movie_data "
-            "WHERE \"Title\" = {};", selectedTitle);
+            "WHERE \"Title\" = {} "
+            "AND \"Year\"::INTEGER = {};", selectedTitle, selectedYear);
     std::cout << builtQuery << "\n";
     return builtQuery;
 }
@@ -78,12 +79,16 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
 }
 
 void ResultsPage::onTitleSelected(const QModelIndex& index) { // select title in QTableView; so not a button
-    QModelIndex firstColumnIndex = index.sibling(index.row(), 0);
-    std::cout << "title index: row -> " << firstColumnIndex.row() << " col -> " << firstColumnIndex.column() << "\n";
-    std::string itemText = proxyModel.data(firstColumnIndex, Qt::DisplayRole).toString().toStdString(); //
-    qDebug() << "itemText (std::string): " << itemText << "\n";
+    QModelIndex titleIndex = index.sibling(index.row(), 0);
+    QModelIndex yearIndex = index.sibling(index.row(), 1);
+    std::cout << "title index: row -> " << titleIndex.row() << " col -> " << titleIndex.column() << "\n";
+    std::cout << "year index: row -> " << yearIndex.row() << " col -> " << yearIndex.column() << "\n";
+    std::string titleText = proxyModel.data(titleIndex, Qt::DisplayRole).toString().toStdString();
+    int yearValue = proxyModel.data(yearIndex, Qt::DisplayRole).toString().toInt();
+    qDebug() << "titleText (std::string): " << titleText << "\n";
+    qDebug() << "yearValue (int): " << yearValue << "\n";
     std::string builtQuery;
-    builtQuery = buildQueryString(itemText);
+    builtQuery = buildQueryString(titleText, yearValue);
     pqxx::result result;
     result = queryDatabase(builtQuery);
     emit titleQueried(result);

@@ -52,5 +52,10 @@ QVariant MovieTableModel::headerData(int section, Qt::Orientation orientation, i
     if (orientation == Qt::Horizontal) {
         return headers.at(section);
     }
+    /*
+    if (orientation == Qt::Vertical) {
+        return headers.at(section);
+    }
+    */
     return section + 1; // Row number
 }
