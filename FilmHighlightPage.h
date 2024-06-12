@@ -29,7 +29,7 @@ Q_OBJECT
 
 public:
     FilmHighlightPage();
-    void initialiseModels(MovieTableModel&, TransposedMovieTableModel&);
+    void initialiseModels();
     void loadImageFromUrl(const QString& url, QLabel* label);
 
 signals:

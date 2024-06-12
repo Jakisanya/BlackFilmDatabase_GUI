@@ -25,12 +25,13 @@ FilmHighlightPage::FilmHighlightPage()
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
 }
 
-void FilmHighlightPage::initialiseModels(MovieTableModel& model, TransposedMovieTableModel& tModel) {
+void FilmHighlightPage::initialiseModels() {
+    // Ensure models are allocated
     if (originalModel == nullptr) {
-        originalModel = &model;
+        originalModel = new MovieTableModel();
     }
     if (transposedModel == nullptr) {
-        transposedModel = &tModel;
+        transposedModel = new TransposedMovieTableModel();
     }
 }
 
@@ -56,13 +57,16 @@ void FilmHighlightPage::onBackToResultsPageButtonClicked() {
 }
 
 void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
+    // initialise models
+    initialiseModels();
     // pass the results object to the model
     originalModel->setQueryResults(resultObject);
-    TransposedMovieTableModel tModel;
-    initialiseModels(reinterpret_cast<MovieTableModel &>(originalModel), reinterpret_cast<TransposedMovieTableModel &>(tModel));
     posterUrl = originalModel->data(originalModel->index(0, 15), Qt::DisplayRole).toString();
     qDebug() << "PosterURL: " << posterUrl << "\n";
-    transposedModel->initialiseOriginalModel(reinterpret_cast<MovieTableModel & >(originalModel));
+    transposedModel->setQueryResults(resultObject);
+    transposedModel->initialiseOriginalModel(originalModel);
+    std::cout << "\n";
+    std::cout << "Do I get here?" << "\n";
     transposedModel->transpose();
 
     // Resize each column to fit the content after setting the query results

@@ -14,7 +14,7 @@ Q_OBJECT
 
 public:
     explicit TransposedMovieTableModel();
-    void initialiseOriginalModel(MovieTableModel& model);
+    void initialiseOriginalModel(MovieTableModel* model);
     void transpose();
 
 private:

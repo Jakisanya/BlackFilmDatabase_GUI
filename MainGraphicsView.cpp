@@ -42,8 +42,8 @@ MainGraphicsView::MainGraphicsView() {
 
     // Connect the showFilmHighlightPage and handleQueryResults slots to tableView::clicked signal
     QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this](pqxx::result& resultObject) {
-        showFilmHighlightPage();
         filmHighlightPage.handleQueryResults(resultObject);
+        showFilmHighlightPage();
     });
 
     // Go back to search page from results page
@@ -103,8 +103,8 @@ void MainGraphicsView::goBackToResultsPageFromFilmHighlightPage() {
     // Reconnect the showFilmHighlightPage and handleQueryResults slots to tableView::clicked signal to prepare to use them again.
     QObject::disconnect(&resultsPage, &ResultsPage::titleQueried, nullptr, nullptr);
     QObject::connect(&resultsPage, &ResultsPage::titleQueried, this, [this](pqxx::result& resultObject) {
-        showFilmHighlightPage();
         filmHighlightPage.handleQueryResults(resultObject);
+        showFilmHighlightPage();
     });
 
     // Change page dimensions
