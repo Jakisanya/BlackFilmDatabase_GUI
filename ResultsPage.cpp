@@ -53,14 +53,31 @@ void ResultsPage::handleQueryResults(const pqxx::result& resultObject) {
     QObject::connect(&tableView, &QTableView::clicked, this, &ResultsPage::onTitleSelected);
 }
 
+std::string ResultsPage::escapeSingleQuotes(std::string& input) const {
+    std::string output;
+    for (char ch : input) {
+        if (ch == '\'') {
+            output += "''";
+        } else {
+            output += ch;
+        }
+    }
+    return output;
+}
+
 [[nodiscard]] QTableView* ResultsPage::getTableView() {
     return &tableView;
 };
 
 [[nodiscard]] std::string ResultsPage::buildQueryString(std::string& selectedTitle, int& selectedYear) const {
-    selectedTitle = "'" + selectedTitle + "'";
+    selectedTitle = "'" + escapeSingleQuotes(selectedTitle) + "'";
     std::string builtQuery = std::format(
-            "SELECT * "
+            "SELECT \"imdbID\", \"Title\", \"Year\", \"Rated\", \"Released\", \"Runtime\", \"Genre\" , \"Director\", "
+            "\"Writer\", \"Lead_Actors\", \"Plot\", \"Language\", \"Country\", \"Metascore\", \"imdbRating\", \"imdbVotes\", "
+            "\"Type\", \"DVD\", \"BoxOffice\", \"Production\", \"rtRating\", \"Keyword_List\", \"Budget\", \"worldwide_gross\", "
+            "\"movie_cast\", \"movie_crew\", \"Supporting_Actors\", \"Total_Awards_Lead_Actors\", \"Total_Awards_Supporting_Actors\", "
+            "\"Total_Awards_Movie_Cast\", \"Total_Awards_Director\", \"Total_Awards_Writer\", \"Total_Awards_Movie_Crew\", "
+            "\"Total_Awards_Soundtrack_Credits\", \"Black_Lead_Proportion\", \"Black_Support_Proportion\", \"Black_Cast_Proportion\", \"Poster\" "
             "FROM general.complete_movie_data "
             "WHERE \"Title\" = {} "
             "AND \"Year\"::INTEGER = {};", selectedTitle, selectedYear);

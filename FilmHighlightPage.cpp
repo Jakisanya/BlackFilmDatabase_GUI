@@ -2,7 +2,7 @@
 
 FilmHighlightPage::FilmHighlightPage()
     : originalModel(nullptr) {
-    setFixedSize(760, 640);
+    setFixedSize(760, 550);
 
     mainLayout.addSpacerItem(&sectionGap);
 
@@ -19,6 +19,8 @@ FilmHighlightPage::FilmHighlightPage()
     filmHighlightContentsLayout.addLayout(&rightFilmHighlightContentsVBoxLayout);
     mainLayout.addLayout(&filmHighlightContentsLayout);
 
+    mainLayout.addSpacerItem(&sectionGap);
+    mainLayout.addStretch();
     setLayout(&mainLayout);
 
     QObject::connect(&backToResultsPageButton, &QPushButton::clicked, this,
@@ -58,7 +60,7 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     initialiseOriginalModel();
     // pass the results object to the model
     originalModel->setQueryResults(resultObject);
-    posterUrl = originalModel->data(originalModel->index(0, 15), Qt::DisplayRole).toString();
+    posterUrl = originalModel->data(originalModel->index(0, 37), Qt::DisplayRole).toString();
     qDebug() << "PosterURL: " << posterUrl << "\n";
 
     // Create a label for the image
@@ -83,6 +85,7 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     tableView.resizeRowsToContents();
     tableView.setColumnWidth(0, 216);
     tableView.setWordWrap(true);
+
     rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
 
     QObject::disconnect(&manager, &QNetworkAccessManager::finished, nullptr, nullptr);

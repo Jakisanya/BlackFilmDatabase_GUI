@@ -22,6 +22,7 @@
 #include <QUrl>
 #include <QAbstractTableModel>
 #include "MovieTableModel.h"
+#include <QRegularExpression>
 
 class FilmHighlightPage : public QWidget {
 Q_OBJECT

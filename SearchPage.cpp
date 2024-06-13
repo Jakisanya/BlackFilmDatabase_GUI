@@ -119,6 +119,7 @@ SearchPage::SearchPage() {
         basicSectionLayout.addWidget(&titleFieldLabel);
         titleLineEdit.setAlignment(Qt::AlignHCenter);
         titleLineEdit.setFixedSize(500, 40);
+        titleLineEdit.setPlaceholderText("Optional; Leave blank (recommended)");
         titleLineEditLayout.addWidget(&titleLineEdit);
         basicSectionLayout.addLayout(&titleLineEditLayout);
 
@@ -135,6 +136,7 @@ SearchPage::SearchPage() {
         releaseYearFromLineEditIntValidator.setRange(1800, 2100);
         releaseYearFromLineEdit.setValidator(&releaseYearFromLineEditIntValidator);
         releaseYearFromLineEdit.setMaxLength(4);
+        releaseYearFromLineEdit.setPlaceholderText("e.g. 2000");
         releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
         releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
 
@@ -147,6 +149,7 @@ SearchPage::SearchPage() {
         releaseYearToLineEditIntValidator.setRange(1800, 2100);
         releaseYearToLineEdit.setValidator(&releaseYearToLineEditIntValidator);
         releaseYearToLineEdit.setAlignment(Qt::AlignHCenter);
+        releaseYearToLineEdit.setPlaceholderText("e.g. 2010");
         releaseYearFieldLayout.addWidget(&releaseYearToLineEdit);
         releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
         basicSectionLayout.addLayout(&releaseYearFieldLayout);
@@ -322,7 +325,10 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
 }
 
 [[nodiscard]] int SearchPage::getReleaseYearToValue() const {
-    return releaseYearToLineEdit.text().toInt();
+    if (releaseYearToLineEdit.text().isEmpty()) {
+        return 2050;
+    }
+    else return releaseYearToLineEdit.text().toInt();
 }
 
 [[nodiscard]] std::string SearchPage::getGenre() const {
@@ -332,18 +338,22 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
             selectedGenres.push_back("'%" + genrePB->text().toStdString() + "%'");
         }
     }
-
-    std::string selectedGenresFormatted;
-    for (int i{0}; i < selectedGenres.size(); i++) {
-        std::transform(selectedGenres[i].begin(), selectedGenres[i].end(), selectedGenres[i].begin(), ::toupper);
-        if (i == 0) {
-            selectedGenresFormatted += selectedGenres[i];
-        }
-        if (i > 0) {
-            selectedGenresFormatted += " OR \"Genre\" LIKE " + selectedGenres[i];
-        }
+    if (selectedGenres.empty()) {
+        return "'%'";
     }
-    return selectedGenresFormatted;
+    else {
+        std::string selectedGenresFormatted;
+        for (int i{0}; i < selectedGenres.size(); i++) {
+            std::transform(selectedGenres[i].begin(), selectedGenres[i].end(), selectedGenres[i].begin(), ::toupper);
+            if (i == 0) {
+                selectedGenresFormatted += selectedGenres[i];
+            }
+            if (i > 0) {
+                selectedGenresFormatted += " OR \"Genre\" LIKE " + selectedGenres[i];
+            }
+        }
+        return selectedGenresFormatted;
+    }
 }
 
 [[nodiscard]] std::string SearchPage::getLanguage() const {
@@ -354,17 +364,23 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
         }
     }
 
-    std::string selectedLanguagesFormatted;
-    for (int i{0}; i < selectedLanguages.size(); i++) {
-        std::transform(selectedLanguages[i].begin(), selectedLanguages[i].end(), selectedLanguages[i].begin(), ::toupper);
-        if (i == 0) {
-            selectedLanguagesFormatted += selectedLanguages[i];
-        }
-        if (i > 0) {
-            selectedLanguagesFormatted += " OR \"Language\" LIKE " + selectedLanguages[i];
-        }
+    if (selectedLanguages.empty()) {
+        return "'%'";
     }
-    return selectedLanguagesFormatted;
+    else {
+        std::string selectedLanguagesFormatted;
+        for (int i{0}; i < selectedLanguages.size(); i++) {
+            std::transform(selectedLanguages[i].begin(), selectedLanguages[i].end(), selectedLanguages[i].begin(),
+                           ::toupper);
+            if (i == 0) {
+                selectedLanguagesFormatted += selectedLanguages[i];
+            }
+            if (i > 0) {
+                selectedLanguagesFormatted += " OR \"Language\" LIKE " + selectedLanguages[i];
+            }
+        }
+        return selectedLanguagesFormatted;
+    }
 }
 
 [[nodiscard]] std::string SearchPage::getAgeRating() const {
@@ -378,21 +394,41 @@ void SearchPage::keyPressEvent(QKeyEvent* event) {
         }
     }
 
-    std::string selectedAgeRatingsFormatted;
-    for (int i{0}; i < selectedAgeRatings.size(); i++) {
-        std::transform(selectedAgeRatings[i].begin(), selectedAgeRatings[i].end(), selectedAgeRatings[i].begin(), ::toupper);
-        if (i == 0) {
-            selectedAgeRatingsFormatted += selectedAgeRatings[i];
-        }
-        if (i > 0) {
-            selectedAgeRatingsFormatted += " OR \"Rated\" LIKE " + selectedAgeRatings[i];
-        }
+    if (selectedAgeRatings.empty()) {
+        return "'%'";
     }
-    return selectedAgeRatingsFormatted;
+    else {
+        std::string selectedAgeRatingsFormatted;
+        for (int i{0}; i < selectedAgeRatings.size(); i++) {
+            std::transform(selectedAgeRatings[i].begin(), selectedAgeRatings[i].end(), selectedAgeRatings[i].begin(),
+                           ::toupper);
+            if (i == 0) {
+                selectedAgeRatingsFormatted += selectedAgeRatings[i];
+            }
+            if (i > 0) {
+                selectedAgeRatingsFormatted += " OR \"Rated\" LIKE " + selectedAgeRatings[i];
+            }
+        }
+        return selectedAgeRatingsFormatted;
+    }
 }
 
-[[nodiscard]] float SearchPage::getIMDbRating() const { return imdbRatingLineEdit.text().toFloat(); }
-[[nodiscard]] int SearchPage::getRottenTomatoesRating() const { return rottenTomatoesRatingLineEdit.text().toInt(); }
+[[nodiscard]] float SearchPage::getIMDbRating() const {
+    if (imdbRatingLineEdit.text().isEmpty()) {
+        return 0;
+    }
+    else {
+        return imdbRatingLineEdit.text().toFloat();
+    }
+}
+
+[[nodiscard]] int SearchPage::getRottenTomatoesRating() const {
+    if (rottenTomatoesRatingLineEdit.text().isEmpty()) {
+        return 0;
+    } else {
+        return rottenTomatoesRatingLineEdit.text().toInt();
+    }
+}
 
 /*
 void SearchPage::toggleAdvancedSearchSection() {

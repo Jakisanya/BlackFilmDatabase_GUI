@@ -26,6 +26,7 @@ Q_OBJECT
 
 public:
     ResultsPage();
+    std::string escapeSingleQuotes(std::string& input) const;
     [[nodiscard]] QTableView* getTableView();
     [[nodiscard]] std::string buildQueryString(std::string& selectedTitle, int& selectedYear) const;
     [[nodiscard]] pqxx::result queryDatabase(std::string& queryString) const;
