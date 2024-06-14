@@ -51,7 +51,9 @@ private:
     QTransposeProxyModel transposeProxyModel;
     QNetworkAccessManager manager;
     QLabel imageLabel;
+    QLabel plotLabel;
     QString posterUrl;
+    QString plot;
 };
 
 
