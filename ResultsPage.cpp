@@ -2,7 +2,7 @@
 
 ResultsPage::ResultsPage() {
     // display the results in widgets and layouts etc.
-    setFixedSize(1280, 760);
+    setFixedSize(1280, 740);
 
     mainLayout.addSpacerItem(&sectionGap);
 
@@ -72,12 +72,13 @@ std::string ResultsPage::escapeSingleQuotes(std::string& input) const {
 [[nodiscard]] std::string ResultsPage::buildQueryString(std::string& selectedTitle, int& selectedYear) const {
     selectedTitle = "'" + escapeSingleQuotes(selectedTitle) + "'";
     std::string builtQuery = std::format(
-            "SELECT \"imdbID\", \"Title\", \"Year\", \"Rated\", \"Released\", \"Runtime\", \"Genre\" , \"Director\", "
-            "\"Writer\", \"Lead_Actors\", \"Plot\", \"Language\", \"Country\", \"Metascore\", \"imdbRating\", \"imdbVotes\", "
-            "\"Type\", \"DVD\", \"BoxOffice\", \"Production\", \"rtRating\", \"Keyword_List\", \"Budget\", \"worldwide_gross\", "
-            "\"movie_cast\", \"movie_crew\", \"Supporting_Actors\", \"Total_Awards_Lead_Actors\", \"Total_Awards_Supporting_Actors\", "
-            "\"Total_Awards_Movie_Cast\", \"Total_Awards_Director\", \"Total_Awards_Writer\", \"Total_Awards_Movie_Crew\", "
-            "\"Total_Awards_Soundtrack_Credits\", \"Black_Lead_Proportion\", \"Black_Support_Proportion\", \"Black_Cast_Proportion\", \"Poster\" "
+            "SELECT \"Black_Lead_Proportion\", \"Black_Support_Proportion\", \"Black_Cast_Proportion\", \"Title\", "
+            "\"Year\", \"Rated\", \"Released\", \"Runtime\", \"Genre\" , \"Director\", \"Writer\", \"Lead_Actors\", "
+            "\"Plot\", \"Language\", \"Country\", \"Metascore\", \"imdbRating\", \"imdbVotes\", \"Type\", \"DVD\", "
+            "\"BoxOffice\", \"Production\", \"rtRating\", \"Keyword_List\", \"Budget\", \"worldwide_gross\", "
+            "\"movie_cast\", \"movie_crew\", \"Supporting_Actors\", \"Total_Awards_Lead_Actors\", "
+            "\"Total_Awards_Supporting_Actors\", \"Total_Awards_Movie_Cast\", \"Total_Awards_Director\", "
+            "\"Total_Awards_Writer\", \"Total_Awards_Movie_Crew\", \"Total_Awards_Soundtrack_Credits\", \"Poster\" "
             "FROM general.complete_movie_data "
             "WHERE \"Title\" = {} "
             "AND \"Year\"::INTEGER = {};", selectedTitle, selectedYear);

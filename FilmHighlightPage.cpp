@@ -15,6 +15,33 @@ FilmHighlightPage::FilmHighlightPage()
 
     mainLayout.addSpacerItem(&sectionGap);
 
+    // Set label as image
+    imageLabel.setAlignment(Qt::AlignCenter);
+    // Set image size (300x424)
+    QSize imageSize;
+    imageSize.setWidth(300);
+    imageSize.setHeight(424);
+    // Set the size of the QLabel to match the poster image size
+    imageLabel.setFixedSize(imageSize);
+
+    // Add the image label to the left layout
+    leftFilmHighlightContentsVBoxLayout.addWidget(&imageLabel);
+    leftFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
+    filmHighlightContentsLayout.addLayout(&leftFilmHighlightContentsVBoxLayout);
+
+    rightFilmHighlightContentsVBoxLayout.addWidget(&plotLabel);
+
+    rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
+    rightFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
+
+    filmHighlightContentsLayout.addLayout(&rightFilmHighlightContentsVBoxLayout);
+    filmHighlightContentsLayout.setSizeConstraint(QLayout::SetFixedSize);
+
+    mainLayout.addLayout(&filmHighlightContentsLayout);
+    mainLayout.addStretch();
+    mainLayout.addSpacerItem(&sectionGap);
+    setLayout(&mainLayout);
+
     QObject::connect(&backToResultsPageButton, &QPushButton::clicked, this,
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
 }
@@ -53,31 +80,16 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     // pass the results object to the model
     originalModel->setQueryResults(resultObject);
 
-    posterUrl = originalModel->data(originalModel->index(0, 37), Qt::DisplayRole).toString();
+    posterUrl = originalModel->data(originalModel->index(0, 36), Qt::DisplayRole).toString();
     qDebug() << "PosterURL: " << posterUrl << "\n";
-
-    // Set label as image
-    imageLabel.setAlignment(Qt::AlignCenter);
-    // Set image size (300x424)
-    QSize imageSize;
-    imageSize.setWidth(300);
-    imageSize.setHeight(424);
-    // Set the size of the QLabel to match the poster image size
-    imageLabel.setFixedSize(imageSize);
     loadImageFromUrl(posterUrl, &imageLabel);
 
-    // Add the image label to the left layout
-    leftFilmHighlightContentsVBoxLayout.addWidget(&imageLabel);
-    leftFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
-    filmHighlightContentsLayout.addLayout(&leftFilmHighlightContentsVBoxLayout);
-
     // Set label as plot
-    plot = originalModel->data(originalModel->index(0, 10), Qt::DisplayRole).toString();
+    plot = originalModel->data(originalModel->index(0, 12), Qt::DisplayRole).toString();
     // plotLabel.setAlignment(Qt::AlignCenter);
     plotLabel.setText(plot);
     plotLabel.setWordWrap(true);
     plotLabel.setAlignment(Qt::AlignJustify);
-    rightFilmHighlightContentsVBoxLayout.addWidget(&plotLabel);
 
     // Create the transpose proxy model and set the source model
     transposeProxyModel.setSourceModel(originalModel);
@@ -88,27 +100,6 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     tableView.setColumnWidth(0, 216);
     tableView.setWordWrap(true);
     tableView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
-    rightFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
-
-    filmHighlightContentsLayout.addLayout(&rightFilmHighlightContentsVBoxLayout);
-    filmHighlightContentsLayout.setSizeConstraint(QLayout::SetFixedSize);
-
-    mainLayout.addLayout(&filmHighlightContentsLayout);
-    mainLayout.addStretch();
-    mainLayout.addSpacerItem(&sectionGap);
-    setLayout(&mainLayout);
-
-    /*
-    qDebug() << "Main Layout Size: " << mainLayout.sizeHint();
-    qDebug() << "backToResultsPageButtonLayout Size: " << backToResultsPageButtonLayout.sizeHint();
-    qDebug() << "Back Button Size: " << backToResultsPageButton.sizeHint();
-    qDebug() << "leftFilmHighlightContentsVBoxLayout Size: " << leftFilmHighlightContentsVBoxLayout.sizeHint();
-    qDebug() << "rightFilmHighlightContentsVBoxLayout Size: " << rightFilmHighlightContentsVBoxLayout.sizeHint();
-    qDebug() << "tableView Size: " << tableView.sizeHint();
-    qDebug() << "filmHighlightContentsLayout Size: " << filmHighlightContentsLayout.sizeHint();
-    */
 
     QObject::disconnect(&manager, &QNetworkAccessManager::finished, nullptr, nullptr);
     QObject::connect(&manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {

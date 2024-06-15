@@ -10,8 +10,11 @@ There are a range of tools that I will use - the main one being Qt which is a cr
 The Postgresql database has data on 1000s of Black Films collated from 3 film databases (IMDb, TMDb and OMDb). The 
 database uses Postgresql and is therefore queried using Postgresql. To give a high-level overview of the program: 
 
-The main window of the application will have a video playing in the background. The video will be a clip from a popular
-Black film. There'll be a 'SEARCH DATABASE' button in the centre of the frame that will navigate to the search page. 
+The landing page of the application will have a video playing in the background. The video will be a clip from a popular
+Black film. There'll be a 'SEARCH DATABASE' button in the centre of the frame that will navigate to the search page.
+
+![Landing Page](https://example.com/images/landscape.jpg)
+
 The search page will have two sections, 'Basic Search' and 'Advanced Search'. The basic search will have 5 fields:
 1. Title -> A general text field. 
 2. Release Year -> A range-based slider. 
