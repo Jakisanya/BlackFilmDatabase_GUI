@@ -13,11 +13,11 @@ database uses Postgresql and is therefore queried using Postgresql. To give a hi
 The landing page of the application will have a video playing in the background. The video will be a clip from a popular
 Black film. X-Men: Apocalypse is shown in the Figma export below but it is not a Black film - just an example used in 
 the design. It is in the unfiltered database because of the Black actors who acted in it; 1% of its Supporting Actors 
-are Black. I intend to either provide functionality to set a 
-Black_Lead_Proportion/Black_Support_Proportion/Black_Cast_Proportion threshold so that the search is filtered more 
-accurately. As of now, the user can sort the results by these fields. I kind of like the idea that every film a Black 
-person has acted in is in the database - this will most likely prove useful as I develop the project. 
-There'll be an 'ENTER' button in the centre of the frame that will navigate to the search page.
+are Black. I intend to either provide functionality to set a Black_Lead_Proportion / Black_Support_Proportion / 
+Black_Cast_Proportion threshold so that the search is filtered more accurately. As of now, the user can sort the results 
+by these fields. I kind of like the idea that every film a Black person has acted in is in the database - this will most 
+likely prove useful as I develop the project. There'll be an 'ENTER' button in the centre of the frame that will 
+navigate to the search page.
 
 ![Landing Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Landing%20Page.png)
 
@@ -39,7 +39,7 @@ The 'Advanced Search' section will allow the user to narrow their search by offe
 Each of the 11 fields will alter the final query sent to the database, and at the bottom of the Search Page there will 
 be the 'SEARCH BUTTON' allowing the user to send the query. 
 
-![Landing Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Landing%20Page.png)
+![Search Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Search%20Page.png)
 
 The search results will show on the Results Page. The layout of the page will be simple. Each result will form a row of 
 data pertaining to a film. The data will be retrieved directly from the database - but with a select number of columns. 
@@ -66,4 +66,4 @@ Ultimately, the user will be able to click on one of the search results and be p
 that film alone (film highlight page). The poster will be on the left, plot in the top-right and a table with all other 
 information about the film below it.
 
-![Film Highlight Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Landing%20Page.png)
+![Film Highlight Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Film%20Highlight%20Page.png)
