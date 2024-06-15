@@ -52,18 +52,18 @@ main elements when skimming. The user will be able to sort the list of results b
 / numerically). 
 
 The fields (excluding the 7 basic search fields) are:
-8. Black Lead Actor Proportion (the number of Black actors among the film's lead actors as a proportion)
-9. Black Supporting Actor Proportion (the number of Black actors among the film's supporting actors as a proportion)
-10. Black_cast_proportion (the number of Black actors in the film's entire cast as a proportion)
-11. Budget 
-12. Opening Weekend Gross 
-13. Worldwide Gross 
-14. Total Awards amongst the Lead Actors 
-15. Total Awards amongst the Supporting Actors 
-16. Total Awards amongst the Movie Cast 
-17. Total Awards amongst the Writers 
-18. Total Awards amongst the Directors 
-19. Total Awards amongst the Soundtrack Credits 
+1. Black Lead Actor Proportion (the number of Black actors among the film's lead actors as a proportion)
+2. Black Supporting Actor Proportion (the number of Black actors among the film's supporting actors as a proportion)
+3. Black_cast_proportion (the number of Black actors in the film's entire cast as a proportion)
+4. Budget 
+5. Opening Weekend Gross 
+6. Worldwide Gross 
+7. Total Awards amongst the Lead Actors 
+8. Total Awards amongst the Supporting Actors 
+9. Total Awards amongst the Movie Cast 
+10. Total Awards amongst the Writers 
+11. Total Awards amongst the Directors 
+12. Total Awards amongst the Soundtrack Credits 
 
 <div align="center">
   <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Results%20Page.png" alt="Figma Prototype Design: Results Page">
