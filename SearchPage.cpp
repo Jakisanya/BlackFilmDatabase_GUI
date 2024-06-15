@@ -526,8 +526,12 @@ void SearchPage::removeKeyword() {
  */
 [[nodiscard]] std::string SearchPage::buildQueryString() const {
     std::string builtQuery = std::format(
-               "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", "
-               "\"Language\", \"imdbRating\"::DECIMAL, \"rtRating\"::INTEGER "
+               "SELECT \"Title\", \"Year\", \"Genre\", \"Rated\", \"Language\", \"imdbRating\"::DECIMAL, "
+               "\"rtRating\"::INTEGER, \"Black_Lead_Proportion\", \"Black_Support_Proportion\", "
+               "\"Black_Cast_Proportion\", \"Budget\", \"opening_weekend_gross\", \"worldwide_gross\", "
+               "\"Total_Awards_Lead_Actors\", \"Total_Awards_Supporting_Actors\", \"Total_Awards_Movie_Cast\", "
+               "\"Total_Awards_Director\", \"Total_Awards_Writer\", \"Total_Awards_Movie_Crew\", "
+               "\"Total_Awards_Soundtrack_Credits\" "
                "FROM general.complete_movie_data "
                "WHERE \"Title\" LIKE {} "
                "AND (\"Year\"::INTEGER BETWEEN {} AND {}) "

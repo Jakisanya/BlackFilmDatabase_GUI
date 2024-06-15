@@ -13,8 +13,8 @@ database uses Postgresql and is therefore queried using Postgresql. To give a hi
 The landing page of the application will have a video playing in the background. The video will be a clip from a popular
 Black film. X-Men: Apocalypse is shown in the Figma export below but it is not a Black film - just an example used in 
 the design. It is in the unfiltered database because of the Black actors who acted in it; 1% of its Supporting Actors 
-are Black. I intend to either provide functionality to set a Black_Lead_Proportion / Black_Support_Proportion / 
-Black_Cast_Proportion threshold so that the search is filtered more accurately. As of now, the user can sort the results 
+are Black. I intend to either provide functionality to set Black_Lead_Proportion / Black_Support_Proportion / 
+Black_Cast_Proportion thresholds so that the search is filtered more accurately. As of now, the user can sort the results 
 by these fields. I kind of like the idea that every film a Black person has acted in is in the database - this will most 
 likely prove useful as I develop the project. There'll be an 'ENTER' button in the centre of the frame that will 
 navigate to the search page.
@@ -54,16 +54,17 @@ main elements when skimming. The user will be able to sort the list of results b
 The fields (excluding the 7 basic search fields) are:
 1. Black Lead Actor Proportion (the number of Black actors among the film's lead actors as a proportion)
 2. Black Supporting Actor Proportion (the number of Black actors among the film's supporting actors as a proportion)
-3. Black_cast_proportion (the number of Black actors in the film's entire cast as a proportion)
+3. Black Cast Proportion (the number of Black actors in the film's entire cast as a proportion)
 4. Budget 
 5. Opening Weekend Gross 
 6. Worldwide Gross 
 7. Total Awards amongst the Lead Actors 
 8. Total Awards amongst the Supporting Actors 
 9. Total Awards amongst the Movie Cast 
-10. Total Awards amongst the Writers 
-11. Total Awards amongst the Directors 
-12. Total Awards amongst the Soundtrack Credits 
+10. Total Awards amongst the Directors 
+11. Total Awards amongst the Writers 
+12. Total Awards amongst the Movie_Crew
+13. Total Awards amongst the Soundtrack Credits 
 
 <div align="center">
   <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Results%20Page.png" alt="Figma Prototype Design: Results Page">
