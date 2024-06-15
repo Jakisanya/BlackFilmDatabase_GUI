@@ -45,7 +45,9 @@ The search results will show on the Results Page. The layout of the page will be
 data pertaining to a film. The data will be retrieved directly from the database - but with a select number of columns. 
 This is so that data on the page doesn't seem excessive - the user should be able to quickly identify the 
 main elements when skimming. The user will be able to sort the list of results by any of the fields (lexicographically 
-/ numerically). The fields are:
+/ numerically). 
+
+The fields are:
 [1 - 7]. 7 Basic Search Fields 
 8. Black Lead Actor Proportion (the number of Black actors among the film's lead actors as a proportion)
 9. Black Supporting Actor Proportion (the number of Black actors among the film's supporting actors as a proportion)
