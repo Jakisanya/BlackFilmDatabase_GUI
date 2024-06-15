@@ -19,7 +19,9 @@ by these fields. I kind of like the idea that every film a Black person has acte
 likely prove useful as I develop the project. There'll be an 'ENTER' button in the centre of the frame that will 
 navigate to the search page.
 
-![Landing Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Landing%20Page.png)
+<div align="center">
+  <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Landing%20Page.png" alt="Figma Prototype Design: Landing Page">
+</div>
 
 The search page will have two sections, 'Basic Search' and 'Advanced Search' (to be added). The basic search will have 7 fields:
 1. Title -> A general text field. 
@@ -43,8 +45,6 @@ be the 'SEARCH BUTTON' allowing the user to send the query.
   <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Search%20Page.png" alt="Figma Prototype Design: Search Page">
 </div>
 
-![Search Page]()
-
 The search results will show on the Results Page. The layout of the page will be simple. Each result will form a row of 
 data pertaining to a film. The data will be retrieved directly from the database - but with a select number of columns. 
 This is so that data on the page doesn't seem excessive - the user should be able to quickly identify the 
@@ -65,10 +65,14 @@ The fields (excluding the 7 basic search fields) are:
 18. Total Awards amongst the Directors 
 19. Total Awards amongst the Soundtrack Credits 
 
-![Results Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Results%20Page.png)
+<div align="center">
+  <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Results%20Page.png" alt="Figma Prototype Design: Results Page">
+</div>
 
 Ultimately, the user will be able to click on one of the search results and be presented with a page of information on 
 that film alone (film highlight page). The poster will be on the left, plot in the top-right and a table with all other 
 information about the film below it.
 
-![Film Highlight Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Film%20Highlight%20Page.png)
+<div align="center">
+  <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Film%20Highlight%20Page.png" alt="Figma Prototype Design: Film Highlight Page">
+</div>
