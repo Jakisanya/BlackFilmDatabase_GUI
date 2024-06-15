@@ -39,7 +39,11 @@ The 'Advanced Search' section will allow the user to narrow their search by offe
 Each of the 11 fields will alter the final query sent to the database, and at the bottom of the Search Page there will 
 be the 'SEARCH BUTTON' allowing the user to send the query. 
 
-![Search Page](https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Search%20Page.png)
+<div align="center">
+  <img src="https://github.com/Jakisanya/BlackFilmDatabase_GUI/blob/main/Black%20Film%20Database%20Search%20_%20Search%20Page.png" alt="Figma Prototype Design: Search Page">
+</div>
+
+![Search Page]()
 
 The search results will show on the Results Page. The layout of the page will be simple. Each result will form a row of 
 data pertaining to a film. The data will be retrieved directly from the database - but with a select number of columns. 
@@ -47,8 +51,7 @@ This is so that data on the page doesn't seem excessive - the user should be abl
 main elements when skimming. The user will be able to sort the list of results by any of the fields (lexicographically 
 / numerically). 
 
-The fields are:
-[1 - 7]. 7 Basic Search Fields 
+The fields (excluding the 7 basic search fields) are:
 8. Black Lead Actor Proportion (the number of Black actors among the film's lead actors as a proportion)
 9. Black Supporting Actor Proportion (the number of Black actors among the film's supporting actors as a proportion)
 10. Black_cast_proportion (the number of Black actors in the film's entire cast as a proportion)
