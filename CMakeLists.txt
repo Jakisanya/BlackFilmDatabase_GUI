@@ -32,6 +32,8 @@ set(SOURCES
         FilmHighlightPage.h
         CustomItemSelectionModel.cpp
         CustomItemSelectionModel.h
+        HoverButton.cpp
+        HoverButton.h
 )
 
 set(HEADERS

@@ -24,31 +24,31 @@ MainGraphicsView::MainGraphicsView() {
     proxyWidget = scene.addWidget(new QWidget);
 
     // Define icons for normal and hover states
-    QIcon normalIcon("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton.png");
-    QIcon hoverIcon("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton_hover.png"); // Example of a different colored icon
+    enterApplicationButtonNormalIconPixmap.load("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton.png");
+    enterApplicationButtonNormalIcon.addPixmap(enterApplicationButtonNormalIconPixmap);
+    enterApplicationButtonHoverIconPixmap.load("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton_hover.png");
+    enterApplicationButtonHoverIcon.addPixmap(enterApplicationButtonHoverIconPixmap);
 
     // Set initial icon
-    enterApplicationButton.setIcon(normalIcon);
+    enterApplicationButton.setIcon(enterApplicationButtonNormalIconPixmap);
+    enterApplicationButton.setIconSize(enterApplicationButtonNormalIconPixmap.rect().size());
 
     // Connect hover events to change icon
-    QObject::connect(&enterApplicationButton, &QPushButton::enterEvent, [&enterApplicationButton, &hoverIcon]() {
-        enterApplicationButton.setIcon(hoverIcon);
+    QObject::connect(&enterApplicationButton, &HoverButton::entered, this,[this]() {
+        enterApplicationButton.setIcon(enterApplicationButtonHoverIcon);
     });
 
-    QObject::connect(&enterApplicationButton, &QPushButton::leaveEvent, [&enterApplicationButton, &normalIcon]() {
-        enterApplicationButton.setIcon(normalIcon);
+    QObject::connect(&enterApplicationButton, &HoverButton::left, this, [this]() {
+        enterApplicationButton.setIcon(enterApplicationButtonNormalIcon);
     });
 
-    pixmap.load("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton.png");
-    enterApplicationButtonIcon.addPixmap(pixmap);
-    enterApplicationButton.setIcon(enterApplicationButtonIcon);
-    enterApplicationButton.setIconSize(pixmap.rect().size());
     enterApplicationButton.setStyleSheet(
             "QPushButton {"
             "    background-color: transparent;"  // Set background color to transparent
             "    border: none;"                    // Remove the border
             "}"
     );
+
     proxyWidget->setWidget(&enterApplicationButton);
     proxyWidget->setPos(static_cast<float>((this->width() - enterApplicationButton.width())) / 2.0,
                         static_cast<float>((this->height() - enterApplicationButton.height())) / 2.0);

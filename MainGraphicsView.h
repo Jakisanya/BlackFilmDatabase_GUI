@@ -11,6 +11,7 @@
 #include "SearchPage.h"
 #include "ResultsPage.h"
 #include "FilmHighlightPage.h"
+#include "HoverButton.h"
 
 class MainGraphicsView : public QGraphicsView {
     Q_OBJECT
@@ -29,9 +30,9 @@ private:
     QGraphicsScene scene;
     QGraphicsVideoItem videoItem;
     QMediaPlayer mediaPlayer;
-    QPushButton enterApplicationButton;
-    QPixmap pixmap;
-    QIcon enterApplicationButtonIcon;
+    HoverButton enterApplicationButton;
+    QPixmap enterApplicationButtonNormalIconPixmap, enterApplicationButtonHoverIconPixmap;
+    QIcon enterApplicationButtonNormalIcon, enterApplicationButtonHoverIcon;
     QGraphicsProxyWidget* proxyWidget;
     SearchPage searchPage;
     ResultsPage resultsPage;
