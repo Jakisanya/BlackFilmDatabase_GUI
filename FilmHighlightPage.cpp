@@ -2,7 +2,9 @@
 
 FilmHighlightPage::FilmHighlightPage()
     : originalModel(nullptr) {
+
     setFixedSize(760, 550);
+    setStyleSheet("background-color: #292A32;");
 
     mainLayout.addSpacerItem(&sectionGap);
 

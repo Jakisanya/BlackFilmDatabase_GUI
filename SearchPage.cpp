@@ -1,299 +1,300 @@
 #include "SearchPage.h"
 
 SearchPage::SearchPage() {
-        setFixedSize(640, 740);
+    setFixedSize(640, 740);
+    setStyleSheet("background-color: #292A32;");
 
-        // Create PushButton vectors
-        genrePushButtons.push_back(&ActionPB);
-        genrePushButtons.push_back(&ThrillerPB);
-        genrePushButtons.push_back(&DramaPB);
-        genrePushButtons.push_back(&SciFiPB);
-        genrePushButtons.push_back(&HorrorPB);
-        genrePushButtons.push_back(&ComedyPB);
-        genrePushButtons.push_back(&RomancePB);
-        genrePushButtons.push_back(&CrimePB);
-        genrePushButtons.push_back(&FantasyPB);
-        genrePushButtons.push_back(&AnimationPB);
-        genrePushButtons.push_back(&AdventurePB);
-        genrePushButtons.push_back(&FamilyPB);
-        genrePushButtons.push_back(&WesternPB);
+    // Create PushButton vectors
+    genrePushButtons.push_back(&ActionPB);
+    genrePushButtons.push_back(&ThrillerPB);
+    genrePushButtons.push_back(&DramaPB);
+    genrePushButtons.push_back(&SciFiPB);
+    genrePushButtons.push_back(&HorrorPB);
+    genrePushButtons.push_back(&ComedyPB);
+    genrePushButtons.push_back(&RomancePB);
+    genrePushButtons.push_back(&CrimePB);
+    genrePushButtons.push_back(&FantasyPB);
+    genrePushButtons.push_back(&AnimationPB);
+    genrePushButtons.push_back(&AdventurePB);
+    genrePushButtons.push_back(&FamilyPB);
+    genrePushButtons.push_back(&WesternPB);
 
-        for (QPushButton* button: genrePushButtons) {
-            button->setCheckable(true);
-            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
-        }
-
-        ageRatingPushButtons.push_back(&U_PB);
-        ageRatingPushButtons.push_back(&PG_PB);
-        ageRatingPushButtons.push_back(&PG_THIRTEEN_PB);
-        ageRatingPushButtons.push_back(&THIRTEEN_PLUS_PB);
-        ageRatingPushButtons.push_back(&SIXTEEN_PLUS_PB);
-        ageRatingPushButtons.push_back(&R_PB);
-        ageRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
-        ageRatingPushButtons.push_back(&X_PB);
-        ageRatingPushButtons.push_back(&UNRATED_PB);
-
-        for (QPushButton* button: ageRatingPushButtons) {
-            button->setCheckable(true);
-            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
-        }
-
-        languagePushButtons.push_back(&EnglishPB);
-        languagePushButtons.push_back(&FrenchPB);
-        languagePushButtons.push_back(&SpanishPB);
-        languagePushButtons.push_back(&GermanPB);
-        languagePushButtons.push_back(&ItalianPB);
-        languagePushButtons.push_back(&JapanesePB);
-        languagePushButtons.push_back(&CantonesePB);
-        languagePushButtons.push_back(&MandarinPB);
-        languagePushButtons.push_back(&RussianPB);
-        languagePushButtons.push_back(&ArabicPB);
-
-        for (QPushButton* button: languagePushButtons) {
-            button->setCheckable(true);
-            connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
-        }
-
-        // Create Push Button Text Vectors
-        genrePushButtonTexts.push_back(ActionPBTextStr);
-        genrePushButtonTexts.push_back(ThrillerPBTextStr);
-        genrePushButtonTexts.push_back(DramaPBTextStr);
-        genrePushButtonTexts.push_back(SciFiPBTextStr);
-        genrePushButtonTexts.push_back(HorrorPBTextStr);
-        genrePushButtonTexts.push_back(ComedyPBTextStr);
-        genrePushButtonTexts.push_back(RomancePBTextStr);
-        genrePushButtonTexts.push_back(CrimePBTextStr);
-        genrePushButtonTexts.push_back(FantasyPBTextStr);
-        genrePushButtonTexts.push_back(AnimationPBTextStr);
-        genrePushButtonTexts.push_back(AdventurePBTextStr);
-        genrePushButtonTexts.push_back(FamilyPBTextStr);
-        genrePushButtonTexts.push_back(WesternPBTextStr);
-
-        ageRatingPushButtonTexts.push_back(U_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(PG_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(PG_THIRTEEN_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(THIRTEEN_PLUS_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(SIXTEEN_PLUS_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(R_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(EIGHTEEN_PLUS_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(X_PB_TextStr);
-        ageRatingPushButtonTexts.push_back(UNRATED_PB_TextStr);
-
-        languagePushButtonTexts.push_back(EnglishPBTextStr);
-        languagePushButtonTexts.push_back(FrenchPBTextStr);
-        languagePushButtonTexts.push_back(SpanishPBTextStr);
-        languagePushButtonTexts.push_back(GermanPBTextStr);
-        languagePushButtonTexts.push_back(ItalianPBTextStr);
-        languagePushButtonTexts.push_back(JapanesePBTextStr);
-        languagePushButtonTexts.push_back(CantonesePBTextStr);
-        languagePushButtonTexts.push_back(MandarinPBTextStr);
-        languagePushButtonTexts.push_back(RussianPBTextStr);
-        languagePushButtonTexts.push_back(ArabicPBTextStr);
-
-        /*
-        enteredKeywordLabels.push_back(&enteredKeyword1);
-        enteredKeywordLabels.push_back(&enteredKeyword2);
-        enteredKeywordLabels.push_back(&enteredKeyword3);
-        enteredKeywordLabels.push_back(&enteredKeyword4);
-        enteredKeywordLabels.push_back(&enteredKeyword5);
-        enteredKeywordLabels.push_back(&enteredKeyword6);
-        enteredKeywordLabels.push_back(&enteredKeyword7);
-        removeKeywordButtons.push_back(&removeKeywordButton1);
-        removeKeywordButtons.push_back(&removeKeywordButton2);
-        removeKeywordButtons.push_back(&removeKeywordButton3);
-        removeKeywordButtons.push_back(&removeKeywordButton4);
-        removeKeywordButtons.push_back(&removeKeywordButton5);
-        removeKeywordButtons.push_back(&removeKeywordButton6);
-        removeKeywordButtons.push_back(&removeKeywordButton7);
-        */
-
-        mainLayout.addSpacerItem(&sectionGap);
-
-        // Basic Search Fields
-        mainLayout.addLayout(&basicSectionLayout);
-        basicSectionLayout.setSizeConstraint(QLayout::SetMinAndMaxSize);
-
-        // Title
-        titleFieldLabel.setText("Title");
-        titleFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&titleFieldLabel);
-        titleLineEdit.setAlignment(Qt::AlignHCenter);
-        titleLineEdit.setFixedSize(500, 40);
-        titleLineEdit.setPlaceholderText("Optional; Leave blank (recommended)");
-        titleLineEditLayout.addWidget(&titleLineEdit);
-        basicSectionLayout.addLayout(&titleLineEditLayout);
-
-        // Release Year
-        releaseYearFieldLabel.setText("Release Year");
-        releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&releaseYearFieldLabel);
-
-        releaseYearFromLabel.setText("From");
-        releaseYearFromLabel.setFixedSize(70, 50);
-        releaseYearFromLabel.setAlignment(Qt::AlignCenter);
-        releaseYearFieldLayout.addWidget(&releaseYearFromLabel);
-        releaseYearFromLineEdit.setFixedSize(125, 40);
-        releaseYearFromLineEditIntValidator.setRange(1800, 2100);
-        releaseYearFromLineEdit.setValidator(&releaseYearFromLineEditIntValidator);
-        releaseYearFromLineEdit.setMaxLength(4);
-        releaseYearFromLineEdit.setPlaceholderText("e.g. 2000");
-        releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
-        releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
-
-        releaseYearToLabel.setText("To");
-        releaseYearToLabel.setFixedSize(70, 50);
-        releaseYearToLabel.setAlignment(Qt::AlignCenter);
-        releaseYearFieldLayout.addWidget(&releaseYearToLabel);
-        releaseYearToLineEdit.setFixedSize(125, 40);
-        releaseYearToLineEdit.setMaxLength(4);
-        releaseYearToLineEditIntValidator.setRange(1800, 2100);
-        releaseYearToLineEdit.setValidator(&releaseYearToLineEditIntValidator);
-        releaseYearToLineEdit.setAlignment(Qt::AlignHCenter);
-        releaseYearToLineEdit.setPlaceholderText("e.g. 2010");
-        releaseYearFieldLayout.addWidget(&releaseYearToLineEdit);
-        releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addLayout(&releaseYearFieldLayout);
-
-        // Genre
-        genreFieldLabel.setText("Genre");
-        genreFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&genreFieldLabel);
-        basicSectionLayout.addLayout(&genreGridLayout);
-        genreGridLayout.setAlignment(Qt::AlignHCenter);
-        for (int i{0}; i < genrePushButtons.size(); i++) {
-            genrePushButtons[i]->setFixedSize(80, 30);
-            genrePushButtons[i]->setText(genrePushButtonTexts[i]);
-            if (i <= 4)
-                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
-            if ((i > 4) && (i <= 9))
-                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
-            if (i > 9)
-                genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
-        }
-
-        // Film Rating
-        ageRatingFieldLabel.setText("Age Rating");
-        ageRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&ageRatingFieldLabel);
-        basicSectionLayout.addLayout(&ageRatingGridLayout);
-        ageRatingGridLayout.setAlignment(Qt::AlignHCenter);
-        for (int i{0}; i < ageRatingPushButtons.size(); i++) {
-            ageRatingPushButtons[i]->setFixedSize(80, 30);
-            ageRatingPushButtons[i]->setText(ageRatingPushButtonTexts[i]);
-            if (i <= 4)
-                ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
-            if (i > 4)
-                ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
-        }
-
-        // Language
-        languageFieldLabel.setText("Language");
-        languageFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&languageFieldLabel);
-        basicSectionLayout.addLayout(&languageGridLayout);
-        languageGridLayout.setAlignment(Qt::AlignCenter);
-        for (int i{0}; i < languagePushButtons.size(); i++) {
-            languagePushButtons[i]->setFixedSize(80, 30);
-            languagePushButtons[i]->setText(languagePushButtonTexts[i]);
-            if (i <= 4)
-                languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
-            if (i > 4)
-                languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
-        }
-
-        // IMDb Rating
-        imdbRatingFieldLabel.setText("IMDb Minimum Rating");
-        imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&imdbRatingFieldLabel);
-        basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
-        imdbRatingLineEdit.setFixedSize(250, 40);
-        imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
-        imdbRatingLineEdit.setMaxLength(4);
-        imdbRatingDoubleValidator.setRange(0.0, 10.0, 1);
-        imdbRatingLineEdit.setValidator(&imdbRatingDoubleValidator);
-        imdbRatingDoubleValidator.setNotation(QDoubleValidator::StandardNotation);
-        imdbRatingLineEdit.setPlaceholderText("Enter a value between 0.0 and 10.0");
-        imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
-
-        // Rotten Tomatoes Rating
-        rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating");
-        rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
-        basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
-        basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
-        rottenTomatoesRatingLineEdit.setFixedSize(250, 40);
-        rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
-        rottenTomatoesRatingLineEdit.setMaxLength(3);
-        // rottenTomatoesRatingIntValidator.setRange(0, 100);
-        // rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
-        rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
-        rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
-
-        mainLayout.addSpacerItem(&sectionGap);
-
-        /*
-        // Create the advanced section header button with down arrow icon
-        mainLayout.addLayout(&advancedSectionToggleButtonLayout);
-        advancedSectionToggleButton.setIcon(QIcon(
-                R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
-        advancedSectionToggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        advancedSectionToggleButton.setText("Advanced Search");
-        advancedSectionToggleButton.setFixedSize(120, 40);
-        advancedSectionToggleButtonLayout.addWidget(&advancedSectionToggleButton);
-        advancedSectionToggleButtonLayout.setAlignment(Qt::AlignHCenter);
-        // Connect the toggle button's clicked signal to the toggleSection slot
-        connect(&advancedSectionToggleButton, &QToolButton::clicked, this,
-                &SearchPage::toggleAdvancedSearchSection);
-
-        mainLayout.addSpacerItem(&sectionGap);
-        mainLayout.addLayout(&advancedSectionLayout);
-
-        // Keywords
-        keywordsFieldLabel.setText("Keywords");
-        keywordsFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&keywordsFieldLabel);
-        keywordsLineEdit.setFixedSize(500, 40);
-        keywordsLineEdit.setAlignment(Qt::AlignHCenter);
-        keywordsLineEditLayout.addWidget(&keywordsLineEdit);
-        advancedSectionLayout.addLayout(&keywordsLineEditLayout);
-        enteredKeywordsLayout.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addLayout(&enteredKeywordsLayout);
-        connect(&keywordsLineEdit, &QLineEdit::returnPressed, this, &SearchPage::addKeyword);
-
-        // Actors
-        actorsFieldLabel.setText("Actors");
-        actorsFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&actorsFieldLabel);
-        actorsLineEdit.setFixedSize(500, 40);
-        actorsLineEdit.setAlignment(Qt::AlignHCenter);
-        actorsLineEditLayout.addWidget(&actorsLineEdit);
-        advancedSectionLayout.addLayout(&actorsLineEditLayout);
-
-        // Directors
-        directorsFieldLabel.setText("Directors");
-        directorsFieldLabel.setAlignment(Qt::AlignHCenter);
-        advancedSectionLayout.addWidget(&directorsFieldLabel);
-        directorsLineEdit.setFixedSize(500, 40);
-        directorsLineEdit.setAlignment(Qt::AlignHCenter);
-        directorsLineEditLayout.addWidget(&directorsLineEdit);
-        advancedSectionLayout.addLayout(&directorsLineEditLayout);
-
-        */
-
-        mainLayout.addSpacerItem(&sectionGap);
-
-        // Search Button
-        searchDatabaseButton.setText("SEARCH");
-        searchDatabaseButton.setFixedSize(200, 50);
-        searchDatabaseButtonLayout.addWidget(&searchDatabaseButton);
-        searchDatabaseButtonLayout.setAlignment(Qt::AlignHCenter);
-        mainLayout.addLayout(&searchDatabaseButtonLayout);
-
-        mainLayout.addSpacerItem(&sectionGap);
-
-        setLayout(&mainLayout);
-
-        connect(&searchDatabaseButton, &QPushButton::clicked, this, &SearchPage::onSearchDatabaseButtonClicked);
+    for (QPushButton* button: genrePushButtons) {
+        button->setCheckable(true);
+        connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
     }
+
+    ageRatingPushButtons.push_back(&U_PB);
+    ageRatingPushButtons.push_back(&PG_PB);
+    ageRatingPushButtons.push_back(&PG_THIRTEEN_PB);
+    ageRatingPushButtons.push_back(&THIRTEEN_PLUS_PB);
+    ageRatingPushButtons.push_back(&SIXTEEN_PLUS_PB);
+    ageRatingPushButtons.push_back(&R_PB);
+    ageRatingPushButtons.push_back(&EIGHTEEN_PLUS_PB);
+    ageRatingPushButtons.push_back(&X_PB);
+    ageRatingPushButtons.push_back(&UNRATED_PB);
+
+    for (QPushButton* button: ageRatingPushButtons) {
+        button->setCheckable(true);
+        connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
+    }
+
+    languagePushButtons.push_back(&EnglishPB);
+    languagePushButtons.push_back(&FrenchPB);
+    languagePushButtons.push_back(&SpanishPB);
+    languagePushButtons.push_back(&GermanPB);
+    languagePushButtons.push_back(&ItalianPB);
+    languagePushButtons.push_back(&JapanesePB);
+    languagePushButtons.push_back(&CantonesePB);
+    languagePushButtons.push_back(&MandarinPB);
+    languagePushButtons.push_back(&RussianPB);
+    languagePushButtons.push_back(&ArabicPB);
+
+    for (QPushButton* button: languagePushButtons) {
+        button->setCheckable(true);
+        connect(button, &QPushButton::clicked, this, &SearchPage::selectButton);
+    }
+
+    // Create Push Button Text Vectors
+    genrePushButtonTexts.push_back(ActionPBTextStr);
+    genrePushButtonTexts.push_back(ThrillerPBTextStr);
+    genrePushButtonTexts.push_back(DramaPBTextStr);
+    genrePushButtonTexts.push_back(SciFiPBTextStr);
+    genrePushButtonTexts.push_back(HorrorPBTextStr);
+    genrePushButtonTexts.push_back(ComedyPBTextStr);
+    genrePushButtonTexts.push_back(RomancePBTextStr);
+    genrePushButtonTexts.push_back(CrimePBTextStr);
+    genrePushButtonTexts.push_back(FantasyPBTextStr);
+    genrePushButtonTexts.push_back(AnimationPBTextStr);
+    genrePushButtonTexts.push_back(AdventurePBTextStr);
+    genrePushButtonTexts.push_back(FamilyPBTextStr);
+    genrePushButtonTexts.push_back(WesternPBTextStr);
+
+    ageRatingPushButtonTexts.push_back(U_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(PG_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(PG_THIRTEEN_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(THIRTEEN_PLUS_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(SIXTEEN_PLUS_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(R_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(EIGHTEEN_PLUS_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(X_PB_TextStr);
+    ageRatingPushButtonTexts.push_back(UNRATED_PB_TextStr);
+
+    languagePushButtonTexts.push_back(EnglishPBTextStr);
+    languagePushButtonTexts.push_back(FrenchPBTextStr);
+    languagePushButtonTexts.push_back(SpanishPBTextStr);
+    languagePushButtonTexts.push_back(GermanPBTextStr);
+    languagePushButtonTexts.push_back(ItalianPBTextStr);
+    languagePushButtonTexts.push_back(JapanesePBTextStr);
+    languagePushButtonTexts.push_back(CantonesePBTextStr);
+    languagePushButtonTexts.push_back(MandarinPBTextStr);
+    languagePushButtonTexts.push_back(RussianPBTextStr);
+    languagePushButtonTexts.push_back(ArabicPBTextStr);
+
+    /*
+    enteredKeywordLabels.push_back(&enteredKeyword1);
+    enteredKeywordLabels.push_back(&enteredKeyword2);
+    enteredKeywordLabels.push_back(&enteredKeyword3);
+    enteredKeywordLabels.push_back(&enteredKeyword4);
+    enteredKeywordLabels.push_back(&enteredKeyword5);
+    enteredKeywordLabels.push_back(&enteredKeyword6);
+    enteredKeywordLabels.push_back(&enteredKeyword7);
+    removeKeywordButtons.push_back(&removeKeywordButton1);
+    removeKeywordButtons.push_back(&removeKeywordButton2);
+    removeKeywordButtons.push_back(&removeKeywordButton3);
+    removeKeywordButtons.push_back(&removeKeywordButton4);
+    removeKeywordButtons.push_back(&removeKeywordButton5);
+    removeKeywordButtons.push_back(&removeKeywordButton6);
+    removeKeywordButtons.push_back(&removeKeywordButton7);
+    */
+
+    mainLayout.addSpacerItem(&sectionGap);
+
+    // Basic Search Fields
+    mainLayout.addLayout(&basicSectionLayout);
+    basicSectionLayout.setSizeConstraint(QLayout::SetMinAndMaxSize);
+
+    // Title
+    titleFieldLabel.setText("Title");
+    titleFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&titleFieldLabel);
+    titleLineEdit.setAlignment(Qt::AlignHCenter);
+    titleLineEdit.setFixedSize(500, 40);
+    titleLineEdit.setPlaceholderText("Optional; Leave blank (recommended)");
+    titleLineEditLayout.addWidget(&titleLineEdit);
+    basicSectionLayout.addLayout(&titleLineEditLayout);
+
+    // Release Year
+    releaseYearFieldLabel.setText("Release Year");
+    releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&releaseYearFieldLabel);
+
+    releaseYearFromLabel.setText("From");
+    releaseYearFromLabel.setFixedSize(70, 50);
+    releaseYearFromLabel.setAlignment(Qt::AlignCenter);
+    releaseYearFieldLayout.addWidget(&releaseYearFromLabel);
+    releaseYearFromLineEdit.setFixedSize(125, 40);
+    releaseYearFromLineEditIntValidator.setRange(1800, 2100);
+    releaseYearFromLineEdit.setValidator(&releaseYearFromLineEditIntValidator);
+    releaseYearFromLineEdit.setMaxLength(4);
+    releaseYearFromLineEdit.setPlaceholderText("e.g. 2000");
+    releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
+    releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
+
+    releaseYearToLabel.setText("To");
+    releaseYearToLabel.setFixedSize(70, 50);
+    releaseYearToLabel.setAlignment(Qt::AlignCenter);
+    releaseYearFieldLayout.addWidget(&releaseYearToLabel);
+    releaseYearToLineEdit.setFixedSize(125, 40);
+    releaseYearToLineEdit.setMaxLength(4);
+    releaseYearToLineEditIntValidator.setRange(1800, 2100);
+    releaseYearToLineEdit.setValidator(&releaseYearToLineEditIntValidator);
+    releaseYearToLineEdit.setAlignment(Qt::AlignHCenter);
+    releaseYearToLineEdit.setPlaceholderText("e.g. 2010");
+    releaseYearFieldLayout.addWidget(&releaseYearToLineEdit);
+    releaseYearFieldLayout.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addLayout(&releaseYearFieldLayout);
+
+    // Genre
+    genreFieldLabel.setText("Genre");
+    genreFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&genreFieldLabel);
+    basicSectionLayout.addLayout(&genreGridLayout);
+    genreGridLayout.setAlignment(Qt::AlignHCenter);
+    for (int i{0}; i < genrePushButtons.size(); i++) {
+        genrePushButtons[i]->setFixedSize(80, 30);
+        genrePushButtons[i]->setText(genrePushButtonTexts[i]);
+        if (i <= 4)
+            genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
+        if ((i > 4) && (i <= 9))
+            genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
+        if (i > 9)
+            genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
+    }
+
+    // Film Rating
+    ageRatingFieldLabel.setText("Age Rating");
+    ageRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&ageRatingFieldLabel);
+    basicSectionLayout.addLayout(&ageRatingGridLayout);
+    ageRatingGridLayout.setAlignment(Qt::AlignHCenter);
+    for (int i{0}; i < ageRatingPushButtons.size(); i++) {
+        ageRatingPushButtons[i]->setFixedSize(80, 30);
+        ageRatingPushButtons[i]->setText(ageRatingPushButtonTexts[i]);
+        if (i <= 4)
+            ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
+        if (i > 4)
+            ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
+    }
+
+    // Language
+    languageFieldLabel.setText("Language");
+    languageFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&languageFieldLabel);
+    basicSectionLayout.addLayout(&languageGridLayout);
+    languageGridLayout.setAlignment(Qt::AlignCenter);
+    for (int i{0}; i < languagePushButtons.size(); i++) {
+        languagePushButtons[i]->setFixedSize(80, 30);
+        languagePushButtons[i]->setText(languagePushButtonTexts[i]);
+        if (i <= 4)
+            languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
+        if (i > 4)
+            languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
+    }
+
+    // IMDb Rating
+    imdbRatingFieldLabel.setText("IMDb Minimum Rating");
+    imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&imdbRatingFieldLabel);
+    basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
+    imdbRatingLineEdit.setFixedSize(250, 40);
+    imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
+    imdbRatingLineEdit.setMaxLength(4);
+    imdbRatingDoubleValidator.setRange(0.0, 10.0, 1);
+    imdbRatingLineEdit.setValidator(&imdbRatingDoubleValidator);
+    imdbRatingDoubleValidator.setNotation(QDoubleValidator::StandardNotation);
+    imdbRatingLineEdit.setPlaceholderText("Enter a value between 0.0 and 10.0");
+    imdbRatingLineEditLayout.addWidget(&imdbRatingLineEdit);
+
+    // Rotten Tomatoes Rating
+    rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating");
+    rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
+    basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
+    rottenTomatoesRatingLineEdit.setFixedSize(250, 40);
+    rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
+    rottenTomatoesRatingLineEdit.setMaxLength(3);
+    // rottenTomatoesRatingIntValidator.setRange(0, 100);
+    // rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
+    rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
+    rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
+
+    mainLayout.addSpacerItem(&sectionGap);
+
+    /*
+    // Create the advanced section header button with down arrow icon
+    mainLayout.addLayout(&advancedSectionToggleButtonLayout);
+    advancedSectionToggleButton.setIcon(QIcon(
+            R"(C:\Users\jorda\CLionProjects\BlackFilmDatabase_GUI_2\down_arrow.png)"));
+    advancedSectionToggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    advancedSectionToggleButton.setText("Advanced Search");
+    advancedSectionToggleButton.setFixedSize(120, 40);
+    advancedSectionToggleButtonLayout.addWidget(&advancedSectionToggleButton);
+    advancedSectionToggleButtonLayout.setAlignment(Qt::AlignHCenter);
+    // Connect the toggle button's clicked signal to the toggleSection slot
+    connect(&advancedSectionToggleButton, &QToolButton::clicked, this,
+            &SearchPage::toggleAdvancedSearchSection);
+
+    mainLayout.addSpacerItem(&sectionGap);
+    mainLayout.addLayout(&advancedSectionLayout);
+
+    // Keywords
+    keywordsFieldLabel.setText("Keywords");
+    keywordsFieldLabel.setAlignment(Qt::AlignHCenter);
+    advancedSectionLayout.addWidget(&keywordsFieldLabel);
+    keywordsLineEdit.setFixedSize(500, 40);
+    keywordsLineEdit.setAlignment(Qt::AlignHCenter);
+    keywordsLineEditLayout.addWidget(&keywordsLineEdit);
+    advancedSectionLayout.addLayout(&keywordsLineEditLayout);
+    enteredKeywordsLayout.setAlignment(Qt::AlignHCenter);
+    advancedSectionLayout.addLayout(&enteredKeywordsLayout);
+    connect(&keywordsLineEdit, &QLineEdit::returnPressed, this, &SearchPage::addKeyword);
+
+    // Actors
+    actorsFieldLabel.setText("Actors");
+    actorsFieldLabel.setAlignment(Qt::AlignHCenter);
+    advancedSectionLayout.addWidget(&actorsFieldLabel);
+    actorsLineEdit.setFixedSize(500, 40);
+    actorsLineEdit.setAlignment(Qt::AlignHCenter);
+    actorsLineEditLayout.addWidget(&actorsLineEdit);
+    advancedSectionLayout.addLayout(&actorsLineEditLayout);
+
+    // Directors
+    directorsFieldLabel.setText("Directors");
+    directorsFieldLabel.setAlignment(Qt::AlignHCenter);
+    advancedSectionLayout.addWidget(&directorsFieldLabel);
+    directorsLineEdit.setFixedSize(500, 40);
+    directorsLineEdit.setAlignment(Qt::AlignHCenter);
+    directorsLineEditLayout.addWidget(&directorsLineEdit);
+    advancedSectionLayout.addLayout(&directorsLineEditLayout);
+
+    */
+
+    mainLayout.addSpacerItem(&sectionGap);
+
+    // Search Button
+    searchDatabaseButton.setText("SEARCH");
+    searchDatabaseButton.setFixedSize(200, 50);
+    searchDatabaseButtonLayout.addWidget(&searchDatabaseButton);
+    searchDatabaseButtonLayout.setAlignment(Qt::AlignHCenter);
+    mainLayout.addLayout(&searchDatabaseButtonLayout);
+
+    mainLayout.addSpacerItem(&sectionGap);
+
+    setLayout(&mainLayout);
+
+    connect(&searchDatabaseButton, &QPushButton::clicked, this, &SearchPage::onSearchDatabaseButtonClicked);
+}
 
 // KeyPressEvents function
 void SearchPage::keyPressEvent(QKeyEvent* event) {

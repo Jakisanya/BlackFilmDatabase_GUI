@@ -29,7 +29,9 @@ private:
     QGraphicsScene scene;
     QGraphicsVideoItem videoItem;
     QMediaPlayer mediaPlayer;
-    QPushButton searchPageButton;
+    QPushButton enterApplicationButton;
+    QPixmap pixmap;
+    QIcon enterApplicationButtonIcon;
     QGraphicsProxyWidget* proxyWidget;
     SearchPage searchPage;
     ResultsPage resultsPage;

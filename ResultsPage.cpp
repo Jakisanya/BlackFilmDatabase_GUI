@@ -3,6 +3,7 @@
 ResultsPage::ResultsPage() {
     // display the results in widgets and layouts etc.
     setFixedSize(1280, 740);
+    setStyleSheet("background-color: #292A32;");
 
     mainLayout.addSpacerItem(&sectionGap);
 

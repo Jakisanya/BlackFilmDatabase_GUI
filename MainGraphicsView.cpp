@@ -22,17 +22,42 @@ MainGraphicsView::MainGraphicsView() {
 
     // Create central button by wrapping it in a QGraphics proxy widget (allows me to manipulate its properties)
     proxyWidget = scene.addWidget(new QWidget);
-    searchPageButton.setText("SEARCH DATABASE");
-    searchPageButton.setFixedSize(200, 50);
-    proxyWidget->setWidget(&searchPageButton);
-    proxyWidget->setPos(static_cast<float>((this->width() - searchPageButton.width())) / 2.0,
-                        static_cast<float>((this->height() - searchPageButton.height())) / 2.0);
+
+    // Define icons for normal and hover states
+    QIcon normalIcon("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton.png");
+    QIcon hoverIcon("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton_hover.png"); // Example of a different colored icon
+
+    // Set initial icon
+    enterApplicationButton.setIcon(normalIcon);
+
+    // Connect hover events to change icon
+    QObject::connect(&enterApplicationButton, &QPushButton::enterEvent, [&enterApplicationButton, &hoverIcon]() {
+        enterApplicationButton.setIcon(hoverIcon);
+    });
+
+    QObject::connect(&enterApplicationButton, &QPushButton::leaveEvent, [&enterApplicationButton, &normalIcon]() {
+        enterApplicationButton.setIcon(normalIcon);
+    });
+
+    pixmap.load("C:/Users/jorda/Documents/Figma Project Files/Black Film Database Search/enterApplicationButton.png");
+    enterApplicationButtonIcon.addPixmap(pixmap);
+    enterApplicationButton.setIcon(enterApplicationButtonIcon);
+    enterApplicationButton.setIconSize(pixmap.rect().size());
+    enterApplicationButton.setStyleSheet(
+            "QPushButton {"
+            "    background-color: transparent;"  // Set background color to transparent
+            "    border: none;"                    // Remove the border
+            "}"
+    );
+    proxyWidget->setWidget(&enterApplicationButton);
+    proxyWidget->setPos(static_cast<float>((this->width() - enterApplicationButton.width())) / 2.0,
+                        static_cast<float>((this->height() - enterApplicationButton.height())) / 2.0);
 
     // Play video
     mediaPlayer.play();
 
     // Connect button to "Go to Search Page" action
-    QObject::connect(&searchPageButton, &QPushButton::clicked, this,
+    QObject::connect(&enterApplicationButton, &QPushButton::clicked, this,
                      &MainGraphicsView::showSearchPage);
 
     QObject::connect(&searchPage, &SearchPage::searchDatabaseButtonClicked, this, [this]() {
@@ -75,8 +100,8 @@ void MainGraphicsView::goBackToSearchPageFromResultsPage(){
     scene.addItem(proxyWidget);
 
     // Reconnect the onSearchDatabaseButtonClicked slot to searchDatabaseButton::clicked signal to prepare to use it again.
-    QObject::disconnect(&searchPageButton, &QPushButton::clicked, nullptr, nullptr);
-    QObject::connect(&searchPageButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
+    QObject::disconnect(&enterApplicationButton, &QPushButton::clicked, nullptr, nullptr);
+    QObject::connect(&enterApplicationButton, &QPushButton::clicked, &searchPage, &SearchPage::onSearchDatabaseButtonClicked);
 
     // Reconnect the showResultsPage and handleQueryResults slots to searchDatabaseButtonClicked signal to prepare to use them again.
     QObject::disconnect(&searchPage, &SearchPage::searchDatabaseButtonClicked, nullptr, nullptr);
