@@ -204,7 +204,9 @@ SearchPage::SearchPage() {
     basicSectionLayout.addWidget(&genreFieldLabel);
     basicSectionLayout.addLayout(&genreGridLayout);
     genreGridLayout.setAlignment(Qt::AlignHCenter);
+    genreGridLayout.setVerticalSpacing(35);
     for (int i{0}; i < genrePushButtons.size(); i++) {
+        genrePushButtons[i]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         genrePushButtons[i]->setFixedSize(80, 30);
         genrePushButtons[i]->setText(genrePushButtonTexts[i]);
         genrePushButtons[i]->setStyleSheet(
@@ -223,6 +225,8 @@ SearchPage::SearchPage() {
         if (i > 9)
             genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
     }
+
+    basicSectionLayout.addSpacing(32);
 
     // Film Rating
     ageRatingFieldLabel.setText("Age Rating");
@@ -280,6 +284,8 @@ SearchPage::SearchPage() {
             languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
     }
 
+    basicSectionLayout.addSpacing(5);
+
     // IMDb Rating
     imdbRatingFieldLabel.setText("IMDb Minimum Rating");
     imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
@@ -294,7 +300,7 @@ SearchPage::SearchPage() {
     imdbRatingLineEdit.setMaxLength(4);
     imdbRatingLineEdit.setStyleSheet(
             "QLineEdit {"
-            "   border: 2.5px solid #000000;" // Border color
+            "   border: 1.5px solid #000000;" // Border color
             "   border-radius: 8px;"         // Rounded corners
             "   padding: 2px 4px;"           // Padding inside the QLineEdit
             "   background: #ffffff;"        // Background color
@@ -321,15 +327,13 @@ SearchPage::SearchPage() {
     rottenTomatoesRatingLineEdit.setMaxLength(3);
     rottenTomatoesRatingLineEdit.setStyleSheet(
             "QLineEdit {"
-            "   border: 2.5px solid #000000;" // Border color
+            "   border: 1.5px solid #000000;" // Border color
             "   border-radius: 8px;"         // Rounded corners
             "   padding: 2px 4px;"           // Padding inside the QLineEdit
             "   background: #ffffff;"        // Background color
             "   font: 14px 'Patrick Hand SC';"
             "}"
     );
-    // rottenTomatoesRatingIntValidator.setRange(0, 100);
-    // rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
     rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
     rottenTomatoesRatingLineEditLayout.addWidget(&rottenTomatoesRatingLineEdit);
 
@@ -391,11 +395,12 @@ SearchPage::SearchPage() {
     searchDatabaseButton.setFixedSize(200, 50);
     searchDatabaseButton.setStyleSheet(
             "QPushButton {"
-            "   border: 1.5px solid #000000;" // Border color
+            "   border: 1.5px solid #6B0E82;" // Border color
             "   border-radius: 8px;"         // Rounded corners
             "   padding: 2px 4px;"           // Padding inside the QLineEdit
             "   background: #ffffff;"        // Background color
             "   font: 14px 'Patrick Hand SC';"
+            "   color: #6B0E82;"
             "}"
     );
     searchDatabaseButtonLayout.addWidget(&searchDatabaseButton);
@@ -680,9 +685,26 @@ void SearchPage::selectButton() {
     auto* clickedButton = qobject_cast<QPushButton*>(sender());
     if (clickedButton->isChecked()) {
         // Apply a different style when button is checked
-        clickedButton->setStyleSheet("background-color: blue");
+        clickedButton->setStyleSheet(
+                "QPushButton {"
+                "   border: 1.5px solid #6B0E82;" // Border color
+                "   border-radius: 8px;"         // Rounded corners
+                "   padding: 2px 4px;"           // Padding inside the QLineEdit
+                "   background: #ffffff;"        // Background color
+                "   font: 14px 'Patrick Hand SC';"
+                "   color: #6B0E82;"
+                "}"
+        );;
     } else {
         // Apply the default style when button is unchecked
-        clickedButton->setStyleSheet(""); // Clearing stylesheet to revert to default
+        clickedButton->setStyleSheet(
+                "QPushButton {"
+                "   border: 1.5px solid #000000;" // Border color
+                "   border-radius: 8px;"         // Rounded corners
+                "   padding: 2px 4px;"           // Padding inside the QLineEdit
+                "   background: #ffffff;"        // Background color
+                "   font: 14px 'Patrick Hand SC';"
+                "}"
+        );; // Clearing stylesheet to revert to default
     }
 };

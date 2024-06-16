@@ -11,6 +11,16 @@ FilmHighlightPage::FilmHighlightPage()
     // Search Button
     backToResultsPageButton.setText("BACK TO RESULTS");
     backToResultsPageButton.setFixedSize(200, 50);
+    backToResultsPageButton.setStyleSheet(
+            "QPushButton {"
+            "   border: 1.5px solid #6B0E82;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "   color: #6B0E82;"
+            "}"
+    );
     backToResultsPageButtonLayout.addWidget(&backToResultsPageButton);
     backToResultsPageButtonLayout.setAlignment(Qt::AlignCenter);
     mainLayout.addLayout(&backToResultsPageButtonLayout);
@@ -92,6 +102,12 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     plotLabel.setText(plot);
     plotLabel.setWordWrap(true);
     plotLabel.setAlignment(Qt::AlignJustify);
+    plotLabel.setStyleSheet(
+            "QLabel {"
+            "font: 16px 'Patrick Hand SC';"
+            "color: #ffffff;"
+            "}"
+    );
 
     // Create the transpose proxy model and set the source model
     transposeProxyModel.setSourceModel(originalModel);
@@ -102,6 +118,16 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     tableView.setColumnWidth(0, 216);
     tableView.setWordWrap(true);
     tableView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    tableView.setStyleSheet(
+            "QTableView {"
+            "    background-color: #ffffff;"
+            "    font: 14px 'Patrick Hand SC';"
+            "}"
+            "QHeaderView::section {"
+            "    background-color: #ffffff;"
+            "    font: 14px 'Patrick Hand SC';"
+            "}"
+    );
 
     QObject::disconnect(&manager, &QNetworkAccessManager::finished, nullptr, nullptr);
     QObject::connect(&manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {

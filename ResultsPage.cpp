@@ -10,6 +10,16 @@ ResultsPage::ResultsPage() {
     // Search Button
     backToSearchPageButton.setText("BACK TO SEARCH");
     backToSearchPageButton.setFixedSize(200, 50);
+    backToSearchPageButton.setStyleSheet(
+            "QPushButton {"
+            "   border: 1.5px solid #6B0E82;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "   color: #6B0E82;"
+            "}"
+    );
     backToSearchPageButtonLayout.addWidget(&backToSearchPageButton);
     backToSearchPageButtonLayout.setAlignment(Qt::AlignHCenter);
     mainLayout.addLayout(&backToSearchPageButtonLayout);
@@ -23,6 +33,16 @@ ResultsPage::ResultsPage() {
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
     tableView.setWordWrap(true);
+    tableView.setStyleSheet(
+            "QTableView {"
+            "    background-color: #ffffff;"
+            "    font: 14px 'Patrick Hand SC';"
+            "}"
+            "QHeaderView::section {"
+            "    background-color: #ffffff;"
+            "    font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     tableViewLayout.addWidget(&tableView);
 
     mainLayout.addLayout(&tableViewLayout);
