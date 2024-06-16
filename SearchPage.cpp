@@ -117,23 +117,47 @@ SearchPage::SearchPage() {
     // Title
     titleFieldLabel.setText("Title");
     titleFieldLabel.setAlignment(Qt::AlignHCenter);
+    titleFieldLabel.setStyleSheet("QLabel {"
+                                  "font: 16px 'Patrick Hand SC';"
+                                  "color: #ffffff;"
+                                  "}");
     basicSectionLayout.addWidget(&titleFieldLabel);
     titleLineEdit.setAlignment(Qt::AlignHCenter);
     titleLineEdit.setFixedSize(500, 40);
     titleLineEdit.setPlaceholderText("Optional; Leave blank (recommended)");
+    titleLineEdit.setStyleSheet(
+            "QLineEdit {"
+            "   border: 1.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     titleLineEditLayout.addWidget(&titleLineEdit);
     basicSectionLayout.addLayout(&titleLineEditLayout);
 
     // Release Year
-    releaseYearFieldLabel.setText("Release Year");
+    releaseYearFieldLabel.setText("Release Year (Range)");
     releaseYearFieldLabel.setAlignment(Qt::AlignHCenter);
+    releaseYearFieldLabel.setStyleSheet(
+            "QLabel {"
+            "font: 16px 'Patrick Hand SC';"
+            "color: #ffffff;"
+            "}"
+    );
     basicSectionLayout.addWidget(&releaseYearFieldLabel);
 
-    releaseYearFromLabel.setText("From");
-    releaseYearFromLabel.setFixedSize(70, 50);
-    releaseYearFromLabel.setAlignment(Qt::AlignCenter);
-    releaseYearFieldLayout.addWidget(&releaseYearFromLabel);
-    releaseYearFromLineEdit.setFixedSize(125, 40);
+    releaseYearFromLineEdit.setFixedSize(175, 40);
+    releaseYearFromLineEdit.setStyleSheet(
+            "QLineEdit {"
+            "   border: 1.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     releaseYearFromLineEditIntValidator.setRange(1800, 2100);
     releaseYearFromLineEdit.setValidator(&releaseYearFromLineEditIntValidator);
     releaseYearFromLineEdit.setMaxLength(4);
@@ -141,11 +165,26 @@ SearchPage::SearchPage() {
     releaseYearFromLineEdit.setAlignment(Qt::AlignHCenter);
     releaseYearFieldLayout.addWidget(&releaseYearFromLineEdit);
 
-    releaseYearToLabel.setText("To");
+    releaseYearToLabel.setText("to");
     releaseYearToLabel.setFixedSize(70, 50);
     releaseYearToLabel.setAlignment(Qt::AlignCenter);
+    releaseYearToLabel.setStyleSheet(
+            "QLabel {"
+            "font: 16px 'Patrick Hand SC';"
+            "color: #ffffff;"
+            "}"
+    );
     releaseYearFieldLayout.addWidget(&releaseYearToLabel);
-    releaseYearToLineEdit.setFixedSize(125, 40);
+    releaseYearToLineEdit.setFixedSize(175, 40);
+    releaseYearToLineEdit.setStyleSheet(
+            "QLineEdit {"
+            "   border: 1.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     releaseYearToLineEdit.setMaxLength(4);
     releaseYearToLineEditIntValidator.setRange(1800, 2100);
     releaseYearToLineEdit.setValidator(&releaseYearToLineEditIntValidator);
@@ -158,12 +197,25 @@ SearchPage::SearchPage() {
     // Genre
     genreFieldLabel.setText("Genre");
     genreFieldLabel.setAlignment(Qt::AlignHCenter);
+    genreFieldLabel.setStyleSheet("QLabel {"
+                                   "font: 16px 'Patrick Hand SC';"
+                                   "color: #ffffff;"
+                                   "}");
     basicSectionLayout.addWidget(&genreFieldLabel);
     basicSectionLayout.addLayout(&genreGridLayout);
     genreGridLayout.setAlignment(Qt::AlignHCenter);
     for (int i{0}; i < genrePushButtons.size(); i++) {
         genrePushButtons[i]->setFixedSize(80, 30);
         genrePushButtons[i]->setText(genrePushButtonTexts[i]);
+        genrePushButtons[i]->setStyleSheet(
+                "QPushButton {"
+                "   border: 1.5px solid #000000;" // Border color
+                "   border-radius: 8px;"         // Rounded corners
+                "   padding: 2px 4px;"           // Padding inside the QLineEdit
+                "   background: #ffffff;"        // Background color
+                "   font: 14px 'Patrick Hand SC';"
+                "}"
+        );
         if (i <= 4)
             genreGridLayout.addWidget(genrePushButtons[i], i / 5, i % 5);
         if ((i > 4) && (i <= 9))
@@ -175,12 +227,25 @@ SearchPage::SearchPage() {
     // Film Rating
     ageRatingFieldLabel.setText("Age Rating");
     ageRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    ageRatingFieldLabel.setStyleSheet("QLabel {"
+                                      "font: 16px 'Patrick Hand SC';"
+                                      "color: #ffffff;"
+                                      "}");
     basicSectionLayout.addWidget(&ageRatingFieldLabel);
     basicSectionLayout.addLayout(&ageRatingGridLayout);
     ageRatingGridLayout.setAlignment(Qt::AlignHCenter);
     for (int i{0}; i < ageRatingPushButtons.size(); i++) {
         ageRatingPushButtons[i]->setFixedSize(80, 30);
         ageRatingPushButtons[i]->setText(ageRatingPushButtonTexts[i]);
+        ageRatingPushButtons[i]->setStyleSheet(
+                "QPushButton {"
+                "   border: 1.5px solid #000000;" // Border color
+                "   border-radius: 8px;"         // Rounded corners
+                "   padding: 2px 4px;"           // Padding inside the QLineEdit
+                "   background: #ffffff;"        // Background color
+                "   font: 14px 'Patrick Hand SC';"
+                "}"
+        );
         if (i <= 4)
             ageRatingGridLayout.addWidget(ageRatingPushButtons[i], i / 5, i % 5);
         if (i > 4)
@@ -190,12 +255,25 @@ SearchPage::SearchPage() {
     // Language
     languageFieldLabel.setText("Language");
     languageFieldLabel.setAlignment(Qt::AlignHCenter);
+    languageFieldLabel.setStyleSheet("QLabel {"
+                                     "font: 16px 'Patrick Hand SC';"
+                                     "color: #ffffff;"
+                                     "}");
     basicSectionLayout.addWidget(&languageFieldLabel);
     basicSectionLayout.addLayout(&languageGridLayout);
     languageGridLayout.setAlignment(Qt::AlignCenter);
     for (int i{0}; i < languagePushButtons.size(); i++) {
         languagePushButtons[i]->setFixedSize(80, 30);
         languagePushButtons[i]->setText(languagePushButtonTexts[i]);
+        languagePushButtons[i]->setStyleSheet(
+                "QPushButton {"
+                "   border: 1.5px solid #000000;" // Border color
+                "   border-radius: 8px;"         // Rounded corners
+                "   padding: 2px 4px;"           // Padding inside the QLineEdit
+                "   background: #ffffff;"        // Background color
+                "   font: 14px 'Patrick Hand SC';"
+                "}"
+        );
         if (i <= 4)
             languageGridLayout.addWidget(languagePushButtons[i], i / 5, i % 5);
         if (i > 4)
@@ -205,11 +283,24 @@ SearchPage::SearchPage() {
     // IMDb Rating
     imdbRatingFieldLabel.setText("IMDb Minimum Rating");
     imdbRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    imdbRatingFieldLabel.setStyleSheet("QLabel {"
+                                       "font: 16px 'Patrick Hand SC';"
+                                       "color: #ffffff;"
+                                       "}");
     basicSectionLayout.addWidget(&imdbRatingFieldLabel);
     basicSectionLayout.addLayout(&imdbRatingLineEditLayout);
-    imdbRatingLineEdit.setFixedSize(250, 40);
+    imdbRatingLineEdit.setFixedSize(275, 40);
     imdbRatingLineEdit.setAlignment(Qt::AlignHCenter);
     imdbRatingLineEdit.setMaxLength(4);
+    imdbRatingLineEdit.setStyleSheet(
+            "QLineEdit {"
+            "   border: 2.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     imdbRatingDoubleValidator.setRange(0.0, 10.0, 1);
     imdbRatingLineEdit.setValidator(&imdbRatingDoubleValidator);
     imdbRatingDoubleValidator.setNotation(QDoubleValidator::StandardNotation);
@@ -219,11 +310,24 @@ SearchPage::SearchPage() {
     // Rotten Tomatoes Rating
     rottenTomatoesRatingFieldLabel.setText("Rotten Tomatoes Minimum Rating");
     rottenTomatoesRatingFieldLabel.setAlignment(Qt::AlignHCenter);
+    rottenTomatoesRatingFieldLabel.setStyleSheet("QLabel {"
+                                                 "font: 16px 'Patrick Hand SC';"
+                                                 "color: #ffffff;"
+                                                 "}");
     basicSectionLayout.addWidget(&rottenTomatoesRatingFieldLabel);
     basicSectionLayout.addLayout(&rottenTomatoesRatingLineEditLayout);
-    rottenTomatoesRatingLineEdit.setFixedSize(250, 40);
+    rottenTomatoesRatingLineEdit.setFixedSize(275, 40);
     rottenTomatoesRatingLineEdit.setAlignment(Qt::AlignHCenter);
     rottenTomatoesRatingLineEdit.setMaxLength(3);
+    rottenTomatoesRatingLineEdit.setStyleSheet(
+            "QLineEdit {"
+            "   border: 2.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     // rottenTomatoesRatingIntValidator.setRange(0, 100);
     // rottenTomatoesRatingLineEdit.setValidator(&rottenTomatoesRatingIntValidator);
     rottenTomatoesRatingLineEdit.setPlaceholderText("Enter a value between 0 and 100");
@@ -285,6 +389,15 @@ SearchPage::SearchPage() {
     // Search Button
     searchDatabaseButton.setText("SEARCH");
     searchDatabaseButton.setFixedSize(200, 50);
+    searchDatabaseButton.setStyleSheet(
+            "QPushButton {"
+            "   border: 1.5px solid #000000;" // Border color
+            "   border-radius: 8px;"         // Rounded corners
+            "   padding: 2px 4px;"           // Padding inside the QLineEdit
+            "   background: #ffffff;"        // Background color
+            "   font: 14px 'Patrick Hand SC';"
+            "}"
+    );
     searchDatabaseButtonLayout.addWidget(&searchDatabaseButton);
     searchDatabaseButtonLayout.setAlignment(Qt::AlignHCenter);
     mainLayout.addLayout(&searchDatabaseButtonLayout);

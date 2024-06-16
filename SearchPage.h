@@ -108,7 +108,7 @@ private:
             ArabicPBTextStr = "ARABIC";
 
     QLabel titleFieldLabel;
-    QLabel releaseYearFieldLabel, releaseYearFromLabel, releaseYearToLabel;
+    QLabel releaseYearFieldLabel, releaseYearToLabel;
     QLabel genreFieldLabel;
     QLabel ageRatingFieldLabel;
     QLabel languageFieldLabel;
