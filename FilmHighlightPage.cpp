@@ -123,7 +123,6 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
     originalModel->setQueryResults(resultObject);
 
     posterUrl = originalModel->data(originalModel->index(0, 36), Qt::DisplayRole).toString();
-    qDebug() << "PosterURL: " << posterUrl << "\n";
     loadImageFromUrl(posterUrl, &imageLabel);
 
     // Set label as plot

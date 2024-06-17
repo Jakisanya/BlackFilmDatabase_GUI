@@ -150,7 +150,6 @@ std::string ResultsPage::escapeSingleQuotes(std::string& input) const {
             "FROM general.complete_movie_data "
             "WHERE \"Title\" = {} "
             "AND \"Year\"::INTEGER = {};", selectedTitle, selectedYear);
-    std::cout << builtQuery << "\n";
     return builtQuery;
 }
 
@@ -167,12 +166,8 @@ std::string ResultsPage::escapeSingleQuotes(std::string& input) const {
 void ResultsPage::onTitleSelected(const QModelIndex& index) { // select title in QTableView; so not a button
     QModelIndex titleIndex = index.sibling(index.row(), 0);
     QModelIndex yearIndex = index.sibling(index.row(), 1);
-    std::cout << "title index: row -> " << titleIndex.row() << " col -> " << titleIndex.column() << "\n";
-    std::cout << "year index: row -> " << yearIndex.row() << " col -> " << yearIndex.column() << "\n";
     std::string titleText = proxyModel.data(titleIndex, Qt::DisplayRole).toString().toStdString();
     int yearValue = proxyModel.data(yearIndex, Qt::DisplayRole).toString().toInt();
-    qDebug() << "titleText (std::string): " << titleText << "\n";
-    qDebug() << "yearValue (int): " << yearValue << "\n";
     std::string builtQuery;
     builtQuery = buildQueryString(titleText, yearValue);
     pqxx::result result;
