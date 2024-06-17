@@ -3,10 +3,8 @@
 FilmHighlightPage::FilmHighlightPage()
     : originalModel(nullptr) {
 
-    setFixedSize(760, 550);
+    setFixedSize(760, 740);
     setStyleSheet("background-color: #292A32;");
-
-    mainLayout.addSpacerItem(&sectionGap);
 
     // Search Button
     backToResultsPageButton.setText("BACK TO RESULTS");
@@ -23,9 +21,42 @@ FilmHighlightPage::FilmHighlightPage()
     );
     backToResultsPageButtonLayout.addWidget(&backToResultsPageButton);
     backToResultsPageButtonLayout.setAlignment(Qt::AlignCenter);
-    mainLayout.addLayout(&backToResultsPageButtonLayout);
+    pageLayout.addLayout(&backToResultsPageButtonLayout);
+    pageLayout.addSpacerItem(&sectionGap);
 
-    mainLayout.addSpacerItem(&sectionGap);
+    scrollArea.setWidgetResizable(true); // Allow the scroll area to resize its contents
+    QString styleSheet = R"(
+            QScrollArea { border: none; }
+            QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                    height: 0px;
+                    width: 0px;
+            }
+            QScrollBar:vertical {
+                border: 2px solid #292A32;
+                background: #292A32;
+                width: 20px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical {
+                    background: #6B0E82;
+                    border-radius: 8px;
+                    min-height: 80px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                    background: none;
+            })";
+
+    scrollArea.setStyleSheet(styleSheet);
+    scrollArea.setAlignment(Qt::AlignCenter);
+    scrollWidget.setLayout(&mainLayout);
+    scrollArea.setWidget(&scrollWidget);
+    scrollArea.setFixedSize(738, 650);
+    setLayout(&pageLayout);
+    pageLayout.addWidget(&scrollArea);
+    pageLayout.addSpacerItem(&sectionGap);
+
+    mainLayout.setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     // Set label as image
     imageLabel.setAlignment(Qt::AlignCenter);
@@ -41,8 +72,6 @@ FilmHighlightPage::FilmHighlightPage()
     leftFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
     filmHighlightContentsLayout.addLayout(&leftFilmHighlightContentsVBoxLayout);
 
-    rightFilmHighlightContentsVBoxLayout.addWidget(&plotLabel);
-
     rightFilmHighlightContentsVBoxLayout.addWidget(&tableView);
     rightFilmHighlightContentsVBoxLayout.setSizeConstraint(QLayout::SetFixedSize);
 
@@ -50,9 +79,10 @@ FilmHighlightPage::FilmHighlightPage()
     filmHighlightContentsLayout.setSizeConstraint(QLayout::SetFixedSize);
 
     mainLayout.addLayout(&filmHighlightContentsLayout);
-    mainLayout.addStretch();
-    mainLayout.addSpacerItem(&sectionGap);
-    setLayout(&mainLayout);
+    mainLayout.addSpacing(10);
+    plotLayout.addWidget(&plotLabel);
+    mainLayout.addLayout(&plotLayout);
+    mainLayout.addStretch(50);
 
     QObject::connect(&backToResultsPageButton, &QPushButton::clicked, this,
                      &FilmHighlightPage::onBackToResultsPageButtonClicked);
@@ -114,20 +144,66 @@ void FilmHighlightPage::handleQueryResults(pqxx::result& resultObject) {
 
     // Set QTableView to the transpose proxy model
     tableView.setModel(&transposeProxyModel);
-    tableView.resizeRowsToContents();
-    tableView.setColumnWidth(0, 216);
+    tableView.verticalScrollBar()->setSingleStep(1);
     tableView.setWordWrap(true);
     tableView.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    tableView.setStyleSheet(
-            "QTableView {"
-            "    background-color: #ffffff;"
-            "    font: 14px 'Patrick Hand SC';"
-            "}"
-            "QHeaderView::section {"
-            "    background-color: #ffffff;"
-            "    font: 14px 'Patrick Hand SC';"
-            "}"
-    );
+    tableView.horizontalHeader()->hide();
+    QString styleSheet = R"(
+            QTableView {
+                background-color: #ffffff;
+                border-radius: 8px;
+                font: 14px 'Patrick Hand SC';
+            }
+            QHeaderView::section {
+                background-color: #292A32;
+                font: 16px 'Patrick Hand SC';
+                color: #ffffff;
+            }
+            QTableView::corner {
+                background: #292A32;
+            }
+            QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                width: 0px;
+            }
+            QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,
+            QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+                height: 0px;
+                width: 0px;
+            }
+            QScrollBar:vertical {
+                border: 2px solid #292A32;
+                background: #292A32;
+                width: 20px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical {
+                background: #6B0E82;
+                border-radius: 8px;
+                min-height: 80px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+            }
+            QScrollBar:horizontal {
+                border: 2px solid #292A32;
+                background: #292A32;
+                height: 20px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:horizontal {
+                background: #6B0E82;
+                border-radius: 8px;
+                min-width: 20px;
+            }
+            QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+                background: none;
+            }
+        )";
+    tableView.setStyleSheet(styleSheet);
+    tableView.resizeRowsToContents();
+    tableView.setColumnWidth(0, 150);
 
     QObject::disconnect(&manager, &QNetworkAccessManager::finished, nullptr, nullptr);
     QObject::connect(&manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {

@@ -150,5 +150,5 @@ void MainGraphicsView::showFilmHighlightPage() {
     proxyWidget->setWidget(&filmHighlightPage);
     scene.addItem(proxyWidget);
     // Change page dimensions
-    setFixedSize(760, 550);
+    setFixedSize(760, 740);
 }

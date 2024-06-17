@@ -54,6 +54,10 @@ private:
     QLabel plotLabel;
     QString posterUrl;
     QString plot;
+    QHBoxLayout plotLayout;
+    QScrollArea scrollArea;
+    QVBoxLayout pageLayout;
+    QWidget scrollWidget;
 };
 
 

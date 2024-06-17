@@ -33,16 +33,63 @@ ResultsPage::ResultsPage() {
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
     tableView.setWordWrap(true);
-    tableView.setStyleSheet(
-            "QTableView {"
-            "    background-color: #ffffff;"
-            "    font: 14px 'Patrick Hand SC';"
-            "}"
-            "QHeaderView::section {"
-            "    background-color: #ffffff;"
-            "    font: 14px 'Patrick Hand SC';"
-            "}"
-    );
+    tableView.verticalHeader()->hide();
+
+    // Apply style sheet to customize scroll bars
+    QString styleSheet = R"(
+            QTableView {
+                background-color: #ffffff;
+                border-radius: 8px;
+                font: 14px 'Patrick Hand SC';
+            }
+            QHeaderView::section {
+                background-color: #292A32;
+                font: 16px 'Patrick Hand SC';
+                color: #ffffff;
+            }
+            QTableView::corner {
+                background: #292A32;
+            }
+            QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                width: 0px;
+            }
+            QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,
+            QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+                height: 0px;
+                width: 0px;
+            }
+            QScrollBar:vertical {
+                border: 2px solid #292A32;
+                background: #292A32;
+                width: 20px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical {
+                background: #6B0E82;
+                border-radius: 8px;
+                min-height: 80px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+            }
+            QScrollBar:horizontal {
+                border: 2px solid #292A32;
+                background: #292A32;
+                height: 20px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:horizontal {
+                background: #6B0E82;
+                border-radius: 8px;
+                min-width: 20px;
+            }
+            QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+                background: none;
+            }
+        )";
+    tableView.setStyleSheet(styleSheet);
     tableViewLayout.addWidget(&tableView);
 
     mainLayout.addLayout(&tableViewLayout);
